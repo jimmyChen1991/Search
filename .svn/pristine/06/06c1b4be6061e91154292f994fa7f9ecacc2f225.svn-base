@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">体验结算系统</string>
+    
+    <string name="salername_login">请输入账号</string>
+    <string name="salerpwd_login">请输入密码</string>
+    
+    <string name="bindcustomercode">关联客户码</string>
+    <string name="menu_settings">Settings</string>
+    <string name="soft_update_no">不更新</string>
+    <string name="soft_update_title">软件更新</string>
+    <string name="soft_update_info">更新信息</string>
+    <string name="soft_update_failed">MD5校验失败</string>
+    <string name="soft_update_failed_contiuned">继续下载?</string>
+    <string name="soft_update_updatebtn">更新</string>
+    <string name="soft_update_later">稍后更新</string>
+    <string name="soft_updating">正在更新</string>
+    <string name="soft_update_cancel">取消更新</string>
+    <string name="queding">确定</string>
+    <string name="warnning">温馨提示</string>
+    <string name="leavingText">您将退出本应用</string>
+    <string name="cancel">取消</string>
+    <string name="IsFreeOfDutyLargerThanLimit">免税商品总额不能超过16000</string>
+    <string name="IsTaxGoodsCntLargerThanLimit">单次离岛限购一件有税商品</string>
+    <string name="IsTypeRestictionCntLargerThanLimit">G类商品单次离岛限购H件</string>
+    <string name="IsStockNotEnough">部分商品库存不足，请在购物车内调整购买数量</string>
+    <string name="scan_text1">将商品条码放入输入框内</string>
+    <string name="scan_text2">即可扫描加入购物车</string>
+    <string name="title_activity_history_order">HistoryOrderActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="auto_settle_desc">· 立即支付：在当前设备自助完成后续资格验证、优惠券、礼品卡使用、支付等结算流程。</string>
+    <string name="server_settle_desc">· 服务台支付：在服务台由结算员帮助您完成后续资格验证、优惠券、礼品卡使用、支付等结算流程。</string>
+
+    <string name="server_settle_userName">用户名:</string>
+    <string name="server_settle_idCard">身份证号:</string>
+    <string name="server_settle_flightNum">航班号:</string>
+    <string name="server_settle_flightDate">航班时间:</string>
+
+    <string name="server_settle_moeny">￥</string>
+    <string name="server_settle_goodsPrice">商品总价</string>
+    <string name="server_settle_discountActive">折扣优惠</string>
+    <string name="server_settle_1">满减优惠</string>
+    <string name="server_settle_moeny1">优惠券</string>
+    <string name="server_settle_card">礼品卡</string>
+    <string name="server_settle_hongbao">红包</string>
+    <string name="server_settle_money_rate">商品税</string>
+    <string name="server_settle_finalPrice">实付金额</string>
+    <string name="id_code_err">*请输入正确身份证</string>
+    <string name="username_err">*请输入正确姓名</string>
+    <string name="flightNum_err">*请输入正确航班号</string>
+    <string name="date_err">*请输入日期</string>
+    <string name="goback_to_shopcart">返回购物车</string>
+
+    <string name="pay_type_zhifubao">支付宝支付</string>
+    <string name="pay_type_weixin">微信支付</string>
+    <string name="pay_type_use_zhifubao">使用支付宝安全支付</string>
+    <string name="pay_type_use_weixin">使用微信支付</string>
+    <string name="selected">已选择 </string>
+    <string name="rmb">￥</string>
+    <string name="alert_loading_msg">请稍候...</string>
+    <string name="alert_loading_txt">请稍候...</string>
+
+    <string name="pay_result_mpney">支付金额:</string>
+    <string name="pay_result_order_number">订单编号:</string>
+
+
+    <string name="ticket_no_use">不满足使用条件</string>
+    <string name="select_pay_type_order_number">订单提交成功,请尽快付款!订单号:</string>
+    
+    <string name="server_exception">后台POST数据异常</string>
+    <string name="netconnect_exception">网络异常</string>
+    <string name="serverresult_exception">响应数据为空</string>
+    <string name="bind_privilege_code">绑定特权码</string>
+    <string name="privilege_label">特权</string>
+    <string name="privilege_code">特权码</string>
+    <string name="bind">绑定</string>
+    <string name="cancel_bind">取消绑定</string>
+    <string name="detail_desc">详细说明:</string>
+    <string name="privilege_good">适用商品></string>
+    <string name="current_privilege_user">您当前为特权用户\n享受特权优惠活动</string>
+    <string name="privilege_unbind_receiver">unBind</string>
+    <string name="privilege_inputcode">请输入券码</string>
+    <string name="discountActivity">优惠活动</string>
+    <string name="privilegeActivity">特权码活动</string>
+    <string name="bind_success">绑定成功</string>
+</resources>

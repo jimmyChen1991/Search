@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f2f2f2">
+<RelativeLayout
+    android:id="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:background="@drawable/topshdowbar">
+        <ImageButton
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/back" />
+    <TextView 
+        android:id="@+id/specialname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21sp"
+        android:textColor="#333333"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
+<com.hhyg.TyClosing.ui.view.SPScrollview 
+    android:id="@+id/scrollview"
+    android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_below="@+id/top"
+	android:background="#ffffff">
+    <LinearLayout 
+        android:id="@+id/scrollroot"
+        android:layout_width="match_parent"
+		android:layout_height="wrap_content"       
+		android:orientation="vertical">
+        <ImageView
+		    android:id="@+id/headimg"
+		    android:layout_width="match_parent"
+		    android:layout_height="250dip" />
+		<com.hhyg.TyClosing.ui.view.TabPageIndicator
+		    android:id="@+id/indicator"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:visibility="gone" />
+		<com.hhyg.TyClosing.ui.view.InSideListView 
+		    android:id="@+id/listlv"
+		    android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:divider="#f2f2f2"
+    		android:dividerHeight="15dip"
+    		android:listSelector="@android:color/transparent"
+			></com.hhyg.TyClosing.ui.view.InSideListView>
+    </LinearLayout>
+</com.hhyg.TyClosing.ui.view.SPScrollview>
+<com.hhyg.TyClosing.ui.view.TabPageIndicator
+    android:id="@+id/topindicator"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/top"
+    android:visibility="gone" >
+</com.hhyg.TyClosing.ui.view.TabPageIndicator>
+<ImageView 
+			android:id="@+id/infoOperating" 				
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:layout_centerInParent="true"
+			android:src="@drawable/progress" 
+			android:visibility="gone"
+			android:scaleType="center"/> 
+<ImageButton 
+    		android:id="@+id/backtotop"
+    		android:background="@drawable/backtotop"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_marginBottom="151dip"
+    		android:layout_alignParentBottom="true"
+    		android:layout_alignParentRight="true"
+    		android:visibility="gone"
+    		android:layout_marginRight="20dip"    />
+</RelativeLayout>

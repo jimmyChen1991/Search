@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="14dip"
+    android:paddingRight="20dip"
+    android:paddingTop="50dip"
+    android:background="#f2f2f2" >
+<GridView
+    android:id="@+id/cateimggrid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnWidth="128dip"
+    android:horizontalSpacing="10dip"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="10dip"
+    android:listSelector="@android:color/transparent"
+     >
+</GridView>
+</LinearLayout>

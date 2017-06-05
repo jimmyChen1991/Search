@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dip" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingBottom="20dip"
+        android:background="@drawable/dialog_corner" >
+<RelativeLayout 
+    android:id="@+id/titlelayout"
+    android:layout_width="match_parent"
+    android:layout_height="65dip"
+    >
+<TextView 
+    android:id="@+id/specailcode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="24sp"
+    android:textColor="@color/maincolor"
+    android:layout_centerInParent="true"
+    android:text="获取特权码"
+    />    
+</RelativeLayout>
+<ImageView 
+	android:id="@+id/split"
+	android:layout_width="410dip"
+	android:layout_height="1dip"
+	android:background="#e5e5e5"
+	android:layout_below="@+id/titlelayout"
+	android:layout_centerHorizontal="true"/> 
+<TextView 
+    android:id="@+id/detail_one"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/split"
+    android:layout_marginTop="20dip"
+    android:text="方式一:"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    />
+<TextView 
+    android:id="@+id/detail_two"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/detail_one"
+    android:layout_marginTop="10dip"
+    android:text="店面消费满3000元即可获得体验店特权码"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    />
+<TextView 
+    android:id="@+id/detail_three"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/detail_two"
+    android:layout_marginTop="10dip"
+    android:text="方式二:"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    />
+<TextView 
+    android:id="@+id/detail_four"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/detail_three"
+    android:layout_marginTop="10dip"
+    android:text="关注如下公众号,回复“特权码”,即可参与疯抢特权码"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    />
+<ImageView 
+    android:id="@+id/barcode_img"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:layout_centerHorizontal="true"
+	android:layout_below="@+id/detail_four"    
+	android:layout_marginTop="50dip"
+	android:background="@drawable/privilege_barcode"
+    />
+<Button 
+    android:id="@+id/ok"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:background="@drawable/button_corner_selector"
+    android:layout_below="@+id/barcode_img"
+    android:layout_marginTop="50dip"
+    android:text="确定"
+    android:textColor="#ffffff"
+    />
+</RelativeLayout>
+    <ImageButton
+        android:id="@+id/close_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/close"
+        android:padding="10dp" />
+</RelativeLayout>

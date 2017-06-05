@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dip"
+     >
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingBottom="20dip"
+        android:background="@drawable/dialog_corner" >
+<RelativeLayout 
+    android:id="@+id/titlelayout"
+    android:layout_width="match_parent"
+    android:layout_height="65dip"
+    >
+<TextView 
+    android:id="@+id/specailcode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="24sp"
+    android:textColor="@color/maincolor"
+    android:layout_centerInParent="true"
+    android:text="特权码"
+    />    
+</RelativeLayout>
+<ImageView 
+	android:id="@+id/split"
+	android:layout_width="410dip"
+	android:layout_height="1dip"
+	android:background="#e5e5e5"
+	android:layout_below="@+id/titlelayout"
+	android:layout_centerHorizontal="true"/> 
+<TextView 
+    android:id="@+id/detail_one"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/split"
+    android:layout_marginTop="20dip"
+    android:textSize="15sp"
+    android:textColor="#666666"
+    android:text="·10月27日-11月10日,用特权码下单,可提前享双11优惠，全场8折封顶!"
+    />
+<TextView 
+    android:id="@+id/detail_two"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/detail_one"
+    android:layout_marginTop="10dip"
+    android:textSize="15sp"
+    android:textColor="#666666"
+    android:text="·11月11日-11月18日,用特权码下单,可享受全场77折封顶!低过双11!"
+    />
+<TextView 
+    android:id="@+id/detail_three"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    android:layout_below="@+id/detail_two"
+    android:layout_marginTop="20dip"
+    android:text="特权码:"
+    />
+<TextView 
+    android:id="@+id/err_msg"
+    android:visibility="gone"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/detail_two"
+    android:layout_marginTop="25dip"
+    android:layout_alignRight="@+id/specialcode_input"
+    android:textColor="@color/maincolor"
+    android:textSize="12sp"
+    />
+<com.hhyg.TyClosing.ui.view.AutoClearEditText 
+    android:id="@+id/specialcode_input"
+    android:layout_width="200dip"
+    android:layout_height="35dip"
+    android:layout_below="@+id/detail_three"
+    android:layout_marginTop="10dip"
+    android:background="@drawable/edit_shape"
+    android:singleLine="true"
+    android:hint="输入特权码"
+    />
+<Button 
+    android:id="@+id/commitbtn"
+    android:layout_width="match_parent"
+    android:layout_height="35dip"
+    android:layout_alignTop="@+id/specialcode_input"
+    android:layout_toRightOf="@+id/specialcode_input"
+	android:layout_marginLeft="10dip"
+    android:text="绑定"
+    android:textSize="15sp"
+    android:textColor="#ffffff"
+    android:background="@drawable/button_corner_selector"
+    />
+<RelativeLayout 
+    android:id="@+id/bottomlayout"
+    android:layout_width="match_parent"
+    android:layout_height="66dip"
+    android:layout_below="@+id/specialcode_input"
+    >
+ <TextView 
+    android:id="@+id/aboutspecialcode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="没有特权码？"
+    android:background="#ffffff"
+    android:layout_centerVertical="true"
+    android:textColor="@color/maincolor"/>   
+</RelativeLayout>
+</RelativeLayout>
+    <ImageButton
+        android:id="@+id/close_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/close"
+        android:padding="10dp" />
+</RelativeLayout>

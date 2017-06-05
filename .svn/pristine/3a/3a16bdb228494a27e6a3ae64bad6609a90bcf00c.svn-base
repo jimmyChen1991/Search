@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+<RelativeLayout
+    android:id="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="60dip"
+    android:background="#ffffff" >
+    	    <ImageView
+	    android:id="@+id/gooddetailsplit0"
+	    android:layout_width="match_parent"
+	    android:layout_height="1dip"
+	    android:layout_alignParentBottom="true"
+	    android:background="#e5e5e5" />
+    <ImageButton
+            android:id="@+id/backbtn"
+            android:layout_width="55dip"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dip"
+            android:src="@drawable/back"
+            android:background="#ffffff" />
+    <LinearLayout
+        	android:id="@+id/searchlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:layout_marginLeft="55dip"
+            android:layout_marginRight="20dip"
+            android:background="@drawable/edit_shape">
+    <ImageView
+        	android:id="@+id/searchblank"
+        	android:layout_width="15dip"
+        	android:layout_height="40dip"/>
+    <com.hhyg.TyClosing.ui.view.AutoClearEditText
+            android:id="@+id/searchbar"
+            android:layout_width="600dip"
+            android:layout_height="40dip"
+            android:background="@drawable/edit_shape"
+            android:textColor="#999999"
+            android:focusable="true"
+            android:singleLine="true"
+            android:hint="搜索商品" />
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/searchcommmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dip"
+            android:background="@drawable/searchcommit_selector"/>
+</RelativeLayout>
+<TextView
+    android:id="@+id/history_search"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/top"
+    android:layout_marginTop="50dip"
+    android:layout_marginLeft="20dip"
+    android:text="最近搜索"
+    android:textColor="#C38C56"
+    android:textSize="18sp" />
+<ImageButton 
+    android:id="@+id/clearbtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/clear_pressed"
+    android:layout_alignParentRight="true"
+    android:layout_alignTop="@+id/history_search"
+    android:layout_marginRight="20dip"
+    />
+<ImageView
+    android:id="@+id/gooddetailsplit1"
+    android:layout_width="match_parent"
+    android:layout_height="1dip"
+    android:layout_below="@+id/history_search"
+    android:layout_marginTop="16dip"
+    android:layout_marginLeft="20dip"
+    android:layout_marginRight="20dip"
+    android:background="#e5e5e5" />
+<LinearLayout 
+    android:id="@+id/htyviewgroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@+id/gooddetailsplit1"
+    android:layout_marginLeft="20dip"
+    android:layout_marginRight="20dip"
+    ></LinearLayout>
+<TextView
+    android:id="@+id/hotsearch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/htyviewgroup"
+    android:layout_marginTop="150dip"
+    android:layout_marginLeft="20dip"
+    android:text="热门搜索"
+    android:textColor="#C38C56"
+    android:textSize="18sp" />
+<ImageView
+    android:id="@+id/gooddetailsplit"
+    android:layout_width="match_parent"
+    android:layout_height="1dip"
+    android:layout_below="@+id/hotsearch"
+    android:layout_marginTop="16dip"
+    android:layout_marginLeft="20dip"
+    android:layout_marginRight="20dip"
+    android:background="#e5e5e5" />
+<LinearLayout
+    android:id="@+id/viewGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/gooddetailsplit"
+    android:layout_marginLeft="20dip"
+    android:layout_marginRight="20dip"
+    android:orientation="vertical"></LinearLayout>
+<ListView
+    android:id="@+id/adlv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/viewGroup"
+    android:layout_marginTop="131dip"
+    android:divider="#00000000"
+    android:dividerHeight="0dip"
+    android:listSelector="@android:color/transparent" />
+<ImageView
+			android:id="@+id/infoOperating" 				
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:layout_centerInParent="true"
+			android:src="@drawable/progress" 
+			android:visibility="gone"
+			android:scaleType="center"/> 
+</RelativeLayout>

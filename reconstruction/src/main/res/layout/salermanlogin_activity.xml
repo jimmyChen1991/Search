@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/salerlogin_backgroup" >
+<com.hhyg.TyClosing.ui.view.AutoClearEditText 
+    android:id="@+id/salername_input"
+    android:layout_width="400dip"
+    android:layout_height="45dip"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="300dip"
+    android:drawableLeft="@drawable/salerloginid_backgroup"
+    android:paddingLeft="10dip"
+    android:background="@drawable/edit_shape"
+    android:singleLine="true"
+    android:hint="@string/salername_login"
+        />
+<com.hhyg.TyClosing.ui.view.AutoClearEditText 
+    android:id="@+id/salerpwd_input"
+    android:layout_width="400dip"
+    android:layout_height="45dip"
+    android:inputType="textPassword"
+    android:layout_below="@+id/salername_input"
+    android:layout_marginTop="50dip"
+    android:paddingLeft="10dip"
+    android:drawableLeft="@drawable/salerloginpwd_backgroup"
+    android:background="@drawable/edit_shape"
+    android:layout_centerHorizontal="true"
+    android:singleLine="true"
+    android:hint="@string/salerpwd_login"
+    />
+<Button 
+    android:id="@+id/commmitbtn"
+    android:layout_width="400dip"
+    android:layout_height="45dip"
+    android:layout_below="@+id/salerpwd_input"
+    android:layout_marginTop="50dip"
+    android:layout_centerHorizontal="true"
+    android:clickable="false"
+    android:text="登录"
+    android:textColor="#ffffff"
+    />
+<TextView 
+    android:id="@+id/versionname"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="12sp"
+    android:textColor="#ffffff"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="100dip"
+    />
+<TextView 
+    android:id="@+id/device_id"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="12sp"
+    android:textColor="#ffffff"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="80dip"
+    />
+</RelativeLayout>

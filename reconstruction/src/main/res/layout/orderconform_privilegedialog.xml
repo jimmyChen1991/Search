@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingBottom="20dip"
+        android:background="@drawable/dialog_corner" >
+        <RelativeLayout
+            android:id="@+id/titlelayout"
+            android:layout_width="match_parent"
+            android:layout_height="65dip" >
+            <TextView
+                android:id="@+id/specailcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="下单确认"
+                android:textColor="@color/maincolor"
+                android:textSize="24sp" />
+        </RelativeLayout>
+<ImageView 
+	android:id="@+id/split"
+	android:layout_width="410dip"
+	android:layout_height="1dip"
+	android:background="#e5e5e5"
+	android:layout_below="@+id/titlelayout"
+	android:layout_centerHorizontal="true"/>
+<TextView
+    android:id="@+id/detail_one"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/split"
+    android:layout_marginTop="20dip"
+    android:text="您当前是特权用户,提前享有全场商品8折优惠,提交订单特权码即失效,是否需要	选购更多商品?"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    />
+<Button
+    android:id="@+id/continue_buy"
+    android:layout_width="175dip"
+    android:layout_height="50dip"
+    android:layout_below="@+id/detail_one"
+    android:layout_marginTop="35dip"
+    android:background="@drawable/btnshape"
+    android:textColor="@color/maincolor"
+    android:text="继续选购" />
+<Button
+    android:id="@+id/payself"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:layout_below="@+id/detail_one"
+    android:layout_toRightOf="@+id/continue_buy"
+	android:layout_marginLeft="10dip"
+    android:layout_marginTop="35dip"
+    android:background="@drawable/button_corner"
+    android:textColor="#ffffff"
+    android:text="我选好了" />
+    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/close_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/close"
+        android:padding="10dp" />
+</RelativeLayout>

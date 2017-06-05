@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/topbarheight"
+    android:orientation="horizontal"
+    android:background="@drawable/topbar" >
+<ImageButton 
+    android:id="@+id/back"
+    android:layout_width="30dip"
+    android:layout_height="30dip"
+    android:layout_gravity="center_vertical"
+    android:layout_marginLeft="10dip"
+    />
+
+<ImageButton 
+    android:id="@+id/scanbtn"
+    android:layout_width="@+id/wrap_content"
+    android:layout_height="@+id/wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginRight="10dip"  
+    />
+</LinearLayout>

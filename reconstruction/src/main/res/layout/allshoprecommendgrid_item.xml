@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="320dip"
+    android:background="#ffffff" >
+<RelativeLayout 
+    android:id="@+id/imglayout"
+    android:layout_width="200dip"
+    android:layout_height="200dip"
+    android:layout_centerHorizontal="true"
+    android:background="#ffffff">
+ <ImageView
+    android:id="@+id/goodimg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+ <ImageView 
+    android:id="@+id/nostockimg"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/allshop_nostock"
+    android:layout_centerInParent="true"  />   
+</RelativeLayout>
+<TextView
+    android:id="@+id/brandname"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/imglayout"
+    android:layout_centerHorizontal="true"
+    android:textColor="#333333"
+    android:textSize="15sp"
+    android:background="#ffffff" />
+<TextView
+    android:id="@+id/name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/brandname"
+    android:layout_centerHorizontal="true"
+    android:textColor="#333333"
+    android:textSize="12sp" 
+    android:background="#ffffff"/>
+ <RelativeLayout
+     android:id="@+id/price_wrap"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_centerHorizontal="true"
+     android:layout_below="@+id/name"
+     >
+     <TextView
+         android:id="@+id/acviteprice"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="15dp"
+         android:textColor="#C38C56"
+         android:textSize="18sp"
+         android:textStyle="bold"
+         android:background="#ffffff" />
+     <TextView
+         android:id="@+id/citprice"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_toRightOf="@+id/acviteprice"
+         android:layout_marginLeft="5dp"
+         android:textColor="#999999"
+         android:textSize="18sp" />
+ </RelativeLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="18dip"
+    android:layout_below="@+id/price_wrap"
+    android:background="#ffffff"
+    />
+<TextView 
+    android:id="@+id/activite_indicator_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="@style/active_indicator"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginRight="10dip"
+    android:layout_marginTop="10dip"
+    />
+ <ImageView
+     android:id="@+id/privilege_icon"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_below="@+id/activite_indicator_text"
+     android:layout_alignParentRight="true"
+     android:layout_marginRight="10dp"
+     android:layout_marginTop="10dp"
+     android:background="@drawable/shopcart_privilege_icon"
+     />
+</RelativeLayout>

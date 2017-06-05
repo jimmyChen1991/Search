@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dip"
+    android:orientation="vertical"
+    android:background="@drawable/brandcate_shpae" >
+<LinearLayout
+    android:id="@+id/brandimgcontent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dip"
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip"
+    android:paddingTop="10dip"
+    android:background="#ffffff" >
+    <ImageView 
+        android:id="@+id/brandimg"
+        android:layout_width="match_parent"
+        android:layout_height="90dip"
+        android:background="#ffffff"/>
+</LinearLayout>
+<ImageView
+        android:id="@+id/brandsplit"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#e5e5e5" />
+<TextView android:id="@+id/brandname"
+    android:layout_width="wrap_content"
+    android:layout_height="45dip"
+    android:textSize="12sp"
+    android:layout_gravity="center"
+    android:layout_marginTop="15dip"
+    android:textColor="#999999"
+    android:background="#ffffff"/>
+</LinearLayout>

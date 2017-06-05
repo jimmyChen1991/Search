@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f2f2f2" >
+    <RelativeLayout
+            android:id="@+id/toolbar1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/topbarheight"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/topshdowbar">
+        <ImageButton
+                android:id="@+id/button_scan1"
+                android:layout_width ="wrap_content"
+                android:layout_height ="wrap_content"
+                android:background="@drawable/back"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dip" />
+        <TextView
+                android:id="@+id/textview_title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="支付成功"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="21sp" />
+    </RelativeLayout>
+   <RelativeLayout
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="280dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_below="@+id/toolbar1"
+            android:background="#ffffff">
+
+        <ImageButton
+                android:id="@+id/button_OK"
+                android:layout_width ="wrap_content"
+                android:layout_height ="wrap_content"
+                android:background="@drawable/sucess"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dip" />
+        <TextView
+            android:id="@+id/textview_title_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dip"
+            android:layout_below="@+id/button_OK"
+            android:layout_centerHorizontal="true"
+            android:text="支付成功!"
+            android:textColor="#353535"
+            android:textSize="21sp" />
+        <TextView
+                android:id="@+id/order_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dip"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/textview_title_success"
+                android:textColor="#9a9a9a"
+                android:textSize="15sp" />
+       <TextView
+                android:id="@+id/order_info_shangyou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dip"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/order_info"
+                android:textColor="#9a9a9a"
+                android:textSize="15sp" />
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/toolbar3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_below="@+id/toolbar2"
+            android:layout_marginTop="20dp"
+            android:background="#ffffff">
+        <TextView
+                android:id="@+id/textview_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="28dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="15dip"
+                android:text="请于45分钟后,凭身份证及登机牌到提货点提货"
+                android:textColor="#c88951"
+                android:textSize="18sp" />
+        <ImageButton
+                android:id="@+id/button_line"
+                android:layout_height ="1dip"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dip"
+                android:background="#e6e6e6"
+                android:layout_below="@+id/textview_prompt"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"/>
+        <TextView
+                android:id="@+id/order_pos_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="提货点位置:"
+                android:layout_marginLeft="15dip"
+                android:layout_below="@+id/button_line"
+                android:textColor="#626262"
+                android:textSize="19sp" />
+        <ImageView
+                android:id="@+id/button_pos"
+                android:layout_width ="match_parent"
+                android:layout_height ="wrap_content"
+                android:layout_below="@+id/order_pos_label"
+                android:layout_marginTop="15dip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="52dip"
+                android:layout_marginBottom="40dip"
+                android:adjustViewBounds="true"
+                android:layout_marginRight="52dip"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:id="@+id/toolbar4"
+            android:layout_width="match_parent"
+            android:layout_height="80dip"
+            android:layout_alignParentBottom="true"
+            android:background="#f2f2f2">
+        <Button
+                android:id="@+id/button_goon"
+                android:layout_height ="50dip"
+                android:layout_width="100dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="13dip"
+                android:textColor="#C38C56"
+                android:background="@drawable/success_button"
+                android:text = "继续购物"
+                android:layout_marginLeft="20dip"
+                android:layout_gravity="center"
+                android:textSize="21sp"
+                android:layout_marginRight="20dip"/>
+        <Button
+                android:id="@+id/button_seeorder"
+                android:layout_height ="50dip"
+                android:layout_width="100dp"
+                android:layout_marginBottom="13dip"
+                android:layout_weight="1"
+                android:text = "查看订单"
+                android:background="@drawable/button_corner"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="20dip"
+                android:textSize="21sp"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dip"/>
+    </LinearLayout>
+</RelativeLayout>

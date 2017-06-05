@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingBottom="20dip"
+        android:background="@drawable/dialog_corner" >
+        <RelativeLayout
+            android:id="@+id/titlelayout"
+            android:layout_width="match_parent"
+            android:layout_height="65dip" >
+            <TextView
+                android:id="@+id/specailcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="提示"
+                android:textColor="@color/maincolor"
+                android:textSize="24sp" />
+        </RelativeLayout>
+<ImageView 
+	android:id="@+id/split"
+	android:layout_width="410dip"
+	android:layout_height="1dip"
+	android:background="#e5e5e5"
+	android:layout_below="@+id/titlelayout"
+	android:layout_centerHorizontal="true"/>
+<TextView
+    android:id="@+id/detail_one"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/split"
+    android:layout_marginTop="20dip"
+    android:text="服务台支付方式不支持特权码功能哦~请选择立即支付方式享受特权价"
+    android:textColor="#666666"
+    android:textSize="15sp"
+    />
+<Button
+    android:id="@+id/payself"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:layout_below="@+id/detail_one"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="35dip"
+    android:background="@drawable/button_corner"
+    android:textColor="#ffffff"
+    android:text="立即支付" />
+    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/close_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/close"
+        android:padding="10dp" />
+    
+</RelativeLayout>

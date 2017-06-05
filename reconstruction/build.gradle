@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "25.0.2"
+    aaptOptions {         cruncherEnabled = false     }
+    defaultConfig {
+        applicationId "com.hhyg.TyClosing"
+        minSdkVersion 14
+        targetSdkVersion 21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile project(':pullToRefreshLibrary')
+    compile files('libs/android-support-v4.jar')
+    compile files('libs/android-viewbadger.jar')
+    compile files('libs/fastjson-1.2.12.jar')
+    compile files('libs/imageloader.jar')
+    compile files('libs/umeng-analytics-v6.0.4.jar')
+    compile files('libs/zxing.jar')
+
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green">#5fcc29</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="red">#f00</color>
+    <color name="maincolor">#C38C56</color>
+    <color name="normal">#333333</color>
+    <color name="light">#666666</color>
+    <color name="delight">#999999</color>
+    <color name="rippelColor">#0099CC</color>
+    <color name="gray">#dcdcdc</color>
+    <color name="ffffff">#ffffff</color>
+    <color name="privile_color">#AB79E9</color>
+    <color name="mygray">#f2f2f2</color>
+</resources>

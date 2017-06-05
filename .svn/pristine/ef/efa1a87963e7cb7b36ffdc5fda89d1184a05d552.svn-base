@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f2f2f2" >
+<RelativeLayout
+    android:id="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="60dip"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+	android:background="#ffffff" >
+	   <ImageView
+	    android:id="@+id/gooddetailsplit"
+	    android:layout_width="match_parent"
+	    android:layout_height="1dip"
+	    android:layout_alignParentBottom="true"
+	    android:background="#e5e5e5" />
+	<RelativeLayout
+		android:id="@+id/go_privilege_wrap"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent">
+		<ImageButton
+			android:id="@+id/backbtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:background="@drawable/hhyglogo"
+			android:layout_marginLeft="10dip" />
+		<TextView
+			android:id="@+id/shopname"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="13sp"
+			android:textColor="#ee761a"
+			android:layout_toRightOf="@+id/backbtn"
+			android:layout_marginLeft="10dip"
+			android:layout_marginTop="12dip"
+			/>
+		<TextView
+			android:id="@+id/salername"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="11sp"
+			android:textColor="#999999"
+			android:layout_alignLeft="@+id/shopname"
+			android:layout_below="@+id/shopname"
+			/>
+	</RelativeLayout>
+	<ImageView
+		android:id="@+id/allshop_privilege_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/go_privilege_wrap"
+		android:layout_marginLeft="15dp"
+		android:layout_centerVertical="true"
+		android:visibility="gone"
+		android:background="@drawable/allshop_privilege_icon" />
+	<TextView
+		android:id="@+id/allshop_privilege_desc"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/allshop_privilege_icon"
+		android:layout_marginLeft="5dp"
+		android:layout_marginTop="12dp"
+		android:visibility="gone"
+		android:textSize="12sp"
+		android:text="@string/current_privilege_user"
+		android:textColor="@color/ffffff" />
+    <LinearLayout
+        	android:id="@+id/searchlayout"
+            android:layout_width="420dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dip"
+            android:background="@drawable/edit_shape">
+    <ImageView
+        	android:id="@+id/searchblank"
+        	android:layout_width="15dip"
+        	android:layout_height="40dip"/>
+    <EditText
+            android:id="@+id/searchbar"
+            android:layout_width="368dip"
+            android:layout_height="40dip"
+            android:background="@drawable/edit_shape"
+            android:hint="搜索商品" />
+    <ImageView
+        	android:id="@+id/searchicon" 
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/search_icon"
+        	/>       
+        </LinearLayout>
+</RelativeLayout>
+<com.handmark.pulltorefresh.library.PullToRefreshScrollView 
+    android:id="@+id/allshopsrcoll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/top"
+    >
+	<LinearLayout 
+	    android:id="@+id/allshopcontent"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    >
+	<fragment
+	    android:id="@+id/special_frag"
+	    android:name="com.hhyg.TyClosing.fragment.AllShopSpecialFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="400dip" 
+	    />
+	<fragment 
+	    android:id="@+id/cate_frag"
+	    android:name="com.hhyg.TyClosing.fragment.AllShopCateFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="110dip"
+	    />
+	<fragment
+	    android:id="@+id/flash_frag"
+	    android:name="com.hhyg.TyClosing.fragment.AllShopFlashSaleFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="265dip"
+	    android:layout_marginTop="15dip" />
+	<fragment
+	    android:id="@+id/brand_frag"
+	    android:name="com.hhyg.TyClosing.fragment.AllShopBrandFragment"
+		android:layout_width="match_parent"
+		android:layout_height="260dip"
+		android:layout_marginTop="15dip"/>
+	<fragment
+        android:id="@+id/gift_frag"
+        android:name="com.hhyg.TyClosing.fragment.AllShopGiftFragment"
+        style="@style/allshopfrag" />
+	<fragment
+        android:id="@+id/recommend_frag"
+        android:name="com.hhyg.TyClosing.fragment.AllShopRecommendFragment"
+        style="@style/allshopfrag" />
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="81dip"
+	    />
+	</LinearLayout>
+</com.handmark.pulltorefresh.library.PullToRefreshScrollView>   
+<ImageView 
+			android:id="@+id/infoOperating" 				
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:layout_centerInParent="true"
+			android:src="@drawable/progress" 
+			android:visibility="gone"
+			android:scaleType="center"/> 
+<ImageButton 
+    		android:id="@+id/bindspecialcode"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_above="@+id/bottom"
+    		android:layout_marginBottom="70dip"
+    		android:layout_alignParentRight="true"
+    		android:visibility="gone"
+    		android:layout_marginRight="20dip"    />
+<include 
+    android:id="@+id/bottom"
+    layout="@layout/tab_bottom"/>
+</RelativeLayout>

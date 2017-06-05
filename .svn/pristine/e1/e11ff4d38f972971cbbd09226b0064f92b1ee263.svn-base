@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        >
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:background="#fff"
+                    android:layout_margin="10dp"
+>
+    <RelativeLayout
+            android:id="@+id/titlelayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/topbarheight"
+                android:background="#fff"
+            >
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#C38C56"
+                android:layout_centerInParent="true"
+                android:textSize="21sp"
+                android:text="请选择支付方式"/>
+
+    </RelativeLayout>
+    <ImageView
+            android:id="@+id/split"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#e5e5e5"
+            android:layout_below="@+id/titlelayout"
+            android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+            />
+
+    <Button
+    android:id="@+id/auto_settle_btn"
+    android:layout_width="418dp"
+    android:layout_height="100dp"
+    android:layout_marginTop="40dip"
+    android:textColor="#ffffff"
+    android:textSize="18sp"
+    android:background="@drawable/auto_settle_btn_style"
+    android:gravity="center"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@+id/split"                                 android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+/>
+    <Button
+    android:id="@+id/server_settle_btn"
+    android:layout_width="418dp"
+    android:layout_height="100dp"
+    android:textColor="#ffffff"
+    android:textSize="18sp"
+    android:background="@drawable/server_settle_btn_style"
+    android:gravity="center"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="20dp"
+    android:layout_below="@+id/auto_settle_btn"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+/>
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"                       android:id="@+id/desc_ll"
+    android:layout_marginTop="50dp" android:layout_below="@id/server_settle_btn"
+>
+                <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:text="@string/auto_settle_desc"
+    android:textColor="@color/light"
+    android:id="@+id/auto_settle_text"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_marginTop="30dp" android:layout_below="@id/desc_ll"
+
+android:background="#ffffff">
+                <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:text="@string/server_settle_desc"
+    android:textColor="@color/light"
+    android:layout_marginBottom="50dp"
+    android:id="@+id/server_settle_text"
+
+android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+                    />
+        </LinearLayout>
+        </RelativeLayout>
+    <ImageView
+    android:id="@+id/close_btn"
+    android:layout_width="24dp"
+
+android:layout_height="24dp"
+    android:background="@drawable/close"
+
+android:layout_alignParentRight="true"
+
+android:padding="10dp"
+            />
+</RelativeLayout>
+

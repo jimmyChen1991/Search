@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:id="@+id/counts"
+            android:layout_width="match_parent"
+            android:layout_height="127dip"
+            android:background="#ffffff">
+
+        <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="26.5dip"
+                android:layout_marginTop="5dip"
+                android:textSize="15sp"
+                android:text="数量： "
+                android:textColor="#333333"/>
+
+        <ImageButton
+                android:id="@+id/minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_selector"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dip"
+                android:layout_toRightOf="@+id/text1"/>
+
+        <RelativeLayout
+                android:id="@+id/cntlayout"
+                android:layout_width="40dip"
+                android:layout_height="30dip"
+                android:layout_toRightOf="@+id/minus"
+                android:layout_alignTop="@+id/minus">
+
+            <TextView
+                    android:id="@+id/cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dip"
+                    android:text="1"
+                    android:textColor="#666666"/>
+        </RelativeLayout>
+
+        <ImageButton
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/add_selector"
+                android:layout_toRightOf="@+id/cntlayout"/>
+
+        <TextView
+                android:id="@+id/leftcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_toRightOf="@+id/add"
+                android:textSize="15sp"
+                android:layout_marginTop="10dip"
+                android:text=""
+                android:textColor="@color/maincolor"/>
+        <ImageView
+                android:id="@+id/splitDetail"
+                android:layout_width="698dip"
+                android:layout_height="1dip"
+                android:background="#e5e5e5"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/leftcount"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                />
+
+        <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="26.5dip"
+                android:textSize="15sp"
+                android:layout_marginTop="18dip"
+                android:layout_below="@+id/splitDetail"
+                android:text="提货点："
+                android:textColor="#333333"/>
+
+        <Button android:id="@+id/button_air1"
+                android:layout_height="42dp"
+                android:layout_width="130dip"
+                android:layout_weight="1"
+                android:layout_marginTop="10dip"
+                android:layout_below="@+id/splitDetail"
+                android:layout_marginBottom="5dip"
+                android:background="@drawable/airselect_selector"
+                android:layout_marginLeft="15dip"
+                android:layout_toRightOf="@+id/text3"
+                android:text="海口美兰机场"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air2"
+                android:layout_height="42dp"
+                android:layout_width="120dip"
+                android:layout_marginBottom="5dip"
+                android:layout_weight="1"
+                android:layout_marginTop="10dip"
+                android:layout_below="@+id/splitDetail"
+                android:text="三亚凤凰机场"
+                android:layout_toRightOf="@+id/button_air1"
+                android:background="@drawable/airselect_selector"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air3"
+                android:layout_height="42dp"
+                android:layout_width="120dip"
+                android:layout_marginBottom="5dip"
+                android:layout_weight="1"
+                android:layout_marginTop="10dip"
+                android:layout_below="@+id/splitDetail"
+                android:text="三亚凤凰机场"
+                android:layout_toRightOf="@+id/button_air2"
+                android:background="@drawable/airselect_selector"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air4"
+                android:layout_height="42dp"
+                android:layout_width="120dip"
+                android:layout_marginBottom="5dip"
+                android:layout_weight="1"
+                android:layout_marginTop="10dip"
+                android:layout_below="@+id/splitDetail"
+                android:text="三亚凤凰机场"
+                android:layout_toRightOf="@+id/button_air3"
+                android:background="@drawable/airselect_selector"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air5"
+                android:layout_height="42dp"
+                android:layout_width="120dip"
+                android:layout_marginBottom="5dip"
+                android:layout_weight="1"
+                android:layout_marginTop="10dip"
+                android:layout_below="@+id/splitDetail"
+                android:text="三亚凤凰机场"
+                android:layout_toRightOf="@+id/button_air4"
+                android:background="@drawable/airselect_selector"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+
+        <TextView android:id="@+id/timetoget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="21dip"
+                android:layout_marginTop="20dip"
+                android:layout_below="@+id/splitDetail"
+                android:textSize="15sp"
+                android:layout_toRightOf="@+id/button_air5"
+                android:textColor="#333333"/>
+
+        <ImageButton
+                android:id="@+id/help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dip"
+                android:layout_toRightOf="@+id/timetoget"
+                android:layout_below="@+id/splitDetail"
+                android:background="@drawable/tips_icon"/>
+    </RelativeLayout>
+</LinearLayout>

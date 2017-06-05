@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:drawingCacheQuality="high"
+                android:minHeight="20.0dip"
+                android:descendantFocusability="blocksDescendants"
+                android:focusable="false"
+                android:orientation="horizontal">
+
+    <ImageView
+            android:id="@+id/sItemIcon"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:focusable="false"
+            android:padding="1dip"
+            android:layout_marginLeft="10dip"
+            android:clickable="false"
+            android:src="@drawable/select_1"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="10dip"/>
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/sItemIcon"
+            android:layout_toRightOf="@+id/sItemIcon"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="30dip"
+            android:layout_marginTop="4dip"
+            android:layout_centerVertical="true"
+            android:focusable="false"
+            android:clickable="false"
+            android:textStyle="bold"
+            android:text="123243"
+            android:singleLine="true"
+            android:textColor="#c58d55"
+            android:textSize="17.0sp"/>
+
+    <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/title"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_marginLeft="120dip"
+            android:layout_alignTop="@+id/title"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:text="45678"
+            android:textColor="#666666"
+            android:textSize="17.0sp"/>
+
+</RelativeLayout>

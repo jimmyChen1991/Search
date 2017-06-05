@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/s"
+            android:layout_centerHorizontal="true"
+            />
+
+    <RelativeLayout
+            android:id="@+id/left_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_layout"
+            android:background="@drawable/list_m"
+            >
+
+        <RelativeLayout
+                android:id="@+id/top"
+                android:layout_width="match_parent"
+                android:layout_height="90dip"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true">
+
+            <ImageView
+                    android:id="@+id/pic"
+                    android:layout_width="100dip"
+                    android:layout_height="100dip"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignBottom="@+id/price"
+                    android:src="@drawable/ic_launcher"/>
+
+            <ImageView
+                    android:id="@+id/youshui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/pic"
+                    android:layout_alignLeft="@+id/pic"
+                    android:layout_alignRight="@+id/pic"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试品牌测试品牌"
+                    android:textColor="#515151"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/brandName"
+                    android:layout_alignTop="@+id/pic"
+                    android:layout_toRightOf="@+id/pic"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="手表手表手表手"
+                    android:textColor="#515151"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/productName"
+                    android:layout_alignTop="@+id/brandName"
+                    android:layout_alignParentRight="true"
+                    />
+
+            <TextView
+                    android:id="@+id/psName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已选择 100ml"
+
+                    android:layout_alignParentTop="true"
+                    android:layout_alignLeft="@+id/brandName"
+                    android:layout_toRightOf="@+id/brandName"
+                    android:layout_marginTop="24dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥600.00"
+                    android:id="@+id/price"
+                    android:layout_below="@+id/psName"
+                    android:layout_alignLeft="@+id/psName"
+                    android:layout_toRightOf="@+id/psName"/>
+
+            <TextView
+                    android:id="@+id/originprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/price"
+                    android:layout_below="@+id/psName"
+                    android:textColor="#C38C56"
+                    android:layout_marginLeft="20dip"
+                    android:textSize="13sp"
+                    android:text="1123"
+                    android:layout_marginTop="2dip"/>
+
+
+            <ImageView
+                    android:id="@+id/orderlistitemsplit0"
+                    android:layout_width="698dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="1dip"
+                    android:background="#e5e5e5"
+                    android:layout_alignParentBottom="true"
+                    />
+
+            <TextView
+                    android:id="@+id/product_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/price"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:text="X 2"
+                    android:layout_below="@+id/psName"
+                    android:layout_alignRight="@+id/productName"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品税：(12000-8000) x 20% = 800"
+                    android:layout_below="@+id/price"
+                    android:id="@+id/tax"
+                    android:layout_alignLeft="@+id/brandName"/>
+        </RelativeLayout>
+
+        <LinearLayout
+                android:id="@+id/imggroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/top"
+                android:layout_marginTop="3dip"
+
+                >
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

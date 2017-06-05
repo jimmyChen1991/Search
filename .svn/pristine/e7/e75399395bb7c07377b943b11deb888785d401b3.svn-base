@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f2f2f2" >
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topbarheight"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/topbar" >
+		<ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dip"/>
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="购物车"
+            android:textColor="#333333"
+            android:textSize="21sp" />
+
+        <ImageButton
+            android:id="@+id/get_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/shopcart_more_selector" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/nulllayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_below="@+id/toolbar" >
+
+        <ImageView
+            android:id="@+id/shoppingcartnull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="170dip"
+            android:background="@drawable/shopcar_null" />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/wheregetgood"
+            android:layout_width="match_parent"
+            android:layout_height="60dip"
+            android:background="#ffffff"
+            android:layout_below="@+id/toolbar" >
+        <TextView
+                android:id="@+id/title1"
+                android:layout_width="wrap_content"
+                android:layout_height="120dip"
+                android:layout_marginTop="18dip"
+                android:layout_marginLeft="20dip"
+                android:text="提货点:"
+                android:textColor="#C38C56"
+                android:textSize="15sp" />
+        <Button android:id="@+id/button_air1"
+                android:layout_height="42dp"
+                android:layout_width="150dip"
+                android:layout_marginTop="9dip"
+                android:layout_marginBottom="5dip"
+                android:background="@drawable/airselect_selector"
+                android:layout_marginLeft="15dip"
+                android:layout_toRightOf="@+id/title1"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air2"
+                android:layout_height="42dp"
+                android:layout_width="150dip"
+                android:layout_marginTop="9dip"
+                android:layout_marginBottom="5dip"
+                android:layout_toRightOf="@+id/button_air1"
+                android:background="@drawable/airselect_selector"
+                android:visibility="gone"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air3"
+                android:layout_height="42dp"
+                android:layout_width="150dip"
+                android:layout_marginTop="9dip"
+                android:layout_marginBottom="5dip"
+                android:layout_toRightOf="@+id/button_air2"
+                android:background="@drawable/airselect_selector"
+                android:visibility="gone"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air4"
+                android:layout_height="42dp"
+                android:layout_width="150dip"
+                android:layout_marginTop="9dip"
+                android:layout_marginBottom="5dip"
+                android:layout_toRightOf="@+id/button_air3"
+                android:background="@drawable/airselect_selector"
+                android:visibility="gone"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <Button
+                android:id="@+id/button_air5"
+                android:layout_height="42dp"
+                android:layout_width="150dip"
+                android:layout_marginTop="9dip"
+                android:layout_marginBottom="5dip"
+                android:layout_toRightOf="@+id/button_air4"
+                android:background="@drawable/airselect_selector"
+                android:visibility="gone"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"/>
+        <TextView android:id="@+id/lefttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dip"
+                android:layout_marginLeft="20dip"
+                  android:layout_toRightOf="@+id/button_air5"
+                android:text=""
+                android:textColor="#C38C56"
+                android:textSize="15sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/valueLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/wheregetgood"
+        android:visibility="gone"
+        android:layout_marginBottom="170dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="8dip" >
+        <ListView
+            android:id="@+id/shoppingcart_lv"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:cacheColorHint="#00000000"
+            android:dividerHeight="20dip"
+            android:divider="#f2f2f2" >
+        </ListView>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_alignLeft="@+id/valueLayout"
+        android:layout_alignRight="@+id/valueLayout"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="15dip"
+        android:visibility="gone"
+        android:background="@drawable/warning_window"
+        android:textColor="@android:color/white" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="80dip"
+        android:layout_above="@+id/bottom"
+        android:background="#333333" >
+
+        <Button
+            android:id="@+id/commitBt"
+            android:layout_width="210dip"
+            android:layout_height="50dip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="18dip"
+            android:layout_marginTop="12.5dip"
+            android:background="@drawable/cancelbtn_shape"
+            android:text="完成选购"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/hejiTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="25dip"
+            android:layout_toLeftOf="@+id/hejiTv"
+            android:text="合计(不含税):  "
+            android:textColor="#C38C56"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/hejiTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/hejiTitle"
+            android:layout_marginBottom="-5dip"
+            android:layout_marginRight="20dip"
+            android:layout_toLeftOf="@+id/commitBt"
+            android:text=""
+            android:textColor="#C38C56"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/zjfixTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hejiTitle"
+            android:layout_marginTop="2dip"
+            android:layout_toLeftOf="@+id/zjTv"
+            android:text="总计：￥"
+            android:textColor="#C38C56"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/zjTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/zjfixTitle"
+            android:layout_toLeftOf="@+id/yhfixTitle"
+            android:textColor="#C38C56"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/yhfixTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/zjfixTitle"
+            android:layout_toLeftOf="@+id/yhTv"
+            android:text=" - 优惠：￥"
+            android:textColor="#C38C56"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/yhTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/zjfixTitle"
+            android:layout_marginRight="20dip"
+            android:layout_toLeftOf="@+id/commitBt"
+            android:textColor="#C38C56"
+            android:textSize="15sp" />
+    </RelativeLayout>
+<include 
+    android:id="@+id/bottom"
+    layout="@layout/tab_bottom"/>
+</RelativeLayout>

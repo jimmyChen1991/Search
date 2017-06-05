@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:layout_height="wrap_content"
+        >
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:id="@+id/toolbar1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:text="商品总价:\n8400.00"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:gravity="center"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan1"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info1"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:gravity="center"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan3"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan4"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar41"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info41"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="满件折优惠12123"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan41"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar42"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info42"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="每满减优惠1123"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan42"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:id="@+id/toolbar5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan5"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan6"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar61"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info61"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan61"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/addmoney"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:id="@+id/textview_info7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="0dip"
+                        android:layout_marginLeft="0dip"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="shangpinshui"
+                        android:textColor="#333333"
+                        android:lineSpacingExtra="7dp"
+                        android:textSize="13sp"/>
+
+                <ImageView
+                        android:id="@+id/tax_formula_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_toRightOf="@+id/textview_info7"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/tips_icon"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="5dip"
+
+                        />
+
+            </RelativeLayout>
+
+            <ImageButton
+                    android:id="@+id/button_scan7"
+                    android:layout_width="6dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/equal"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/toolbar8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ffffff">
+
+            <TextView
+                    android:id="@+id/textview_info8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="2000.00"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="7dp"
+                    android:textSize="13sp"/>
+
+            <ImageButton
+                    android:id="@+id/button_scan8"
+                    android:layout_width="0dip"
+                    android:layout_toRightOf="@+id/textview_info2"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dip"
+                    android:layout_marginLeft="0dip"
+                    android:layout_marginRight="0dip"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="80dp"
+            android:id="@+id/tax_relativeLayout"
+            android:visibility="gone"
+            >
+
+        <ImageView
+                android:id="@+id/tax_formula_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/tax_sanjiao"
+                />
+
+        <TextView
+                android:id="@+id/tax_formula"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tax_formula_tip"
+                android:background="#C38C56"
+                android:padding="8dp"
+                android:textColor="#fff"
+                />
+    </RelativeLayout>
+
+</LinearLayout>

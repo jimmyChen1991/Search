@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<RelativeLayout
+    android:id="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="50dip">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+            android:text="筛选"
+            android:textColor="#333333"
+            android:textSize="21sp" />
+    <ImageButton android:id="@+id/cleanchosebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dip"
+        android:background="@drawable/cleanchose_btn"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:layout_alignParentBottom="true"
+            android:background="#e5e5e5" />
+</RelativeLayout>
+<LinearLayout android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_below="@+id/top">
+    <LinearLayout
+            android:id="@+id/mainchose"
+            android:layout_width="240dip"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#f2f2f2">
+            <RelativeLayout
+                android:id="@+id/catechose"
+                android:layout_width="match_parent"
+                android:layout_height="50dip" >
+                <TextView
+                    android:id="@+id/catetitle"
+                    style="@style/goodlistchosetitle"
+                    android:layout_marginLeft="20dip"
+                    android:text="分类" />
+                <TextView
+                    android:id="@+id/catetitlecontent"
+                    style="@style/goodlistchosetitle"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dip"
+                    android:text="全部" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="#e5e5e5" />
+            <RelativeLayout
+                android:id="@+id/pricechose"
+                android:layout_width="match_parent"
+                android:layout_height="50dip" >
+                <TextView
+                    android:id="@+id/pricetitle"
+                    style="@style/goodlistchosetitle"
+                    android:layout_marginLeft="20dip"
+                    android:text="价格" />
+                <TextView
+                    android:id="@+id/pricetitlecontent"
+                    style="@style/goodlistchosetitle"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dip"
+                    android:text="全部" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="#e5e5e5" />
+            <RelativeLayout
+                android:id="@+id/brandchose"
+                android:layout_width="match_parent"
+                android:layout_height="50dip" >
+                <TextView
+                    android:id="@+id/brandtitle"
+                    style="@style/goodlistchosetitle"
+                    android:layout_marginLeft="20dip"
+                    android:text="品牌" />
+                <TextView
+                    android:id="@+id/brandtitlecontent"
+                    style="@style/goodlistchosetitle"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dip"
+                    android:text="全部" />
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/contentchose"
+            android:layout_width="360dip"
+            android:layout_height="match_parent">
+              <RelativeLayout
+                android:id="@+id/contenttop"
+                android:layout_width="match_parent"
+                android:layout_height="50dip" >
+            <TextView
+                android:id="@+id/fixtitile"
+                style="@style/goodlistchosetitle"
+                android:layout_marginLeft="10dip"
+                android:layout_centerVertical="true"
+                android:text="全部"
+                android:textColor="#333333"
+                android:textSize="18sp" />
+            <ImageView
+                    android:id="@+id/chosenimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dip"
+                    android:background="@drawable/chosenimg"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/split"
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_below="@+id/contenttop"
+                android:background="#e5e5e5" />
+            <ListView
+                android:id="@+id/chosedetail_lv"
+                android:layout_below="@+id/split"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#e5e5e5"
+                android:dividerHeight="1dip"
+                android:listSelector="@android:color/transparent">
+            </ListView>
+			<Button 
+			    android:id="@+id/commitsearchbtn"
+			    android:layout_width="320dip"
+			    android:layout_height="50dip"
+			    android:text="确定"
+			    android:textColor="#ffffff"
+			    android:layout_alignParentBottom="true"
+			    android:layout_marginBottom="18sp"
+			    android:layout_centerHorizontal="true"
+			    android:background="@drawable/button_corner"/>
+        </RelativeLayout>
+</LinearLayout>
+</RelativeLayout>

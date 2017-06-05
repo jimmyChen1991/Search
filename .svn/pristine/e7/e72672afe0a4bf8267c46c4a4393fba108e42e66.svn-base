@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:paddingBottom="10dp"
+            android:layout_margin="10dp">
+
+        <RelativeLayout
+                android:id="@+id/section1"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dip"
+                android:layout_height="@dimen/topbarheight">
+
+            <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#C28d56"
+                    android:layout_centerInParent="true"
+                    android:textSize="28sp"
+                    android:text="免税额度"/>
+        </RelativeLayout>
+        <Button
+                android:id="@+id/button_scan3"
+                android:layout_below="@+id/section1"
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginTop="12dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:background="#cccccc"/>
+
+
+        <RelativeLayout
+                android:id="@+id/section2"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_below="@id/button_scan3"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#303030"
+                    android:textSize="21sp"
+                    android:text="旅客信息"/>
+
+            <LinearLayout
+                    android:id="@+id/section21"
+                    android:layout_below="@+id/title2"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dip"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff">
+
+                <TextView
+                        android:id="@+id/text21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#C28d56"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="12dp"
+                        android:layout_below="@+id/title2"
+                        android:textSize="18sp"
+                        android:text=""/>
+
+                <TextView
+                        android:id="@+id/text22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#C28d56"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="12dp"
+                        android:layout_below="@+id/title2"
+                        android:textSize="18sp"
+                        android:text=""/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/section3"
+                android:layout_width="match_parent"
+                android:layout_marginTop="25dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_below="@id/section2"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/title3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#303030"
+                    android:textSize="21sp"
+                    android:text="年度累计购买额度"/>
+
+            <LinearLayout
+                    android:id="@+id/section31"
+                    android:layout_below="@+id/title3"
+                    android:layout_marginTop="8dip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff">
+
+                <TextView
+                        android:id="@+id/text31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#C28d56"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="12dp"
+                        android:textSize="18sp"
+                        android:text=""/>
+
+                <TextView
+                        android:id="@+id/text32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#C28d56"
+                        android:layout_weight="1"
+                        android:layout_below="@+id/title3"
+                        android:lineSpacingExtra="12dp"
+                        android:textSize="18sp"
+                        android:text=""/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/section4"
+                android:layout_width="match_parent"
+                android:layout_below="@id/section3"
+                android:layout_marginTop="25dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/title4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#303030"
+                    android:textSize="21sp"
+                    android:text="本次离岛已购买的商品数量"/>
+
+            <LinearLayout
+                    android:id="@+id/section34"
+                    android:layout_below="@+id/title4"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dip"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff">
+
+                <TextView
+                        android:id="@+id/text41"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#C28d56"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="12dp"
+                        android:layout_below="@+id/title4"
+                        android:textSize="18sp"
+                        android:text=""/>
+
+                <TextView
+                        android:id="@+id/text42"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#C28d56"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="12dp"
+                        android:layout_below="@+id/title4"
+                        android:textSize="18sp"
+                        android:text=""/>
+            </LinearLayout>
+        </RelativeLayout>
+        <Button
+                android:id="@+id/confirm_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:layout_marginTop="26dip"
+                android:text="@string/queding"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:background="@drawable/button_corner"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/section4"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+        <LinearLayout
+                android:layout_below="@+id/confirm_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

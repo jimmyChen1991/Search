@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f2f2f2" >
+    <ScrollView
+        android:id="@+id/catescroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <LinearLayout
+            android:id="@+id/catecontent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="14dip"
+            android:paddingRight="20dip"
+            android:paddingTop="15dip" >
+            <ImageView
+                android:id="@+id/cateheadimg"
+                android:layout_width="match_parent"
+                android:layout_height="160dip"
+                android:scaleType="fitXY"/>"
+            <com.hhyg.TyClosing.ui.view.InSideListView
+                android:id="@+id/catelv"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:divider="#f2f2f2" >
+            </com.hhyg.TyClosing.ui.view.InSideListView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

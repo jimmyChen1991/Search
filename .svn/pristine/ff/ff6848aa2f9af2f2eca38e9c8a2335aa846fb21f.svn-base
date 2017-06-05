@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dialog_corner">
+
+        <RelativeLayout
+                android:id="@+id/toolbar_sliding"
+                android:layout_width="match_parent"
+                android:layout_height="80dip" android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true">
+            <TextView
+                    android:id="@+id/sliding_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品清单"
+                    android:textColor="#333333"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="21sp"
+                    />
+
+            <ImageView
+                    android:id="@+id/splitone"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#e5e5e5"
+                    android:layout_alignParentBottom="true"
+                    />
+        </RelativeLayout>
+        <ListView
+                android:id="@+id/order_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar_sliding"
+                android:layout_marginTop="12.5dip"
+                android:divider="#00000000"
+                android:dividerHeight="25dip"
+                android:listSelector="@android:color/transparent"
+                />
+        <!--<ImageView-->
+                <!--android:id="@+id/splitthree"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dip"-->
+                <!--android:background="#e5e5e5"-->
+                <!--android:layout_below ="@+id/ordershoplv"-->
+                <!--android:layout_marginTop="12.5dip"/>-->
+        <!--<TextView-->
+                <!--android:id="@+id/pricecalc"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/splitthree"-->
+                <!--android:layout_marginTop="15dip"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="12.5dip"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="15sp"-->
+                <!--/>-->
+        <!--<TextView-->
+                <!--android:id="@+id/pricetv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/pricecalc"-->
+                <!--android:layout_marginTop="2dip"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="12.5dip"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="15sp"-->
+                <!--/>-->
+        <!--<TextView-->
+                <!--android:id="@+id/pricetotal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below ="@+id/pricetv"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginTop="2dip"-->
+                <!--android:layout_marginRight="12.5dip"-->
+                <!--android:textColor="#C38C56"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textStyle="bold"-->
+                <!--/>-->
+    </RelativeLayout>

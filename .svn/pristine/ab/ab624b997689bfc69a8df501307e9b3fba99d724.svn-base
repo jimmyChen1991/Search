@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="5dip"
+    android:paddingBottom="10dip"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:background="#ffffff" >
+<com.hhyg.TyClosing.ui.view.InSideGridView
+    android:id="@+id/brandgrid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnWidth="178dip"
+    android:horizontalSpacing="5dip"
+    android:numColumns="4"
+    android:verticalSpacing="5dip" 	 >
+</com.hhyg.TyClosing.ui.view.InSideGridView>
+</LinearLayout>

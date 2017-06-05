@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <RelativeLayout
+            android:id="@+id/imglayout"
+            android:layout_width="wrap_content"
+            android:layout_height="100dip"
+            android:layout_alignParentTop="true" >
+            <ImageView
+                android:id="@+id/ordershopimage"
+                android:layout_width="100dip"
+                android:layout_height="100dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dip" />
+            <ImageView
+                android:id="@+id/youshui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ordershopimage"
+                android:layout_alignLeft="@+id/ordershopimage"
+                android:layout_alignRight="@+id/ordershopimage"
+                android:visibility="gone" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/ordershopbrand_shopname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="19.5dip"
+            android:layout_toRightOf="@+id/imglayout"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/ordershopspuname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ordershopbrand_shopname"
+            android:layout_below="@+id/ordershopbrand_shopname"
+            android:layout_marginTop="2dip"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/ordershopmsprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ordershopspuname"
+            android:layout_below="@+id/ordershopspuname"
+            android:layout_marginTop="2dip"
+            android:textColor="#C38C56"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/originprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ordershopspuname"
+            android:layout_marginLeft="20dip"
+            android:layout_marginTop="5dip"
+            android:layout_toRightOf="@+id/ordershopmsprice"
+            android:text=""
+            android:textColor="#C38C56"
+            android:textSize="13sp" />
+        <TextView
+            android:id="@+id/shopcnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/ordershopspuname"
+            android:layout_marginRight="22.5dip"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+    </RelativeLayout>
+</FrameLayout>

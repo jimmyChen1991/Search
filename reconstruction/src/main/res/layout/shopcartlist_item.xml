@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/imglayout"
+        android:layout_width="wrap_content"
+        android:layout_height="100dip"
+        android:layout_marginTop="12.5dip" >
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:layout_marginLeft="17dip" />
+
+        <ImageView
+            android:id="@+id/youshui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img"
+            android:layout_alignLeft="@+id/img"
+            android:background="@drawable/youshuipad" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/x_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imglayout"
+        android:layout_marginRight="32dip"
+        android:layout_marginTop="40dip"
+        android:background="@drawable/shoppingcar_delete" />
+
+    <LinearLayout
+        android:id="@+id/textlayout"
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imglayout"
+        android:layout_toRightOf="@+id/imglayout"
+        android:orientation="vertical"
+        android:paddingLeft="15dip"
+        android:paddingRight="30dip"
+        android:paddingTop="10dip" >
+
+        <TextView
+            android:id="@+id/brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/selectName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/addlayout"
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        android:layout_alignRight="@+id/add" />
+
+    <ImageButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="220dip"
+        android:layout_marginTop="50dip"
+        android:background="@drawable/add_selector" />
+
+    <TextView
+        android:id="@+id/cxjPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dip"
+        android:layout_marginTop="37dip"
+        android:layout_toRightOf="@+id/addlayout"
+        android:textColor="#C38C56"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/msjPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cxjPrice"
+        android:layout_below="@+id/cxjPrice"
+        android:layout_marginTop="2dip"
+        android:textColor="#666666"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:id="@+id/cntlayout"
+        android:layout_width="40dip"
+        android:layout_height="30dip"
+        android:layout_alignTop="@+id/add"
+        android:layout_toLeftOf="@+id/add" >
+
+        <TextView
+            android:id="@+id/cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dip"
+            android:textColor="#666666" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/no_good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cntlayout"
+        android:layout_alignLeft="@+id/minus"
+        android:layout_marginLeft="30dip"
+        android:layout_marginTop="5dip"
+        android:background="#C38C56"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+    <ImageButton
+        android:id="@+id/minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/add"
+        android:layout_alignTop="@+id/add"
+        android:layout_toLeftOf="@+id/cntlayout"
+        android:background="@drawable/minus_selector" />
+
+    <TextView
+        android:id="@+id/timetoget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/minus"
+        android:layout_below="@+id/minus"
+        android:layout_marginTop="5dip"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:id="@+id/activeinfoswrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:layout_below="@+id/imglayout" >
+       <TextView
+            android:id="@+id/aty_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:text="优惠"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+        <TextView 
+            android:id="@+id/aty_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_toRightOf="@+id/aty_token"
+            android:textColor="#333333"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:singleLine="true"
+            android:textSize="15sp" />
+        <Button 
+            android:id="@+id/aty_mod"
+            android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="30dip"
+			android:background="#ffffff"
+			android:text="修改"
+			android:textColor="#C38C56"            
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

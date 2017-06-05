@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white">
+
+    <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="75dip"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/topshdowbar">
+        <ImageButton
+                android:id="@+id/button_scan1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dip"/>
+
+        <TextView
+                android:id="@+id/textview_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="提交成功"
+                android:textColor="@android:color/black"
+                android:textSize="21sp"/>
+    </RelativeLayout>
+
+    <ImageView
+            android:id="@+id/success_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="155dip"
+            android:background="@drawable/sucess"
+            />
+
+    <TextView
+            android:id="@+id/order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/success_img"
+            android:layout_marginTop="95dip"
+            android:text="订单流水号"
+            android:textColor="#C38C56"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            />
+
+    <TextView
+            android:id="@+id/dingdanbianhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dip"
+            android:textColor="#C38C56"
+            android:textSize="30sp"/>
+
+    <ImageView
+            android:id="@+id/splitone"
+            android:layout_width="410dip"
+            android:layout_height="1dip"
+            android:background="#e5e5e5"
+            android:layout_below="@+id/dingdanbianhao"
+            android:layout_marginTop="25dip"
+            android:layout_centerHorizontal="true"
+            />
+
+    <TextView
+            android:id="@+id/des1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splitone"
+            android:layout_marginTop="30dip"
+            android:textColor="#999999"
+            android:textSize="15sp"
+            android:layout_centerHorizontal="true"
+            android:text="1.请尽快持设备到服务台结算,以免商品无货不能购买"
+            />
+
+    <TextView
+            android:id="@+id/des2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/des1"
+            android:layout_marginTop="2dip"
+            android:textColor="#999999"
+            android:textSize="15sp"
+            android:layout_centerHorizontal="true"
+            android:text="2.订单当天有效"
+            />
+
+    <LinearLayout
+            android:id="@+id/toolbar6"
+            android:layout_below="@+id/des2"
+            android:layout_width="354dip"
+            android:layout_height="42dip"
+            android:layout_marginTop="37dip"
+            android:layout_marginBottom="17.5dip"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff">
+
+        <Button
+                android:id="@+id/myorder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/button_corner"
+                android:layout_weight="1"
+                android:text="继续购物"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                android:id="@+id/seeorder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dip"
+                android:background="@drawable/button_corner"
+                android:text="查看订单"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"/>
+
+    </LinearLayout>
+</RelativeLayout>

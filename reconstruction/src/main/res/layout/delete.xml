@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f2f2f2" >
+   <RelativeLayout
+            android:id="@+id/toolbar"
+		    android:layout_width="match_parent"
+		    android:layout_height="75dip"
+		    android:layout_alignParentTop="true"
+		    android:background="@drawable/topbar" >
+		
+		    <ImageButton
+		        android:id="@+id/button_shoppingcart"
+		        android:layout_width ="wrap_content"
+		        android:layout_height ="wrap_content"
+		        android:background="@drawable/back_to_shopcar_selector"
+		        android:layout_centerVertical="true"
+		        android:layout_alignParentLeft="true"
+		        android:layout_marginLeft="15dip" />
+		
+		    <TextView
+		        android:id="@+id/textview_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_centerVertical="true"
+		        android:text="已删除商品"
+		        android:textColor="#333333"
+		        android:textSize="21sp" />
+		    
+		    <ImageButton
+		        android:id="@+id/button_clear"
+		        android:layout_width ="wrap_content"
+		        android:layout_height ="wrap_content"
+		        android:background="@drawable/clear"
+		        android:layout_centerVertical="true"
+		        android:layout_alignParentRight="true"
+		        android:layout_marginRight="20dip" />
+		
+		</RelativeLayout>
+	    <RelativeLayout
+	        android:id="@+id/nulllayout"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_below="@+id/toolbar" >
+		    
+	        <ImageView
+		        android:id="@+id/deletenull"
+		        android:layout_width ="wrap_content"
+		        android:layout_height ="wrap_content"
+		        android:background="@drawable/deletenull"
+		        android:layout_marginTop="90dip"
+		        android:layout_centerHorizontal="true"/> 
+		</RelativeLayout>
+	     <ListView
+            android:id="@+id/delete_lv"
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+		    android:layout_marginLeft="20dip"
+		    android:layout_marginRight="20dip"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="8dip"
+            android:cacheColorHint="#00000000"
+            android:divider="@android:color/white">
+        </ListView>         
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingBottom="10dip"
+    android:background="#ffffff" >
+<RelativeLayout
+    android:id="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="50dip" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="礼品主题购"
+        android:textColor="#C38C56"
+        android:textSize="21sp" />
+</RelativeLayout>
+<com.hhyg.TyClosing.ui.view.InSideGridView
+    android:id="@+id/giftgrid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnWidth="239dip"
+    android:horizontalSpacing="5dip"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="5dip"
+    android:listSelector="@android:color/transparent" >
+</com.hhyg.TyClosing.ui.view.InSideGridView>
+
+</LinearLayout>

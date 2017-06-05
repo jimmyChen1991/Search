@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dip" >
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="限时特卖"
+            android:textColor="#C38C56"
+            android:textSize="21sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dip"
+            android:background="@drawable/flash_sale" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/split"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:background="#e5e5e5" />
+    <HorizontalScrollView
+        android:id="@+id/imgscroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+        <LinearLayout
+            android:id="@+id/viewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="20dip"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:background="#ffffff"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f2f2f2"
+                android:id="@+id/mianshui">
+
+    <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/topbarheight"
+            android:background="@drawable/topshdowbar"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+
+        <ImageButton
+                android:id="@+id/back_to_settle_method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back_selector"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dip"
+                android:layout_centerVertical="true"/>
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="资格验证"
+                android:textColor="#333333"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/title"/>
+    </RelativeLayout>
+
+    <ScrollView
+            android:id="@+id/ScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:scrollbars="none">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff">
+
+            <RelativeLayout
+                    android:id="@+id/body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                <TextView
+                        android:id="@+id/info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="离岛免税购买资格说明"
+                        android:textColor="#C38C56"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="16dip"
+                        android:textSize="18dip"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#fcf8f4"
+                        android:layout_below="@+id/info"
+                        android:layout_marginTop="16dip"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"/>
+
+                <TextView
+                        android:id="@+id/info1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="根据国家海关规定，离岛旅客购买免税商品需符合相应条件: \n\n1. 乘机人持有效居民身份证（年满16周岁）\n\n2. 已确定由海口/三亚离岛行程的国内航班\n\n3. 当年内未达到限购额度（海南本地居民额度：8000，限购买一次；非海南居民额度：16000，不限购买次数）"
+                        android:textColor="#666666"
+                        android:textSize="12dip"
+                        android:layout_below="@+id/info"
+                        android:layout_alignLeft="@+id/info"
+                        android:layout_marginTop="36dp"
+                        android:paddingBottom="30dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_below="@+id/body"
+                    android:paddingBottom="20dp">
+
+                <TextView
+                        android:id="@+id/info2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="提货人购买资格验证"
+                        android:textColor="#C38C56"
+                        android:textSize="18dip"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginTop="16dip"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#fcf8f4"
+                        android:layout_below="@+id/info2"
+                        android:layout_marginTop="16dip"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"/>
+
+                <RelativeLayout
+                        android:layout_below="@+id/info2"
+                        android:id="@+id/text_view"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dip"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:id="@+id/id_code"
+                            android:layout_width="70dip"
+                            android:layout_height="wrap_content"
+                            android:text="身份证号:"
+                            android:textColor="#666666"
+                            android:textSize="15dip"
+                            android:layout_marginLeft="15dip"
+                            android:layout_marginTop="20dip"/>
+
+                    <EditText
+                            android:id="@+id/idCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dip"
+                            android:textColorHint="#999999"
+                            android:textColor="#333333"
+                            android:hint="输入提货人身份证号"
+                            android:text=""
+                            android:layout_below="@+id/id_code"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dip"
+                            android:singleLine="true"
+                            />
+
+                    <TextView
+                            android:id="@+id/id_tip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#c38c56"
+                            android:textSize="15dip"
+                            android:layout_marginRight="15dip"
+                            android:layout_alignRight="@+id/idCode"
+                            android:layout_alignBaseline="@+id/id_code"
+                            android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/relativeLayout7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_view"
+                        android:layout_alignParentLeft="true"
+                        >
+
+                    <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="70dip"
+                            android:layout_height="wrap_content"
+                            android:text="姓名:"
+                            android:textColor="#666666"
+                            android:textSize="15dip"
+                            android:layout_marginLeft="15dip"
+                            android:layout_marginTop="10dip"/>
+
+                    <EditText
+                            android:id="@+id/userName"
+                            android:layout_width="match_parent"
+                            android:textColor="#333333"
+                            android:layout_height="42dip"
+                            android:hint="输入提货人姓名"
+                            android:textColorHint="#999999"
+                            android:text=""
+                            android:layout_below="@+id/textView7"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dip"
+                            android:singleLine="true"/>
+
+                    <TextView
+                            android:id="@+id/userName_tip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#c38c56"
+                            android:textSize="12dip"
+                            android:layout_marginRight="15dip"
+                            android:layout_alignBaseline="@+id/textView7"
+                            android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/relativeLayoutphone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/relativeLayout7"
+                        android:layout_alignParentLeft="true">
+
+                    <TextView
+                            android:id="@+id/textViewpone"
+                            android:layout_width="70dip"
+                            android:layout_height="wrap_content"
+                            android:text="手机号码:"
+                            android:textColor="#666666"
+                            android:textSize="15dip"
+                            android:layout_marginLeft="15dip"
+                            android:layout_marginTop="10dip"/>
+
+                    <EditText
+                            android:id="@+id/phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dip"
+                            android:hint="输入手机号码"
+                            android:textColor="#333333"
+                            android:textColorHint="#999999"
+                            android:layout_below="@+id/textViewpone"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:singleLine="true"
+                            android:layout_marginTop="10dip"/>
+
+                    <TextView
+                            android:id="@+id/date_tip_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#c38c56"
+                            android:textSize="12dip"
+                            android:layout_marginRight="15dip"
+                            android:layout_alignBaseline="@+id/textViewpone"
+                            android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/relativeLayout9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/relativeLayoutphone"
+                        android:layout_alignParentLeft="true">
+
+                    <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="70dip"
+                            android:layout_height="wrap_content"
+                            android:text="航班号:"
+                            android:textColor="#666666"
+                            android:textSize="15dip"
+                            android:layout_marginLeft="15dip"
+                            android:layout_marginTop="10dip"/>
+
+                    <EditText
+                            android:id="@+id/flightNum"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dip"
+                            android:hint=" 输入航班号，如  HU7890"
+                            android:textColor="#333333"
+                            android:textColorHint="#999999"
+                            android:text=""
+                            android:layout_below="@+id/textView9"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:singleLine="true"
+                            android:layout_marginTop="10dip"/>
+
+                    <TextView
+                            android:id="@+id/flightNum_tip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#c38c56"
+                            android:textSize="12dip"
+                            android:layout_marginRight="15dip"
+                            android:layout_alignBaseline="@+id/textView9"
+                            android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/relativeLayout11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/relativeLayout9"
+                        android:layout_alignParentLeft="true">
+
+                    <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="70dip"
+                            android:layout_height="wrap_content"
+                            android:text="航班时间:"
+                            android:textColor="#666666"
+                            android:textSize="15dip"
+                            android:layout_marginLeft="15dip"
+                            android:layout_marginTop="10dip"/>
+
+                    <EditText
+                            android:id="@+id/date"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dip"
+                            android:hint="输入航班时间"
+                            android:textColor="#333333"
+                            android:textColorHint="#999999"
+                            android:layout_below="@+id/textView11"
+                            android:layout_marginLeft="10dp"
+                            android:singleLine="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dip"/>
+
+                    <TextView
+                            android:id="@+id/date_tip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#c38c56"
+                            android:textSize="12dip"
+                            android:layout_marginRight="15dip"
+                            android:layout_alignBaseline="@+id/textView11"
+                            android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                    android:id="@+id/toolbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dip"
+                    android:background="@drawable/button_02"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_below="@+id/form"
+                    android:layout_marginBottom="18dp">
+                <TextView
+                        android:id="@+id/bottom_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="开始验证"
+                        android:textColor="#ffffff"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/title"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

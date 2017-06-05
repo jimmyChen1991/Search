@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cutLayout"
+    android:layout_width="match_parent"
+    android:paddingRight="20dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+    android:layout_height="70dip" >
+    <ImageView
+        android:id="@+id/privilege_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shopcart_privilege_icon"/>
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/privilege_icon"
+        android:layout_marginLeft="10dip"
+        style="@style/active_indicator"/>
+
+    <TextView
+        android:id="@+id/descriptionTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/titleTv"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dip"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#C38C56"
+        android:textSize="15sp" />
+
+</RelativeLayout>
