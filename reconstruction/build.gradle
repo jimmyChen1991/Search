@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.neenbedankt.android-apt'
 android {
     compileSdkVersion 21
     buildToolsVersion "25.0.2"
     aaptOptions {         cruncherEnabled = false     }
     defaultConfig {
         applicationId "com.hhyg.TyClosing"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 21
     }
 
@@ -19,12 +19,17 @@ android {
 }
 
 dependencies {
+    compile fileTree('libs')
     compile project(':pullToRefreshLibrary')
-    compile files('libs/android-support-v4.jar')
-    compile files('libs/android-viewbadger.jar')
-    compile files('libs/fastjson-1.2.12.jar')
-    compile files('libs/imageloader.jar')
-    compile files('libs/umeng-analytics-v6.0.4.jar')
-    compile files('libs/zxing.jar')
+    compile 'com.google.dagger:dagger:2.6'
+    apt 'com.google.dagger:dagger-compiler:2.6'
+    //java注解
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    apt 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+// Because RxAndroid releases are few and far between, it is recommended you also
+// explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
 
 }
