@@ -16,7 +16,7 @@
         <item name="android:windowBackground">@android:color/background_dark</item>
     </style>
      <style name="AppTheme" parent="android:Theme.NoTitleBar"/>
-         <style name="AnimationPreview">  
+         <style name="AnimationPreview">
            <item name="android:windowEnterAnimation">@anim/fade_in</item>  
            <item name="android:windowExitAnimation">@anim/fade_out</item>
        </style>  

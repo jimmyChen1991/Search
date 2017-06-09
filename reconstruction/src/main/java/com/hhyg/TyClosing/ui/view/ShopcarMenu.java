@@ -45,8 +45,8 @@ public class ShopcarMenu extends PopupWindow implements OnClickListener{
 	        ColorDrawable dw = new ColorDrawable(0000000000);  
 	        // 点back键和其他地方使其消失,设置了这个才能触发OnDismisslistener ，设置其他控件变化等操作  
 	        this.setBackgroundDrawable(dw);  
-	        // mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);  
-	        // 设置SelectPicPopupWindow弹出窗体动画效果  
+//			this.setAnimationStyle(android.R.style.Animation_Dialog);
+	        // 设置SelectPicPopupWindow弹出窗体动画效果
 	        v_item1 = (RelativeLayout) conentView  
 	                .findViewById(R.id.delete);  
 	        v_item2 = (RelativeLayout) conentView  

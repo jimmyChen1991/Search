@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,8 +220,8 @@ public class AllShopActivity extends Activity implements OnClickListener,IsPrivi
 		 dialog.getWindow().setContentView(layout);
 		 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 		 dialog.getWindow().setLayout(880, RelativeLayout.LayoutParams.WRAP_CONTENT);
-         dialog.setCancelable(false);
-         TextView exitContent=(TextView)layout.findViewById(R.id.warnning_content);
+		 dialog.setCancelable(false);
+		 TextView exitContent=(TextView)layout.findViewById(R.id.warnning_content);
          exitContent.setText("确认退出账号  "+ClosingRefInfoMgr.getInstance().getSalerInfo().getUserName()+"  " +ClosingRefInfoMgr.getInstance().getSalerInfo().getSalerName()+"?");
          Button exitBtn = (Button) layout.findViewById(R.id.summit_btn);
          exitBtn.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +233,7 @@ public class AllShopActivity extends Activity implements OnClickListener,IsPrivi
 				startActivity(it);
 				finish();
 			}
-		});
+		 });
          Button cancelBtn = (Button) layout.findViewById(R.id.cancel_btn);
          cancelBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

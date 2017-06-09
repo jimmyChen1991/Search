@@ -62,7 +62,7 @@ public class Constants {
 	public static final String V4BUYCONDITIONURL = "http://commonapi.mianshui365.com/xiangou.html";//销售主页里的限购条件
 
 
-	private static  NetrulConfig url = new UrlConfig4Test();
+	private static  NetrulConfig url = new UrlConfig4Active();
 	
 	public static final String getIndexUrl(){
 		return url.getIndexUrl();
