@@ -1,7 +1,5 @@
 package com.hhyg.TyClosing.di.module;
 
-import android.util.Log;
-
 import com.hhyg.TyClosing.global.MyApplication;
 
 import java.util.concurrent.TimeUnit;
@@ -51,34 +49,23 @@ public class NetModule {
     @Provides
     @Named("serviceUrl")
     String provideServiceApiUrlStr(){
-        return "http://search.mianshui365.net/";
+        return "search.mianshui365.net/";
     }
 
     @Provides
     @Named("indexUrl")
     String provideIndexApiUrlStr(){
-        return "http://search_commonapi.mianshui365.net/";
+        return "search_commonapi.mianshui365.net/";
     }
 
     @Provides
     OkHttpClient provideOkClient(HttpLoggingInterceptor interceptor){
-        return new OkHttpClient.Builder().addInterceptor(interceptor).connectTimeout(5000, TimeUnit.MILLISECONDS).readTimeout(5000,TimeUnit.MILLISECONDS).build();
+        return new OkHttpClient.Builder().addInterceptor(interceptor).connectTimeout(5, TimeUnit.MILLISECONDS).readTimeout(5,TimeUnit.MILLISECONDS).build();
     }
 
     @Provides
-    HttpLoggingInterceptor provideLogginInterceptor(HttpLoggingInterceptor.Logger l){
-        HttpLoggingInterceptor interceptor =  new HttpLoggingInterceptor(l);
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        return  interceptor;
+    HttpLoggingInterceptor provideLogginInterceptor(){
+        return new HttpLoggingInterceptor();
     }
 
-    @Provides
-    HttpLoggingInterceptor.Logger provideLogger(){
-        return new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Log.v("httpLogger",message);
-            }
-        };
-    }
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.info.CategoryInfo;
 import com.hhyg.TyClosing.allShop.info.SearchInfo;
-import com.hhyg.TyClosing.entities.SearchGoodsParam;
 import com.hhyg.TyClosing.mgr.UserTrackMgr;
 import com.hhyg.TyClosing.ui.GoodListActivity;
 import com.hhyg.TyClosing.ui.SearchGoodActivity;
@@ -86,9 +85,6 @@ public class AllShopCateFragment extends AllShopBaseFragment implements View.OnC
 	}
 	private void jumpToSearchActivity(CategoryInfo item) {
 		Intent it = new Intent();
-		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
-		bean.setClass1Id(item.id);
-		it.putExtra("param",bean);
 		it.setClass(getActivity(), SearchGoodActivity.class);
 		startActivity(it);
 	}

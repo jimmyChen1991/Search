@@ -1,0 +1,41 @@
+package com.hhyg.TyClosing.di.module;
+
+import com.hhyg.TyClosing.entities.CommonParam;
+import com.hhyg.TyClosing.entities.SearchGoodsParam;
+
+
+import dagger.Module;
+import dagger.Provides;
+
+/**
+ * Created by user on 2017/6/9.
+ */
+@Module
+public class SearchGoodsModule {
+    private SearchGoodsParam.DataBean beanParam;
+    public SearchGoodsModule(SearchGoodsParam.DataBean beanParam) {
+        this.beanParam = beanParam;
+    }
+    @Provides
+    SearchGoodsParam provideSearchGoodParam(CommonParam commonParam, SearchGoodsParam.DataBean bean)
+    {
+        SearchGoodsParam param = new SearchGoodsParam();
+        param.setChannel(commonParam.getChannelId());
+        param.setImei(commonParam.getImei());
+        param.setShopid(commonParam.getShopId());
+        param.setPlatformId(commonParam.getPlatformId());
+        param.setData(bean);
+        return param;
+    }
+
+    @Provides
+    SearchGoodsParam.DataBean provideBean(){
+        SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+        bean.setPageNo("1");
+        bean.setAvailable("1");
+        bean.setClass1Id(beanParam.getClass1Id());
+        bean.setClass2Id(beanParam.getClass2Id());
+        bean.setClass3Id(beanParam.getClass3Id());
+        return bean;
+    }
+}

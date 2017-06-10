@@ -1,0 +1,51 @@
+package com.hhyg.TyClosing.ui;
+
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.hhyg.TyClosing.R;
+import com.hhyg.TyClosing.entities.SearchGoodsParam;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Created by user on 2017/6/7.
+ */
+
+public class SearchGoodActivity extends AppCompatActivity {
+    private static final String TAG = "SearchGoodActivity";
+    @BindView(R.id.backbtn)
+    ImageButton backbtn;
+    @BindView(R.id.searchtitle)
+    TextView searchtitle;
+    @BindView(R.id.searchbar)
+    TextView searchbar;
+    @Inject
+    SearchGoodsParam param;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_searchgood);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.backbtn)
+    public void onViewClicked() {
+        finish();
+    }
+
+    @OnClick(R.id.searchbar)
+    public void onViewClick() {
+        Intent it = new Intent(this,SearchActivity.class);
+        startActivity(it);
+    }
+}
