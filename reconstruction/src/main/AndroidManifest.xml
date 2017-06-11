@@ -57,7 +57,7 @@
                 android:name=".ui.ShopCartActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:launchMode="singleTask"
-                android:theme="@style/shopcart_atytheme"
+                android:theme="@style/new_atytheme"
                 android:screenOrientation="portrait">
         </activity>
         <activity
@@ -173,7 +173,7 @@
         <activity
                 android:name=".ui.SearchGoodActivity"
                 android:screenOrientation="portrait"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+                android:theme="@style/new_atytheme">
         </activity>
 
     </application>

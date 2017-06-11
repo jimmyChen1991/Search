@@ -6,7 +6,7 @@ android {
     aaptOptions {         cruncherEnabled = false     }
     defaultConfig {
         applicationId "com.hhyg.TyClosing"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
 //        multiDexEnabled true
     }
@@ -36,6 +36,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
     // Because RxAndroid releases are few and far between, it is recommended you also
+
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -43,10 +44,13 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
-
-    compile "com.hanks:htextview-base:0.1.1"
-    compile "com.hanks:htextview-scale:0.1.1"
-
+    compile 'com.hanks:htextview-base:0.1.1'
+    compile 'com.hanks:htextview-scale:0.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
+    compile 'com.github.GrenderG:Toasty:1.2.5'
+    compile 'com.android.support:design:25.3.1'
 }

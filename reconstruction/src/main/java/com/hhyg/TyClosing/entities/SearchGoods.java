@@ -17,18 +17,18 @@ public class SearchGoods {
      * data : {"goodsList":[{"barcode":"3346470418059","name":"亲亲唇膏343 3.5g","brand_name":"GUERLAIN娇兰","price":220,"mianshui_price":220,"market_price":320,"image":"https://img.mianshui365.com/upload/20151229/19211045409.jpg@400h_400w_95q_1wh","stock":88,"active_detail":"","active_type":0,"active_code":"","is_privileged":false}],"pageNo":1,"pageSize":24,"totalRows":121,"totalPages":6,"firstPage":true,"lastPage":false,"searchKey":"唇膏,该字段为了兼容同义词而设置，用于搜索过滤条件回传关键词"}
      */
 
-    private String errcode;
+    private int errcode;
     private String op;
     private String channel;
     private String imei;
     private String msg;
     private DataBean data;
 
-    public String getErrcode() {
+    public int getErrcode() {
         return errcode;
     }
 
-    public void setErrcode(String errcode) {
+    public void setErrcode(int errcode) {
         this.errcode = errcode;
     }
 
@@ -182,7 +182,7 @@ public class SearchGoods {
             private String image;
             private int stock;
             private String active_detail;
-            private int active_type;
+            private String active_type;
             private String active_code;
             private boolean is_privileged;
 
@@ -258,11 +258,11 @@ public class SearchGoods {
                 this.active_detail = active_detail;
             }
 
-            public int getActive_type() {
+            public String getActive_type() {
                 return active_type;
             }
 
-            public void setActive_type(int active_type) {
+            public void setActive_type(String active_type) {
                 this.active_type = active_type;
             }
 

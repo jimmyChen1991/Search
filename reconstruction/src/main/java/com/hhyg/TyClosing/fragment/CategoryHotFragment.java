@@ -7,8 +7,10 @@ import com.hhyg.TyClosing.allShop.adapter.AllShopBaseAdapter;
 import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
 import com.hhyg.TyClosing.allShop.info.CateInfo;
 import com.hhyg.TyClosing.allShop.info.SearchInfo;
+import com.hhyg.TyClosing.entities.SearchGoodsParam;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.ui.GoodListActivity;
+import com.hhyg.TyClosing.ui.SearchGoodActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -50,10 +52,18 @@ public class CategoryHotFragment extends Fragment{
 		mGridView.setAdapter(mHotCategoryAdapter);
 	}
 	private void jumpToSearchGoodListActivity(CateInfo item){
-		SearchInfo searchInfo =	SearchInfo.NewInstance(SearchInfo.CATE_SEARCH, item.cateId, item.name);
 		Intent it = new Intent();
-		it.setClass(getActivity(), GoodListActivity.class);
-		it.putExtra("searchInfo", searchInfo);
+		it.setClass(getActivity(), SearchGoodActivity.class);
+		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+		if(item.cateLevel == 1){
+			bean.setClass1Id(item.cateId);
+		}else if(item.cateLevel == 2){
+			bean.setClass2Id(item.cateId);
+		}else{
+			bean.setClass3Id(item.cateId);
+		}
+		it.putExtra(getString(R.string.search_token), bean);
+		it.putExtra(getString(R.string.search_content),item.name);
 		startActivity(it);
 	}
 	class HotCategoryAdapter extends AllShopBaseAdapter<CateInfo,HotCategoryAdapter.ViewHolder>{

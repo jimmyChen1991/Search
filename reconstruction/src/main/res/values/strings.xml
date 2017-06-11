@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">体验结算系统</string>
-    
     <string name="salername_login">请输入账号</string>
     <string name="salerpwd_login">请输入密码</string>
     
@@ -86,4 +85,6 @@
     <string name="bind_success">绑定成功</string>
 
     <string name="searchbartext">搜索商品</string>
+    <string name="search_token">param</string>
+    <string name="search_content">content</string>
 </resources>

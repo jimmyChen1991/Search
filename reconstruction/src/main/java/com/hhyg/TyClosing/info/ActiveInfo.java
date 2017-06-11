@@ -103,6 +103,10 @@ public class ActiveInfo {
 		return desc;
 	}
 	public void setType(String typeStr){
+		type = ActiveType.Normal;
+		if(typeStr == null){
+			return;
+		}
 		if(typeStr.equals("-1")){
 			type = ActiveType.Normal;
 		}else if(typeStr.equals("1")){

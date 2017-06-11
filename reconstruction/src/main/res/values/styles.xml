@@ -20,7 +20,9 @@
            <item name="android:windowEnterAnimation">@anim/fade_in</item>  
            <item name="android:windowExitAnimation">@anim/fade_out</item>
        </style>
-    <style name="shopcart_atytheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    <style name="new_atytheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 
 	<style name="allshopcatimg">
 	    <item name="android:layout_width">116dip</item>

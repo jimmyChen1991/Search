@@ -112,7 +112,7 @@ public class SearchGoodsParam {
         private String available;
         private String sortType;
         private String propertyList;
-        private String pageNo;
+        private int pageNo;
         private String activityId;
         private String pageSize;
 
@@ -196,11 +196,11 @@ public class SearchGoodsParam {
             this.propertyList = propertyList;
         }
 
-        public String getPageNo() {
+        public int getPageNo() {
             return pageNo;
         }
 
-        public void setPageNo(String pageNo) {
+        public void setPageNo(int pageNo) {
             this.pageNo = pageNo;
         }
 
@@ -259,7 +259,7 @@ public class SearchGoodsParam {
             dest.writeString(this.available);
             dest.writeString(this.sortType);
             dest.writeString(this.propertyList);
-            dest.writeString(this.pageNo);
+            dest.writeInt(this.pageNo);
             dest.writeString(this.activityId);
             dest.writeString(this.pageSize);
         }
@@ -275,7 +275,7 @@ public class SearchGoodsParam {
             this.available = in.readString();
             this.sortType = in.readString();
             this.propertyList = in.readString();
-            this.pageNo = in.readString();
+            this.pageNo = in.readInt();
             this.activityId = in.readString();
             this.pageSize = in.readString();
         }

@@ -1,10 +1,18 @@
 package com.hhyg.TyClosing.di.module;
 
+import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.view.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.hhyg.TyClosing.R;
+import com.hhyg.TyClosing.allShop.adapter.GoodRecAdapter;
 import com.hhyg.TyClosing.apiService.SearchSevice;
 import com.hhyg.TyClosing.entities.CommonParam;
 import com.hhyg.TyClosing.entities.SearchGoodsParam;
-
 
 import javax.inject.Named;
 
@@ -18,8 +26,10 @@ import retrofit2.Retrofit;
 @Module
 public class SearchGoodsModule {
     private SearchGoodsParam.DataBean beanParam;
-    public SearchGoodsModule(SearchGoodsParam.DataBean beanParam) {
+    private Context context;
+    public SearchGoodsModule(SearchGoodsParam.DataBean beanParam,Context c) {
         this.beanParam = beanParam;
+        context = c ;
     }
     @Provides
     SearchGoodsParam provideSearchGoodParam(CommonParam commonParam, SearchGoodsParam.DataBean bean)
@@ -36,11 +46,15 @@ public class SearchGoodsModule {
     @Provides
     SearchGoodsParam.DataBean provideBean(){
         SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
-        bean.setPageNo("1");
+        bean.setPageNo(1);
+        bean.setPageSize("100");
         bean.setAvailable("1");
         bean.setClass1Id(beanParam.getClass1Id());
         bean.setClass2Id(beanParam.getClass2Id());
         bean.setClass3Id(beanParam.getClass3Id());
+        bean.setBrandId(beanParam.getBrandId());
+        bean.setKeyword(beanParam.getKeyword());
+        bean.setActivityId(beanParam.getActivityId());
         return bean;
     }
 
@@ -53,4 +67,22 @@ public class SearchGoodsModule {
     Gson provideGson(){
         return new Gson();
     }
+
+    @Provides
+    @LayoutRes int layoutName(){
+        return R.layout.adapter_searchgood;
+    }
+
+    @Provides
+    GoodRecAdapter provideGoodAdapter(@LayoutRes int layout){
+        GoodRecAdapter adapter = new GoodRecAdapter(layout);
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        return adapter;
+    }
+
+    @Provides
+    MaterialDialog provideDialog(){
+        return new MaterialDialog.Builder(context).theme(Theme.LIGHT).title("拼命加载中").content("请稍后...").build();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.hhyg.TyClosing.apiService;
 
+import com.hhyg.TyClosing.entities.SearchFilterRes;
 import com.hhyg.TyClosing.entities.SearchGoods;
 
 import io.reactivex.Observable;
@@ -15,4 +16,8 @@ public interface SearchSevice {
     @POST("index.php?r=essearch/searchgoods")
     @FormUrlEncoded
     Observable<SearchGoods> searchGoodsApi(@Field("parameter") String param);
+
+    @POST("index.php?r=essearch/searchfilter")
+    @FormUrlEncoded
+    Observable<SearchFilterRes> searchFilterApi(@Field("parameter") String param);
 }

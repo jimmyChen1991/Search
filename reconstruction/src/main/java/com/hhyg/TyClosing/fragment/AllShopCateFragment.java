@@ -88,7 +88,8 @@ public class AllShopCateFragment extends AllShopBaseFragment implements View.OnC
 		Intent it = new Intent();
 		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
 		bean.setClass1Id(item.id);
-		it.putExtra("param",bean);
+		it.putExtra(getResources().getString(R.string.search_token),bean);
+		it.putExtra(getString(R.string.search_content),item.cateName);
 		it.setClass(getActivity(), SearchGoodActivity.class);
 		startActivity(it);
 	}
