@@ -76,7 +76,8 @@ public class SearchGoodsModule {
     @Provides
     GoodRecAdapter provideGoodAdapter(@LayoutRes int layout){
         GoodRecAdapter adapter = new GoodRecAdapter(layout);
-        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        adapter.isFirstOnly(false);
         return adapter;
     }
 

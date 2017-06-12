@@ -29,6 +29,7 @@ import com.hhyg.TyClosing.di.module.SearchGoodsModule;
 import com.hhyg.TyClosing.entities.search.SearchFilterRes;
 import com.hhyg.TyClosing.entities.search.SearchGoods;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.exceptions.ServiceDataException;
 import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
@@ -101,8 +102,7 @@ public class SearchGoodActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     int totalPage;
-    int type = 0;
-    Observable<String> ob;
+    SearchType type = SearchType.KEY_WORD;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,6 +244,7 @@ public class SearchGoodActivity extends AppCompatActivity {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+        bean.setPageNo(1);
         param_use.setData(bean);
         Log.v(TAG,param.toString());
         Log.v(TAG,param_use.toString());

@@ -62,7 +62,7 @@ public class NetModule {
 
     @Provides
     OkHttpClient provideOkClient(HttpLoggingInterceptor interceptor){
-        return new OkHttpClient.Builder().addInterceptor(interceptor).connectTimeout(5000, TimeUnit.MILLISECONDS).readTimeout(5000,TimeUnit.MILLISECONDS).build();
+        return new OkHttpClient.Builder().addInterceptor(interceptor).connectTimeout(50000, TimeUnit.MILLISECONDS).readTimeout(50000,TimeUnit.MILLISECONDS).build();
     }
 
     @Provides
