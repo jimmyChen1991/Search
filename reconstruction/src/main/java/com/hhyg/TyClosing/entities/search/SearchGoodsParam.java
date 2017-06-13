@@ -1,4 +1,4 @@
-package com.hhyg.TyClosing.entities;
+package com.hhyg.TyClosing.entities.search;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,7 +7,12 @@ import android.os.Parcelable;
  * Created by user on 2017/6/9.
  */
 
-public class SearchGoodsParam {
+public class SearchGoodsParam implements Cloneable{
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     /**
      * op : searchgoods
@@ -85,7 +90,13 @@ public class SearchGoodsParam {
                 '}';
     }
 
-    public static class DataBean implements Parcelable {
+    public static class DataBean implements Parcelable,Cloneable {
+
+        @Override
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+
         /**
          * keyword : 搜索关键字（非必需(需要UrlEncode 特殊字符需要进行处理)
          * brandId : 品牌Id（非必需：多个之间用英文半角逗号隔开）

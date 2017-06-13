@@ -4,12 +4,14 @@ package com.hhyg.TyClosing.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,8 +26,11 @@ import com.hhyg.TyClosing.di.componet.DaggerCommonNetParamComponent;
 import com.hhyg.TyClosing.di.componet.DaggerSearchGoodComponent;
 import com.hhyg.TyClosing.di.module.CommonNetParamModule;
 import com.hhyg.TyClosing.di.module.SearchGoodsModule;
-import com.hhyg.TyClosing.entities.SearchGoods;
-import com.hhyg.TyClosing.entities.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchFilterRes;
+import com.hhyg.TyClosing.entities.search.SearchGoods;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.exceptions.ServiceDataException;
+import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
 
 import javax.inject.Inject;
@@ -34,9 +39,17 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -53,6 +66,8 @@ public class SearchGoodActivity extends AppCompatActivity {
     TextView searchbar;
     @BindString(R.string.search_token)
     String seach_token;
+    @Inject
+    SearchGoodsParam param_use;
     @Inject
     SearchGoodsParam param;
     @Inject
@@ -73,13 +88,21 @@ public class SearchGoodActivity extends AppCompatActivity {
     ImageButton choseprice;
     @BindView(R.id.tochosebtn)
     ImageButton tochosebtn;
-    //    @BindView(R.id.attr_group_wrap)
-//    RecyclerView attrGroupWrap;
+    @BindView(R.id.attr_group_wrap)
+    RecyclerView attrGroupWrap;
     @BindView(R.id.goods_wrap)
     RecyclerView goodsWrap;
     @BindView(R.id.backtotop)
-    FloatingActionButton backtotop;
+    ImageButton backtotop;
+    @BindView(R.id.backtomain)
+    ImageButton backtomain;
+    @BindView(R.id.chosengerenal)
+    ImageButton chosengerenal;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     int totalPage;
+    int type = 0;
+    Observable<String> ob;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +113,12 @@ public class SearchGoodActivity extends AppCompatActivity {
         goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         goodsWrap.setHasFixedSize(true);
+        attrGroupWrap.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        attrGroupWrap.setHasFixedSize(true);
         DaggerSearchGoodComponent.builder()
                 .applicationComponent(MyApplication.GetInstance().getComponent())
                 .commonNetParamComponent(DaggerCommonNetParamComponent.builder().commonNetParamModule(new CommonNetParamModule()).build())
-                .searchGoodsModule(new SearchGoodsModule((SearchGoodsParam.DataBean) getIntent().getParcelableExtra(seach_token),this))
+                .searchGoodsModule(new SearchGoodsModule((SearchGoodsParam.DataBean) getIntent().getParcelableExtra(seach_token), this))
                 .build().inject(this);
         goodsWrap.setAdapter(goodRecAdapter);
         goodRecAdapter.bindToRecyclerView(goodsWrap);
@@ -150,6 +175,31 @@ public class SearchGoodActivity extends AppCompatActivity {
                         Log.v(TAG, throwable.toString());
                     }
                 });
+        searchSevice.searchFilterApi(gson.toJson(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SearchFilterRes>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull SearchFilterRes searchFilterRes) {
+                        Log.v("test",Thread.currentThread().getName());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @OnClick(R.id.backbtn)
@@ -163,22 +213,117 @@ public class SearchGoodActivity extends AppCompatActivity {
         startActivity(it);
     }
 
-    @OnClick({R.id.chosehotsale, R.id.chosenew, R.id.choseprice, R.id.tochosebtn})
-    public void onViewClicked(View view) {
+    @OnClick({R.id.chosengerenal, R.id.chosehotsale, R.id.chosenew, R.id.choseprice})
+    public void onViewClicked(final View view){
+        SearchGoodsParam.DataBean bean = null;
+        try {
+            bean = (SearchGoodsParam.DataBean) param.getData().clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         switch (view.getId()) {
+            case R.id.chosengerenal:
+                bean.setSortType("0");
+                break;
             case R.id.chosehotsale:
+                bean.setSortType("1");
                 break;
             case R.id.chosenew:
+                bean.setSortType("2");
                 break;
             case R.id.choseprice:
-                break;
-            case R.id.tochosebtn:
+                if(bean.getSortType().equals("3")){
+                    bean.setSortType("-3");
+                }else{
+                    bean.setSortType("3");
+                }
                 break;
         }
+        try {
+            param_use = (SearchGoodsParam) param.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        param_use.setData(bean);
+        Log.v(TAG,param.toString());
+        Log.v(TAG,param_use.toString());
+        Observable.just(param_use)
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
+                    @Override
+                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam bean) throws Exception {
+                        return  searchSevice.searchGoodsApi(gson.toJson(bean));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        dialog.show();
+                    }
+                })
+                .flatMap(new Function<SearchGoods, ObservableSource<SearchGoods.DataBean>>() {
+                    @Override
+                    public ObservableSource<SearchGoods.DataBean> apply(@NonNull final SearchGoods searchGoods) throws Exception {
+                        return Observable.create(new ObservableOnSubscribe<SearchGoods.DataBean>() {
+                            @Override
+                            public void subscribe(@NonNull ObservableEmitter<SearchGoods.DataBean> e) throws Exception {
+                                if (searchGoods.getErrcode() != 1) {
+                                    e.onError(new ServiceMsgException(searchGoods.getMsg()));
+                                }
+                                if (searchGoods.getData() != null && searchGoods.getData().getGoodsList() != null) {
+                                    e.onNext(searchGoods.getData());
+                                    e.onComplete();
+                                } else {
+                                    e.onError(new ServiceDataException());
+                                }
+                            }
+                        });
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        dialog.dismiss();
+                        Log.v(TAG,"final");
+                    }
+                })
+                .subscribe(new Consumer<SearchGoods.DataBean>() {
+                    @Override
+                    public void accept(@NonNull SearchGoods.DataBean dataBean) throws Exception {
+                        totalPage = dataBean.getTotalPages();
+                        goodRecAdapter.setNewData(dataBean.getGoodsList());
+                        if(dataBean.getGoodsList().size() == 0){
+                            goodRecAdapter.setEmptyView(R.layout.empty_view);
+                        }
+                        param.setData(param_use.getData());
+                        Log.v(TAG,"success");
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.v(TAG,throwable.toString());
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.v(TAG,"complete");
+                    }
+                });
+    }
+    @OnClick(R.id.tochosebtn)
+    public void chosenFilter() {
+        drawerLayout.openDrawer(Gravity.RIGHT);
     }
 
     @OnClick(R.id.backtotop)
     public void onViewClickedTotop() {
         goodsWrap.smoothScrollToPosition(0);
+    }
+
+    @OnClick(R.id.backtomain)
+    public void onViewClickedTomain() {
+        Intent it = new Intent(this, AllShopActivity.class);
+        startActivity(it);
     }
 }

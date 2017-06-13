@@ -2,7 +2,6 @@ package com.hhyg.TyClosing.di.module;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
-import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -12,7 +11,7 @@ import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.adapter.GoodRecAdapter;
 import com.hhyg.TyClosing.apiService.SearchSevice;
 import com.hhyg.TyClosing.entities.CommonParam;
-import com.hhyg.TyClosing.entities.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 
 import javax.inject.Named;
 
@@ -49,6 +48,7 @@ public class SearchGoodsModule {
         bean.setPageNo(1);
         bean.setPageSize("100");
         bean.setAvailable("1");
+        bean.setSortType("0");
         bean.setClass1Id(beanParam.getClass1Id());
         bean.setClass2Id(beanParam.getClass2Id());
         bean.setClass3Id(beanParam.getClass3Id());
@@ -82,7 +82,13 @@ public class SearchGoodsModule {
 
     @Provides
     MaterialDialog provideDialog(){
-        return new MaterialDialog.Builder(context).theme(Theme.LIGHT).title("拼命加载中").content("请稍后...").build();
+        return new MaterialDialog.Builder(context)
+                .theme(Theme.LIGHT)
+                .iconRes(R.drawable.hhyglogo)
+                .content("拼命加载中...")
+                .title("请稍后")
+                .canceledOnTouchOutside(false)
+                .build();
     }
 
 }

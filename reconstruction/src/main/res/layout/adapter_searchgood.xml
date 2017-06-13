@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
     android:background="#ffffff" >
     <RelativeLayout
         android:id="@+id/imglayout"
@@ -67,12 +68,6 @@
             android:textSize="18sp" />
     </RelativeLayout>
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="18dip"
-        android:layout_below="@+id/price_wrap"
-        android:background="#ffffff"
-        />
-    <TextView
         android:id="@+id/activite_indicator_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,6 +76,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dip"
         android:layout_marginTop="10dip"
+        android:maxLines="1"
+        android:maxWidth="150dp"
         />
     <ImageView
         android:id="@+id/privilege_icon"

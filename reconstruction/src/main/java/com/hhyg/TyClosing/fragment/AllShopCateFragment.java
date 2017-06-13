@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.info.CategoryInfo;
-import com.hhyg.TyClosing.allShop.info.SearchInfo;
-import com.hhyg.TyClosing.entities.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 import com.hhyg.TyClosing.mgr.UserTrackMgr;
-import com.hhyg.TyClosing.ui.GoodListActivity;
 import com.hhyg.TyClosing.ui.SearchGoodActivity;
 import com.nostra13.universalimageloader.cache.disc.impl.BrandFileGetter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

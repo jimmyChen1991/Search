@@ -11,7 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.config.Constants;
-import com.hhyg.TyClosing.entities.SearchGoods;
+import com.hhyg.TyClosing.entities.search.SearchGoods;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.info.ActiveInfo;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -57,7 +57,7 @@ public class GoodRecAdapter extends BaseQuickAdapter<SearchGoods.DataBean.GoodsL
             activePrice.setText(Constants.PRICE_TITLE+item.getPrice());
             citPrice.setVisibility(View.GONE);
             indicator.setVisibility(View.VISIBLE);
-            indicator.setText(aInfo.getShort_desc());
+            indicator.setText(item.getActive_detail());
         }
         helper.getView(R.id.name).setTag(item.getBarcode());
         final String tag = (String) helper.getView(R.id.goodimg).getTag();

@@ -1,4 +1,4 @@
-package com.hhyg.TyClosing.entities;
+package com.hhyg.TyClosing.entities.search;
 
 import java.util.List;
 

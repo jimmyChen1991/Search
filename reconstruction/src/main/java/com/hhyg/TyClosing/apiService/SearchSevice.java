@@ -1,7 +1,7 @@
 package com.hhyg.TyClosing.apiService;
 
-import com.hhyg.TyClosing.entities.SearchFilterRes;
-import com.hhyg.TyClosing.entities.SearchGoods;
+import com.hhyg.TyClosing.entities.search.SearchFilterRes;
+import com.hhyg.TyClosing.entities.search.SearchGoods;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
