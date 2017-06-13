@@ -7,9 +7,11 @@ import com.hhyg.TyClosing.allShop.adapter.AllShopBaseAdapter;
 import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
 import com.hhyg.TyClosing.allShop.info.BrandImgInfo;
 import com.hhyg.TyClosing.allShop.info.SearchInfo;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.log.Logger;
 import com.hhyg.TyClosing.ui.GoodListActivity;
+import com.hhyg.TyClosing.ui.SearchGoodActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -67,9 +69,10 @@ public class BrandImgFragment extends Fragment{
 		mGridView.setAdapter(mBrandOnlyImgGridViewAdapter);
 	}
 	private void jumpToSearchGoodListActivity(BrandImgInfo item) {
-		Intent intent = new Intent(getActivity(), GoodListActivity.class);
-		SearchInfo info = SearchInfo.NewInstance(SearchInfo.BRAND_SEARCH, item.id, item.name);
-		intent.putExtra("searchInfo",info);
+		Intent intent = new Intent(getActivity(), SearchGoodActivity.class);
+		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+		bean.setBrandId(item.id);
+		intent.putExtra(getString(R.string.search_token),bean);
 		startActivity(intent);
 	}
 	class BrandGridViewAdapter extends AllShopBaseAdapter<BrandImgInfo,BrandGridViewAdapter.ViewHolder>{

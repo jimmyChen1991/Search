@@ -10,7 +10,8 @@ public class FilterBean {
     private FilterType type;
     private ArrayList<FilterItem> dataSet = new ArrayList<>();
     private String name;
-
+    private boolean selected;
+    private String selectedName;
     public FilterType getType() {
         return type;
     }
@@ -45,5 +46,21 @@ public class FilterBean {
                 "type=" + type +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public String getSelectedName() {
+        return selectedName;
+    }
+
+    public void setSelectedName(String selectedName) {
+        this.selectedName = selectedName;
     }
 }

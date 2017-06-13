@@ -10,5 +10,12 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp_16"
         android:textColor="@color/light"/>
-
+    <ImageView
+        android:id="@+id/selected_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_peoperty_selected"
+        android:layout_toRightOf="@+id/name"
+        android:layout_marginLeft="3dp"
+        />
 </RelativeLayout>

@@ -1,7 +1,6 @@
 package com.hhyg.TyClosing.ui;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,17 +10,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.example.zhouwei.library.CustomPopWindow;
 import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.adapter.GoodRecAdapter;
@@ -42,8 +40,11 @@ import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.exceptions.ServiceDataException;
 import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
+import com.hhyg.TyClosing.ui.view.PeopertyPopwindow;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -118,8 +119,8 @@ public class SearchGoodActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     int totalPage;
-    SearchType type = SearchType.KEY_WORD;
-    CustomPopWindow popWindow;
+    private SearchType type = SearchType.KEY_WORD;
+    private PeopertyPopwindow popWindow;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,8 +144,9 @@ public class SearchGoodActivity extends AppCompatActivity {
         goodRecAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                SearchGoods.DataBean.GoodsListBean bean = (SearchGoods.DataBean.GoodsListBean) adapter.getData().get(position);
                 Intent it = new Intent(SearchGoodActivity.this, GoodsInfoActivity.class);
-                it.putExtra("barcode", (String) view.findViewById(R.id.name).getTag());
+                it.putExtra("barcode", bean.getBarcode());
                 startActivity(it);
             }
         });
@@ -152,21 +154,35 @@ public class SearchGoodActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) popContent.findViewById(R.id.pop_rv);
         recyclerView.setLayoutManager(new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(popAdapter);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        popWindow = new CustomPopWindow
-                .PopupWindowBuilder(this)
-                .setView(popContent)
-                .setFocusable(true)
-                .setOutsideTouchable(true)
-                .size(metrics.widthPixels,(metrics.heightPixels/5)*2)
-                .create();
+        Button reset = (Button) popContent.findViewById(R.id.reset);
+        popWindow = new PeopertyPopwindow(this,popContent);
         horizontalFilterAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Log.v(TAG,"add");
-                popAdapter.setNewData((ArrayList<FilterItem>) view.getTag());
+                FilterBean bean = (FilterBean) adapter.getData().get(position);
+                popAdapter.setFilterData(bean);
                 popWindow.showAsDropDown(attrGroupWrap,0,0);
+            }
+        });
+        popAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PeopertyPopAdapter popAdapter = (PeopertyPopAdapter) adapter;
+                FilterBean bean = popAdapter.getFilterData();
+                if(bean.getType() == FilterType.CATEGORY && bean.isSelected()){
+                    return;
+                }else{
+                    FilterItem item = (FilterItem) adapter.getItem(position);
+                    bean.setSelected(true);
+                    if(bean.getSelectedName() != null){
+                        bean.setSelectedName(bean.getSelectedName() +"  " + item.getName());
+                    }else{
+                        bean.setSelectedName(item.getName());
+                    }
+                    item.setSelected(true);
+                    horizontalFilterAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
         goodRecAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -211,7 +227,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.v(TAG, throwable.toString());
+                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
                     }
                 });
         Observable.just(type)
@@ -315,8 +331,6 @@ public class SearchGoodActivity extends AppCompatActivity {
         }
         bean.setPageNo(1);
         param_use.setData(bean);
-        Log.v(TAG,param.toString());
-        Log.v(TAG,param_use.toString());
         Observable.just(param_use)
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
                     @Override
@@ -355,7 +369,6 @@ public class SearchGoodActivity extends AppCompatActivity {
                     @Override
                     public void run() throws Exception {
                         dialog.dismiss();
-                        Log.v(TAG,"final");
                     }
                 })
                 .subscribe(new Consumer<SearchGoods.DataBean>() {
@@ -365,6 +378,52 @@ public class SearchGoodActivity extends AppCompatActivity {
                         goodRecAdapter.setNewData(dataBean.getGoodsList());
                         if(dataBean.getGoodsList().size() == 0){
                             goodRecAdapter.setEmptyView(R.layout.empty_view);
+                        }
+                        switch (view.getId()) {
+                            case R.id.chosengerenal:
+                                view.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_pressed);
+                                view.setClickable(false);
+                                chosehotsale.setClickable(true);
+                                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                                chosenew.setClickable(true);
+                                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                                choseprice.setClickable(true);
+                                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
+                                break;
+                            case R.id.chosehotsale:
+                                view.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_pressed);
+                                view.setClickable(false);
+                                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                                chosenew.setClickable(true);
+                                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
+                                choseprice.setClickable(true);
+                                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                                chosengerenal.setClickable(true);
+                                break;
+                            case R.id.chosenew:
+                                view.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_pressed);
+                                view.setClickable(false);
+                                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                                chosehotsale.setClickable(true);
+                                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
+                                choseprice.setClickable(true);
+                                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
+                                chosengerenal.setClickable(true);
+                                break;
+                            case R.id.choseprice:
+                                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                                chosehotsale.setClickable(true);
+                                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                                chosenew.setClickable(true);
+                                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
+                                chosengerenal.setClickable(true);
+                                choseprice.setClickable(true);
+                                if(param_use.getData().getSortType().equals("3")){
+                                    choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_up);
+                                }else{
+                                    choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_down);
+                                }
+                                break;
                         }
                         param.setData(param_use.getData());
                         Log.v(TAG,"success");

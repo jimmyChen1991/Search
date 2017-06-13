@@ -9,7 +9,7 @@ public class FilterItem {
     private String id;
     private String maxPrice;
     private String minPrice;
-
+    private boolean selected;
     public String getName() {
         return name;
     }
@@ -42,4 +42,11 @@ public class FilterItem {
         this.minPrice = minPrice;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 }

@@ -59,7 +59,6 @@ public class GoodRecAdapter extends BaseQuickAdapter<SearchGoods.DataBean.GoodsL
             indicator.setVisibility(View.VISIBLE);
             indicator.setText(item.getActive_detail());
         }
-        helper.getView(R.id.name).setTag(item.getBarcode());
         final String tag = (String) helper.getView(R.id.goodimg).getTag();
         final String uri = item.getImage();
         if(tag != null && !uri.equals(tag)){
