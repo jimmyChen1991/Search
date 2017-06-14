@@ -68,6 +68,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Notification;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
@@ -188,11 +189,21 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 				.concatMap(new Function<AssociateParam, ObservableSource<AssociateRes>>() {
 					@Override
 					public ObservableSource<AssociateRes> apply(@NonNull AssociateParam associateParam) throws Exception {
-						return associateSevice.getAssociate(gSon.toJson(associateParam));
+						return associateSevice.getAssociate(gSon.toJson(associateParam))
+								.onErrorResumeNext(Observable.<AssociateRes>empty());
 					}
 				})
-				.onErrorResumeNext(Observable.<AssociateRes>empty())
 				.observeOn(AndroidSchedulers.mainThread())
+//				.materialize()
+//				.subscribe(new Consumer<Notification<AssociateRes>>() {
+//					@Override
+//					public void accept(@NonNull Notification<AssociateRes> associateResNotification) throws Exception {
+//						if(associateResNotification.getValue() != null){
+//							associateRec.setVisibility(View.VISIBLE);
+//							associateAdapter.setNewData(associateResNotification.getValue().getData());
+//						}
+//					}
+//				});
 				.subscribe(new Consumer<AssociateRes>() {
 					@Override
 					public void accept(@NonNull AssociateRes associateRes) throws Exception {
