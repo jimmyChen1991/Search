@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ffffff"
+    android:paddingLeft="20dp"
+    android:paddingTop="30dp"
+    android:paddingBottom="30dp"
+    android:paddingRight="20dp">
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/pop_rv"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:paddingLeft="45dp"
+    android:paddingRight="45dp">
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="1dp"
+        android:layout_weight="0.45"
+        android:layout_height="match_parent"
+        android:text="@string/reset"
+        android:textSize="@dimen/sp_16"
+        android:textColor="@color/ffffff"
+        android:background="@drawable/button_corner_selector"/>
+    <TextView
+        android:layout_width="1dp"
+        android:layout_weight="0.1"
+        android:layout_height="match_parent"
+        android:background="@color/ffffff"/>
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="1dp"
+        android:layout_weight="0.45"
+        android:text="@string/queding"
+        android:textSize="@dimen/sp_16"
+        android:textColor="@color/ffffff"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_corner_selector"/>
+</LinearLayout>
+</LinearLayout>

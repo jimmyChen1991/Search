@@ -16,6 +16,7 @@
     <string name="soft_updating">正在更新</string>
     <string name="soft_update_cancel">取消更新</string>
     <string name="queding">确定</string>
+    <string name="reset">重置</string>
     <string name="warnning">温馨提示</string>
     <string name="leavingText">您将退出本应用</string>
     <string name="cancel">取消</string>
@@ -87,4 +88,9 @@
     <string name="searchbartext">搜索商品</string>
     <string name="search_token">param</string>
     <string name="search_content">content</string>
+    <string name="category">分类</string>
+    <string name="brand">品牌</string>
+    <string name="price">价格</string>
+    <string name="filter">筛选</string>
+    <string name="only_hasstock">仅看有货</string>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="15dp">
+    <Button
+        android:id="@+id/filter"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:paddingRight="15dp"
+        android:background="@color/ffffff"
+        android:drawableRight="@drawable/search_property_icon"
+        android:textColor="@color/light"
+        android:textSize="@dimen/sp_16"
+        android:maxLines="1"
+        android:maxEms="12"
+        android:ellipsize="end"/>
+</RelativeLayout>

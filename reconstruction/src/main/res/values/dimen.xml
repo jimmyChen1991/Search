@@ -8,4 +8,6 @@
     <dimen name="rippleRadius">64dp</dimen>
     <dimen name="drawerWidth">600dp</dimen>
     <dimen name="searchboxWidth">420dp</dimen>
+    <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_21">21sp</dimen>
 </resources>

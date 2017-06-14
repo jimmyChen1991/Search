@@ -97,8 +97,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/attr_group_wrap"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="40dp"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/goods_wrap"
                 android:layout_width="match_parent"
@@ -124,10 +123,46 @@
         android:layout_height="match_parent"
         android:background="@color/ffffff"
         android:layout_gravity="right"
+        android:paddingTop="10dp"
         android:clickable="true">
         <TextView
+            android:id="@+id/filter_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/light"
+            android:textSize="@dimen/sp_21"
+            android:text="@string/filter"/>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="242afaf"/>
+            android:layout_height="2sp"
+            android:layout_below="@+id/filter_title"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/gray"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+            <TextView
+                android:id="@+id/only_hasstock_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/sp_20"
+            android:text="@string/only_hasstock"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_below="@+id/only_hasstock_title"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            
+        </LinearLayout>
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>
