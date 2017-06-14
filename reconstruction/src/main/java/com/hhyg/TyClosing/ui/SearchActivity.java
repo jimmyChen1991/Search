@@ -1,17 +1,50 @@
 package com.hhyg.TyClosing.ui;
-import java.io.IOException;
-import java.util.ArrayList;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils.TruncateAt;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.adapter.AllShopBaseAdapter;
+import com.hhyg.TyClosing.allShop.adapter.AssociateAdapter;
 import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
 import com.hhyg.TyClosing.allShop.handler.SimpleHandler;
 import com.hhyg.TyClosing.allShop.info.SearchInfo;
 import com.hhyg.TyClosing.allShop.info.SpecialInfo;
+import com.hhyg.TyClosing.apiService.AssociateSevice;
 import com.hhyg.TyClosing.config.Constants;
+import com.hhyg.TyClosing.di.componet.DaggerAssociateComponent;
+import com.hhyg.TyClosing.di.componet.DaggerCommonNetParamComponent;
+import com.hhyg.TyClosing.di.module.AssociateModule;
+import com.hhyg.TyClosing.di.module.CommonNetParamModule;
+import com.hhyg.TyClosing.entities.associate.AssociateParam;
+import com.hhyg.TyClosing.entities.associate.AssociateRes;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 import com.hhyg.TyClosing.global.HttpUtil;
 import com.hhyg.TyClosing.global.INetWorkCallBack;
 import com.hhyg.TyClosing.global.ImageHelper;
@@ -25,26 +58,29 @@ import com.hhyg.TyClosing.ui.view.AutoClearEditText;
 import com.hhyg.TyClosing.ui.view.AutoClearEditText.OnCommitBtnListener;
 import com.hhyg.TyClosing.ui.view.ProgressBar;
 import com.hhyg.TyClosing.ui.view.SimpleProgressBar;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.text.TextUtils.TruncateAt;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
+
 public class SearchActivity extends BaseActivity implements View.OnClickListener{
+	private static final String TAG = "searchActivity";
 	private final String HOT_SEARCH_URI = Constants.getIndexUrl()+"?r=hotsearch/hotsearch";
 	private final String HISTORY_SEARCH_URI = Constants.getIndexUrl()+"?r=searchwords/historywords";
 	protected HttpUtil mHttpUtil = MyApplication.GetInstance();
@@ -68,15 +104,113 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 	private final String THE_ADINFOS = "theADInfos";
 	private ExceptionHandler exceptionHandler = new ExceptionHandler();
 	private Handler mHandler = new Handler(Looper.getMainLooper());
+	private RecyclerView associateRec;
+	private View wordwrap;
+	@Inject
+	AssociateSevice associateSevice;
+	@Inject
+	AssociateParam associateParam;
+	@Inject
+	Gson gSon;
+	@Inject
+	AssociateAdapter associateAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
 		findView();
+		DaggerAssociateComponent.builder()
+				.applicationComponent(MyApplication.GetInstance().getComponent())
+				.commonNetParamComponent(DaggerCommonNetParamComponent.builder().commonNetParamModule(new CommonNetParamModule()).build())
+				.associateModule(new AssociateModule())
+				.build()
+				.inject(this);
+		associateAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+			@Override
+			public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+				AssociateRes.DataBean bean = (AssociateRes.DataBean) adapter.getData().get(position);
+				final String keyWord = bean.getName();
+				jumpToSearchGoodActivity(keyWord);
+			}
+		});
+		associateRec.setAdapter(associateAdapter);
+		RxTextView.textChanges(mEditText)
+				.filter(new Predicate<CharSequence>() {
+					@Override
+					public boolean test(@NonNull CharSequence charSequence) throws Exception {
+						return charSequence.length() == 0;
+					}
+				})
+				.subscribe(new Consumer<CharSequence>() {
+					@Override
+					public void accept(@NonNull CharSequence charSequence) throws Exception {
+						wordwrap.setVisibility(View.VISIBLE);
+						associateRec.setVisibility(View.GONE);
+					}
+				}, new Consumer<Throwable>() {
+					@Override
+					public void accept(@NonNull Throwable throwable) throws Exception {
+
+					}
+				});
+		RxTextView.textChanges(mEditText)
+				.filter(new Predicate<CharSequence>() {
+					@Override
+					public boolean test(@NonNull CharSequence charSequence) throws Exception {
+						Log.v(TAG,charSequence.length() + "");
+						return charSequence.length() > 0;
+					}
+				})
+				.map(new Function<CharSequence, String>() {
+					@Override
+					public String apply(@NonNull CharSequence charSequence) throws Exception {
+						return charSequence.toString();
+					}
+				})
+				.map(new Function<String, AssociateParam>() {
+					@Override
+					public AssociateParam apply(@NonNull String s) throws Exception {
+						AssociateParam.DataBean bean = new AssociateParam.DataBean();
+						bean.setKeyword(mEditText.getText().toString());
+						associateParam.setData(bean);
+						return associateParam;
+					}
+				})
+				.observeOn(Schedulers.io())
+				.switchMap(new Function<AssociateParam, ObservableSource<AssociateRes>>() {
+					@Override
+					public ObservableSource<AssociateRes> apply(@NonNull AssociateParam s) throws Exception {
+						return associateSevice.getAssociate(gSon.toJson(associateParam));
+					}
+				})
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Consumer<AssociateRes>() {
+					@Override
+					public void accept(@NonNull AssociateRes associateRes) throws Exception {
+						wordwrap.setVisibility(View.GONE);
+						associateRec.setVisibility(View.VISIBLE);
+						associateAdapter.setNewData(associateRes.getData());
+					}
+				}, new Consumer<Throwable>() {
+					@Override
+					public void accept(@NonNull Throwable throwable) throws Exception {
+						Log.v(TAG, throwable.toString());
+					}
+				}, new Action() {
+					@Override
+					public void run() throws Exception {
+
+					}
+				}, new Consumer<Disposable>() {
+					@Override
+					public void accept(@NonNull Disposable disposable) throws Exception {
+						
+					}
+				});
 		mProgressBar.startProgress();
 		mHttpUtil.post(HOT_SEARCH_URI, MakeJsonString(),new NetCallBackHandlerException(exceptionHandler, mHotSearchProc));
 	}
-	
+
 	class ExceptionHandler extends SimpleHandler{
 		@Override
 		public void handleMessage(Message msg) {
@@ -89,7 +223,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putStringArrayList(THE_HOTWORD, HotWords);
@@ -143,7 +277,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 				searchCommmitBtn.setBackgroundResource(R.drawable.search_pressed);
 				searchCommmitBtn.setClickable(false);
 			}
-			
+
 		});
 		deleteHistory.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -151,13 +285,18 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 				deleteHistoty();
 			}
 		});
+		wordwrap = findViewById(R.id.wordwrap);
+		associateRec = (RecyclerView) findViewById(R.id.associate_rec);
+		associateRec.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+		associateRec.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+		associateRec.setHasFixedSize(true);
 	}
 
 	private void deleteHistoty() {
 		mHttpUtil.post(Constants.getIndexUrl() +"?r=searchwords/delhistorywords", makeDelJson(), new INetWorkCallBack() {
 			@Override
 			public void PostProcess(int msgId, String msg) {
-				
+
 			}
 		});
 		HistotyWords.clear();
@@ -183,7 +322,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 	}
 	private void showNoHistory() {
 		historyGroup.removeAllViews();
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT); 
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		TextView warning = new TextView(this);
 		layoutParams.setMargins(0, 6, 0, 0);
 		warning.setLayoutParams(layoutParams);
@@ -194,10 +333,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
 	private void showWords(ArrayList<String> words,ViewGroup container){
 		container.removeAllViews();
-		int count = words.size(); 
+		int count = words.size();
 		final int maxWidth = (container.getMeasuredWidth() - container.getPaddingLeft() - container.getPaddingRight())/4*3;
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT); 
-     	layoutParams.setMargins(10, 0, 10, 0); 
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+     	layoutParams.setMargins(10, 0, 10, 0);
      	Paint measurePaint = new Paint();
      	int remianWidth = maxWidth;
 		LinearLayout  horizLL = new LinearLayout(this);
@@ -217,7 +356,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 			view.setMaxWidth(maxWidth);
 			itemParams.setMargins(0, 20, 20, 0);
 			view.setLayoutParams(itemParams);
-			measurePaint.setTextSize(view.getTextSize());  
+			measurePaint.setTextSize(view.getTextSize());
 			if(remianWidth > (measurePaint.measureText(word) + 20)){
 				horizLL.addView(view);
 			    remianWidth = (int) (remianWidth-measurePaint.measureText(word) - 20);
@@ -275,10 +414,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		UserTrackMgr.getInstance().onEvent("searchkey",searchWord);
 		HistotyWords.add(searchWord);
 		showWords(HistotyWords, historyGroup);
-		SearchInfo info = SearchInfo.NewInstance(SearchInfo.KEYWORD_SEARCH, searchWord ,searchWord);
-		Intent it = new Intent();
-		it.setClass(this, GoodListActivity.class);
-		it.putExtra("searchInfo", info);
+		SearchGoodsParam.DataBean param =  new SearchGoodsParam.DataBean();
+		param.setKeyword(searchWord);
+		Intent it = new Intent(SearchActivity.this,SearchGoodActivity.class);
+		it.putExtra(getString(R.string.search_token),param);
+		it.putExtra(getString(R.string.search_content),searchWord);
 		startActivity(it);
 	}
 	private String MakeJsonString(){
