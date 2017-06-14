@@ -85,9 +85,11 @@
     <string name="privilegeActivity">特权码活动</string>
     <string name="bind_success">绑定成功</string>
 
+    <string name="search_token">intent_param</string>
+    <string name="search_content">intent_content</string>
+    <string name="search_type">intent_type</string>
+
     <string name="searchbartext">搜索商品</string>
-    <string name="search_token">param</string>
-    <string name="search_content">content</string>
     <string name="category">分类</string>
     <string name="brand">品牌</string>
     <string name="price">价格</string>

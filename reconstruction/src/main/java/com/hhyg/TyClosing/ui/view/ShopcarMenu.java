@@ -1,8 +1,6 @@
 package com.hhyg.TyClosing.ui.view;
 
 
-import com.hhyg.TyClosing.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -14,7 +12,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;  
+import android.widget.RelativeLayout;
+
+import com.hhyg.TyClosing.R;
 public class ShopcarMenu extends PopupWindow implements OnClickListener{
         private static final String TAG = "ShopcarMenu";
         private Activity activity;
@@ -50,8 +50,8 @@ public class ShopcarMenu extends PopupWindow implements OnClickListener{
 //	        this.update();
 	        // 实例化一个ColorDrawable颜色为半透明  
 	        ColorDrawable dw = new ColorDrawable(0000000000);  
-	        // 点back键和其他地方使其消失,设置了这个才能触发OnDismisslistener ，设置其他控件变化等操作  
-	        this.setBackgroundDrawable(dw);  
+	        // 点back键和其他地方使其消失,设置了这个才能触发OnDismisslistener ，设置其他控件变化等操作
+	        this.setBackgroundDrawable(dw);
 //			this.setAnimationStyle(android.R.style.Animation_Dialog);
 	        // 设置SelectPicPopupWindow弹出窗体动画效果
 	        v_item1 = (RelativeLayout) conentView  
