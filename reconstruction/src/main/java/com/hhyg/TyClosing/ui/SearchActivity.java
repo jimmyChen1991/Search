@@ -191,6 +191,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 						return associateSevice.getAssociate(gSon.toJson(associateParam));
 					}
 				})
+				.onErrorResumeNext(Observable.<AssociateRes>empty())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(new Consumer<AssociateRes>() {
 					@Override
