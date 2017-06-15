@@ -244,6 +244,12 @@ public class SearchGoodActivity extends AppCompatActivity {
                         return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
                     }
                 })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.d(TAG, "handler");
+                    }
+                })
                 .map(new Function<SearchFilterRes, PeopertyOfCate>() {
                     @Override
                     public PeopertyOfCate apply(@NonNull SearchFilterRes searchFilterRes) throws Exception {
