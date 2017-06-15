@@ -41,10 +41,8 @@ import com.hhyg.TyClosing.exceptions.ServiceDataException;
 import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
 import com.hhyg.TyClosing.ui.view.PeopertyPopwindow;
-import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,10 +55,12 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -155,6 +155,7 @@ public class SearchGoodActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(popAdapter);
         Button reset = (Button) popContent.findViewById(R.id.reset);
+        Button confim = (Button) popContent.findViewById(R.id.confirm);
         popWindow = new PeopertyPopwindow(this,popContent);
         horizontalFilterAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -234,24 +235,28 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .filter(new Predicate<SearchType>() {
                     @Override
                     public boolean test(@NonNull SearchType searchType) throws Exception {
+                        Log.v(TAG,"test  " + Thread.currentThread().getName() );
                         return searchType == SearchType.KEY_WORD;
                     }
                 })
                 .map(new Function<SearchType, SearchGoodsParam>() {
                     @Override
                     public SearchGoodsParam apply(@NonNull SearchType searchType) throws Exception {
+                        Log.v(TAG,"map1  " + Thread.currentThread().getName() );
                         return param;
                     }
                 })
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>(){
                     @Override
                     public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        Log.v(TAG,"flatmap1  " + Thread.currentThread().getName() );
                         return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
                     }
                 })
                 .map(new Function<SearchGoods, SearchGoodsParam>() {
                     @Override
                     public SearchGoodsParam apply(@NonNull SearchGoods searchGoods) throws Exception {
+                        Log.v(TAG,"map2  " + Thread.currentThread().getName() );
                         param.getData().setKeyword(searchGoods.getData().getSearchKey());
                         return param;
                     }
@@ -259,12 +264,14 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
                     @Override
                     public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        Log.v(TAG,"flatmap2  " + Thread.currentThread().getName() );
                         return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
                     }
                 })
                 .map(new Function<SearchFilterRes, ArrayList<FilterBean>>() {
                     @Override
                     public ArrayList<FilterBean> apply(@NonNull SearchFilterRes searchFilterRes) throws Exception {
+                        Log.v(TAG,"map3  " + Thread.currentThread().getName() );
                         return new FilterHelper(searchFilterRes).invoke();
                     }
                 })
@@ -273,7 +280,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .subscribe(new Consumer<ArrayList<FilterBean>>() {
                     @Override
                     public void accept(@NonNull ArrayList<FilterBean> filterBeen) throws Exception {
-                        Log.v(TAG,filterBeen.get(0).toString());
+                        Log.v(TAG,"on next  " + Thread.currentThread().getName() );
                         horizontalFilterAdapter.addData(filterBeen);
                     }
                 }, new Consumer<Throwable>() {
@@ -282,9 +289,6 @@ public class SearchGoodActivity extends AppCompatActivity {
                         Log.v(TAG,throwable.toString());
                     }
                 });
-        searchSevice.searchFilterApi(gson.toJson(param))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @OnClick(R.id.backbtn)
@@ -331,116 +335,203 @@ public class SearchGoodActivity extends AppCompatActivity {
         }
         bean.setPageNo(1);
         param_use.setData(bean);
-        Observable.just(param_use)
+        Observable.just(view)
+                .observeOn(Schedulers.io())
+                .map(new Function<View, Integer>() {
+                    @Override
+                    public Integer apply(@NonNull View view) throws Exception {
+                        return view.getId();
+                    }
+                })
+                .map(new Function<Integer, SearchGoodsParam.DataBean>() {
+                    @Override
+                    public SearchGoodsParam.DataBean apply(@NonNull Integer integer) throws Exception {
+                        SearchGoodsParam.DataBean bean = (SearchGoodsParam.DataBean) param.getData().clone();
+                        bean.setPageNo(1);
+                        switch (view.getId()) {
+                            case R.id.chosengerenal:
+                                bean.setSortType("0");
+                                break;
+                            case R.id.chosehotsale:
+                                bean.setSortType("1");
+                                break;
+                            case R.id.chosenew:
+                                bean.setSortType("2");
+                                break;
+                            case R.id.choseprice:
+                                if(bean.getSortType().equals("3")){
+                                    bean.setSortType("-3");
+                                }else{
+                                    bean.setSortType("3");
+                                }
+                                break;
+                        }
+                        return  bean;
+                    }
+                })
+                .map(new Function<SearchGoodsParam.DataBean, SearchGoodsParam>() {
+                    @Override
+                    public SearchGoodsParam apply(@NonNull SearchGoodsParam.DataBean dataBean) throws Exception {
+                        SearchGoodsParam paramBean = (SearchGoodsParam) param.clone();
+                        paramBean.setData(dataBean);
+                        return paramBean;
+                    }
+                })
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
                     @Override
-                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam bean) throws Exception {
-                        return  searchSevice.searchGoodsApi(gson.toJson(bean));
+                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(new Consumer<Disposable>() {
+                .map(new Function<SearchGoods, SearchGoods.DataBean>() {
                     @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        dialog.show();
+                    public SearchGoods.DataBean apply(@NonNull SearchGoods searchGoods) throws Exception {
+                        return searchGoods.getData();
                     }
                 })
-                .flatMap(new Function<SearchGoods, ObservableSource<SearchGoods.DataBean>>() {
+                .subscribe(new Observer<SearchGoods.DataBean>() {
                     @Override
-                    public ObservableSource<SearchGoods.DataBean> apply(@NonNull final SearchGoods searchGoods) throws Exception {
-                        return Observable.create(new ObservableOnSubscribe<SearchGoods.DataBean>() {
-                            @Override
-                            public void subscribe(@NonNull ObservableEmitter<SearchGoods.DataBean> e) throws Exception {
-                                if (searchGoods.getErrcode() != 1) {
-                                    e.onError(new ServiceMsgException(searchGoods.getMsg()));
-                                }
-                                if (searchGoods.getData() != null && searchGoods.getData().getGoodsList() != null) {
-                                    e.onNext(searchGoods.getData());
-                                    e.onComplete();
-                                } else {
-                                    e.onError(new ServiceDataException());
-                                }
-                            }
-                        });
+                    public void onSubscribe(@NonNull Disposable d) {
+
                     }
-                })
-                .doFinally(new Action() {
+
                     @Override
-                    public void run() throws Exception {
-                        dialog.dismiss();
-                    }
-                })
-                .subscribe(new Consumer<SearchGoods.DataBean>() {
-                    @Override
-                    public void accept(@NonNull SearchGoods.DataBean dataBean) throws Exception {
+                    public void onNext(@NonNull SearchGoods.DataBean dataBean) {
                         totalPage = dataBean.getTotalPages();
                         goodRecAdapter.setNewData(dataBean.getGoodsList());
                         if(dataBean.getGoodsList().size() == 0){
                             goodRecAdapter.setEmptyView(R.layout.empty_view);
                         }
-                        switch (view.getId()) {
-                            case R.id.chosengerenal:
-                                view.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_pressed);
-                                view.setClickable(false);
-                                chosehotsale.setClickable(true);
-                                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
-                                chosenew.setClickable(true);
-                                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
-                                choseprice.setClickable(true);
-                                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
-                                break;
-                            case R.id.chosehotsale:
-                                view.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_pressed);
-                                view.setClickable(false);
-                                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
-                                chosenew.setClickable(true);
-                                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
-                                choseprice.setClickable(true);
-                                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
-                                chosengerenal.setClickable(true);
-                                break;
-                            case R.id.chosenew:
-                                view.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_pressed);
-                                view.setClickable(false);
-                                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
-                                chosehotsale.setClickable(true);
-                                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
-                                choseprice.setClickable(true);
-                                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
-                                chosengerenal.setClickable(true);
-                                break;
-                            case R.id.choseprice:
-                                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
-                                chosehotsale.setClickable(true);
-                                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
-                                chosenew.setClickable(true);
-                                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
-                                chosengerenal.setClickable(true);
-                                choseprice.setClickable(true);
-                                if(param_use.getData().getSortType().equals("3")){
-                                    choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_up);
-                                }else{
-                                    choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_down);
-                                }
-                                break;
-                        }
+                        updateChosenStatus(view);
                         param.setData(param_use.getData());
-                        Log.v(TAG,"success");
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
-                        Log.v(TAG,throwable.toString());
+                    public void onError(@NonNull Throwable e) {
+
                     }
-                }, new Action() {
+
                     @Override
-                    public void run() throws Exception {
-                        Log.v(TAG,"complete");
+                    public void onComplete() {
+
                     }
                 });
+
+//        Observable.just(param_use)
+//                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
+//                    @Override
+//                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam bean) throws Exception {
+//                        return  searchSevice.searchGoodsApi(gson.toJson(bean));
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnSubscribe(new Consumer<Disposable>() {
+//                    @Override
+//                    public void accept(@NonNull Disposable disposable) throws Exception {
+//                        dialog.show();
+//                    }
+//                })
+//                .flatMap(new Function<SearchGoods, ObservableSource<SearchGoods.DataBean>>() {
+//                    @Override
+//                    public ObservableSource<SearchGoods.DataBean> apply(@NonNull final SearchGoods searchGoods) throws Exception {
+//                        return Observable.create(new ObservableOnSubscribe<SearchGoods.DataBean>() {
+//                            @Override
+//                            public void subscribe(@NonNull ObservableEmitter<SearchGoods.DataBean> e) throws Exception {
+//                                if (searchGoods.getErrcode() != 1) {
+//                                    e.onError(new ServiceMsgException(searchGoods.getMsg()));
+//                                }
+//                                if (searchGoods.getData() != null && searchGoods.getData().getGoodsList() != null) {
+//                                    e.onNext(searchGoods.getData());
+//                                    e.onComplete();
+//                                } else {
+//                                    e.onError(new ServiceDataException());
+//                                }
+//                            }
+//                        });
+//                    }
+//                })
+//                .doFinally(new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .subscribe(new Consumer<SearchGoods.DataBean>() {
+//                    @Override
+//                    public void accept(@NonNull SearchGoods.DataBean dataBean) throws Exception {
+//                        totalPage = dataBean.getTotalPages();
+//                        goodRecAdapter.setNewData(dataBean.getGoodsList());
+//                        if(dataBean.getGoodsList().size() == 0){
+//                            goodRecAdapter.setEmptyView(R.layout.empty_view);
+//                        }
+//                        updateChosenStatus(view);
+//                        param.setData(param_use.getData());
+//                        Log.v(TAG,"success");
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(@NonNull Throwable throwable) throws Exception {
+//                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
+//                        Log.v(TAG,throwable.toString());
+//                    }
+//                }, new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        Log.v(TAG,"complete");
+//                    }
+//                });
     }
+
+    private void updateChosenStatus(View view) {
+        switch (view.getId()) {
+            case R.id.chosengerenal:
+                view.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_pressed);
+                view.setClickable(false);
+                chosehotsale.setClickable(true);
+                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosenew.setClickable(true);
+                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                choseprice.setClickable(true);
+                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
+                break;
+            case R.id.chosehotsale:
+                view.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_pressed);
+                view.setClickable(false);
+                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                chosenew.setClickable(true);
+                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
+                choseprice.setClickable(true);
+                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosengerenal.setClickable(true);
+                break;
+            case R.id.chosenew:
+                view.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_pressed);
+                view.setClickable(false);
+                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosehotsale.setClickable(true);
+                choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
+                choseprice.setClickable(true);
+                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
+                chosengerenal.setClickable(true);
+                break;
+            case R.id.choseprice:
+                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosehotsale.setClickable(true);
+                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                chosenew.setClickable(true);
+                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
+                chosengerenal.setClickable(true);
+                choseprice.setClickable(true);
+                if(param_use.getData().getSortType().equals("3")){
+                    choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_up);
+                }else{
+                    choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_down);
+                }
+                break;
+        }
+    }
+
     @OnClick(R.id.tochosebtn)
     public void chosenFilter() {
         drawerLayout.openDrawer(Gravity.RIGHT);

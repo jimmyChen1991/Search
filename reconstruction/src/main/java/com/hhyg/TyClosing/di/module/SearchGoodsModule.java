@@ -6,7 +6,6 @@ import android.support.annotation.LayoutRes;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.example.zhouwei.library.CustomPopWindow;
 import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.adapter.GoodRecAdapter;

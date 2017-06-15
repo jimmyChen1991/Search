@@ -3,6 +3,7 @@ package com.hhyg.TyClosing.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -74,6 +75,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BooleanSupplier;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -88,8 +90,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 	private HistorySearchProc mHistoryProc = new HistorySearchProc();
 	private LinearLayout ViewGroup;
 	private LinearLayout historyGroup;
-	private ArrayList<String> HotWords;
-	private ArrayList<String> HistotyWords = new ArrayList<String>();
+	private ArrayList<HotSearchWord> HotWords;
+	private ArrayList<HotSearchWord> HistotyWords = new ArrayList<>();
 	private ArrayList<SpecialInfo> AdInfos;
 	private ListView mListView;
 	private MyAdapter mAdapter;
@@ -154,13 +156,20 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 					}
 				});
 		RxTextView.textChanges(mEditText)
+				.observeOn(AndroidSchedulers.mainThread())
 				.filter(new Predicate<CharSequence>() {
 					@Override
 					public boolean test(@NonNull CharSequence charSequence) throws Exception {
-						Log.v(TAG,charSequence.length() + "");
 						return charSequence.length() > 0;
 					}
 				})
+				.doOnNext(new Consumer<CharSequence>() {
+					@Override
+					public void accept(@NonNull CharSequence charSequence) throws Exception {
+						wordwrap.setVisibility(View.GONE);
+					}
+				})
+				.observeOn(Schedulers.io())
 				.map(new Function<CharSequence, String>() {
 					@Override
 					public String apply(@NonNull CharSequence charSequence) throws Exception {
@@ -176,10 +185,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 						return associateParam;
 					}
 				})
-				.observeOn(Schedulers.io())
-				.switchMap(new Function<AssociateParam, ObservableSource<AssociateRes>>() {
+				.concatMap(new Function<AssociateParam, ObservableSource<AssociateRes>>() {
 					@Override
-					public ObservableSource<AssociateRes> apply(@NonNull AssociateParam s) throws Exception {
+					public ObservableSource<AssociateRes> apply(@NonNull AssociateParam associateParam) throws Exception {
 						return associateSevice.getAssociate(gSon.toJson(associateParam));
 					}
 				})
@@ -187,13 +195,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 				.subscribe(new Consumer<AssociateRes>() {
 					@Override
 					public void accept(@NonNull AssociateRes associateRes) throws Exception {
-						wordwrap.setVisibility(View.GONE);
+						Log.v(TAG,"success");
 						associateRec.setVisibility(View.VISIBLE);
 						associateAdapter.setNewData(associateRes.getData());
 					}
 				}, new Consumer<Throwable>() {
 					@Override
 					public void accept(@NonNull Throwable throwable) throws Exception {
+						Log.v(TAG,"failed");
 						Log.v(TAG, throwable.toString());
 					}
 				}, new Action() {
@@ -204,7 +213,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 				}, new Consumer<Disposable>() {
 					@Override
 					public void accept(@NonNull Disposable disposable) throws Exception {
-						
+
 					}
 				});
 		mProgressBar.startProgress();
@@ -222,14 +231,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 					break;
 			}
 		}
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putStringArrayList(THE_HOTWORD, HotWords);
-		outState.putParcelableArrayList(THE_ADINFOS, AdInfos);
-		outState.putStringArrayList("history", HistotyWords);
-		super.onSaveInstanceState(outState);
 	}
 
 	private void findView() {
@@ -331,7 +332,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		historyGroup.addView(warning);
 	}
 
-	private void showWords(ArrayList<String> words,ViewGroup container){
+	private void showWords(ArrayList<HotSearchWord> words,ViewGroup container){
 		container.removeAllViews();
 		int count = words.size();
 		final int maxWidth = (container.getMeasuredWidth() - container.getPaddingLeft() - container.getPaddingRight())/4*3;
@@ -344,32 +345,37 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      	horizLL.setLayoutParams(layoutParams);
      	container.addView(horizLL);
 		for(int idx = 0;idx<count;idx++){
-			final String word = words.get(idx);
+			final HotSearchWord word = words.get(idx);
 			LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 			Button view = new Button(this);
 			view.setMaxLines(1);
 			view.setEllipsize(TruncateAt.END);
-			view.setText(word);
+			if(word.isHightlight()){
+				view.setTextColor(Constants.SELECTOR_COLOR);
+			}else{
+				view.setTextColor(Constants.UNSELECTOR_BLACK_COLOR);
+			}
+			view.setText(word.getWord());
 			view.setBackgroundResource(R.drawable.searchhot_word);
 			view.setOnClickListener(this);
-			view.setTag(word);
+			view.setTag(words.get(idx));
 			view.setMaxWidth(maxWidth);
 			itemParams.setMargins(0, 20, 20, 0);
 			view.setLayoutParams(itemParams);
 			measurePaint.setTextSize(view.getTextSize());
-			if(remianWidth > (measurePaint.measureText(word) + 20)){
+			if(remianWidth > (measurePaint.measureText(word.getWord()) + 50)){
 				horizLL.addView(view);
-			    remianWidth = (int) (remianWidth-measurePaint.measureText(word) - 20);
+			    remianWidth = (int) (remianWidth-measurePaint.measureText(word.getWord()) - 50);
 			}else{
 				horizLL = new LinearLayout(this);
 		     	horizLL.setOrientation(LinearLayout.HORIZONTAL);
 		     	horizLL.setLayoutParams(layoutParams);
 		     	horizLL.addView(view);
 				container.addView(horizLL);
-				if(measurePaint.measureText(word) > maxWidth){
+				if(measurePaint.measureText(word.getWord()) > maxWidth){
 					remianWidth = maxWidth;
 				}else{
-					remianWidth = (int) (maxWidth - measurePaint.measureText(word) - 20);
+					remianWidth = (int) (maxWidth - measurePaint.measureText(word.getWord()) - 50);
 				}
 			}
      	}
@@ -402,8 +408,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		jumpToSearchGoodActivity(v);
 	}
 	private void jumpToSearchGoodActivity(View v){
-		String searchWord = (String) v.getTag();
-		jumpToSearchGoodActivity(searchWord);
+		HotSearchWord searchWord = (HotSearchWord) v.getTag();
+		if(searchWord.getSpecialId() != 0){
+			jumpToSpecialActivity(String.valueOf(searchWord.getSpecialId()));
+		}else{
+			jumpToSearchGoodActivity(searchWord.getWord());
+		}
 	}
 	private void jumpToSpecialActivity(String specialId){
 		Intent intent = new Intent(this, SpecialActivity.class);
@@ -412,7 +422,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 	}
 	private void jumpToSearchGoodActivity(String searchWord){
 		UserTrackMgr.getInstance().onEvent("searchkey",searchWord);
-		HistotyWords.add(searchWord);
+		HotSearchWord word = new HotSearchWord();
+		word.setWord(searchWord);
+		HistotyWords.add(word);
 		showWords(HistotyWords, historyGroup);
 		SearchGoodsParam.DataBean param =  new SearchGoodsParam.DataBean();
 		param.setKeyword(searchWord);
@@ -426,6 +438,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		param.put("imei", MyApplication.GetInstance().getAndroidId());
 		param.put("shopid", ClosingRefInfoMgr.getInstance().getShopId());
 		param.put("channel", ClosingRefInfoMgr.getInstance().getChannelId());
+		param.put("platformId",3);
 		return param.toString();
 	}
 	private String MakeHistoryJson(){
@@ -433,6 +446,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		param.put("imei", MyApplication.GetInstance().getAndroidId());
 		param.put("shopid", ClosingRefInfoMgr.getInstance().getShopId());
 		param.put("channel", ClosingRefInfoMgr.getInstance().getChannelId());
+		param.put("platformId",3);
 		JSONObject data = new JSONObject();
 		data.put("num", 10);
 		data.put("usersignmd5", ClosingRefInfoMgr.getInstance().getSalerId());
@@ -454,12 +468,15 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		public void ProcMsg(String msgBody) throws JSONException, IOException {
 			JSONObject jsonObj = JSONObject.parseObject(msgBody);
 			JSONArray dataArray = jsonObj.getJSONArray("hotword");
-			ArrayList<String> hotWords = new ArrayList<String>();
+			ArrayList<HotSearchWord> hotWords = new ArrayList<>();
 			ArrayList<SpecialInfo> AD = new ArrayList<SpecialInfo>();
 			for (int idx = 0; idx < dataArray.size(); idx++) {
 				JSONObject json = dataArray.getJSONObject(idx);
-				String word = json.getString("word");
-				hotWords.add(word);
+				HotSearchWord wordWrap = new HotSearchWord();
+				wordWrap.setHightlight(json.getBooleanValue("highlight"));
+				wordWrap.setSpecialId(json.getIntValue("specialid"));
+				wordWrap.setWord(json.getString("word"));
+				hotWords.add(wordWrap);
 			}
 			JSONArray AddataArray = jsonObj.getJSONArray("ADdata");
 			for (int idx = 0; idx < AddataArray.size(); idx++) {
@@ -480,11 +497,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		public void ProcMsg(String msgBody) throws JSONException, IOException {
 			JSONObject jsonObj = JSONObject.parseObject(msgBody);
 			JSONArray dataArray = jsonObj.getJSONArray("data");
-			ArrayList<String> Words = new ArrayList<String>();
+			ArrayList<HotSearchWord> Words = new ArrayList<HotSearchWord>();
 			for (int idx = 0; idx < dataArray.size(); idx++) {
 				JSONObject json = dataArray.getJSONObject(idx);
-				String word = json.getString("word");
-				Words.add(word);
+				HotSearchWord wordWrap = new HotSearchWord();
+				wordWrap.setWord(json.getString("word"));
+				Words.add(wordWrap);
 			}
 			Words.removeAll(HistotyWords);
 			HistotyWords.addAll(Words);
@@ -494,6 +512,36 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 					init();
 				}
 			});
+		}
+	}
+
+	static class HotSearchWord{
+		private String word;
+		private boolean hightlight;
+		private int specialId;
+
+		public String getWord() {
+			return word;
+		}
+
+		public void setWord(String word) {
+			this.word = word;
+		}
+
+		public boolean isHightlight() {
+			return hightlight;
+		}
+
+		public void setHightlight(boolean hightlight) {
+			this.hightlight = hightlight;
+		}
+
+		public int getSpecialId() {
+			return specialId;
+		}
+
+		public void setSpecialId(int specialId) {
+			this.specialId = specialId;
 		}
 	}
 }
