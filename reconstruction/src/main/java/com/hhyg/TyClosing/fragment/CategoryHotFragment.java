@@ -7,6 +7,7 @@ import com.hhyg.TyClosing.allShop.adapter.AllShopBaseAdapter;
 import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
 import com.hhyg.TyClosing.allShop.info.CateInfo;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.ui.SearchGoodActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -62,6 +63,7 @@ public class CategoryHotFragment extends Fragment{
 		}
 		it.putExtra(getString(R.string.search_token), bean);
 		it.putExtra(getString(R.string.search_content),item.name);
+		it.putExtra(getString(R.string.search_type), SearchType.CATE_OR_BRAND.ordinal());
 		startActivity(it);
 	}
 	class HotCategoryAdapter extends AllShopBaseAdapter<CateInfo,HotCategoryAdapter.ViewHolder>{

@@ -1,5 +1,6 @@
 package com.hhyg.TyClosing.di.module;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 
@@ -13,7 +14,9 @@ import com.hhyg.TyClosing.allShop.adapter.HorizontalFilterAdapter;
 import com.hhyg.TyClosing.allShop.adapter.PeopertyPopAdapter;
 import com.hhyg.TyClosing.apiService.SearchSevice;
 import com.hhyg.TyClosing.entities.CommonParam;
+import com.hhyg.TyClosing.entities.search.FilterType;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 
 import javax.inject.Named;
 
@@ -27,8 +30,8 @@ import retrofit2.Retrofit;
 @Module
 public class SearchGoodsModule {
     private SearchGoodsParam.DataBean beanParam;
-    private Context context;
-    public SearchGoodsModule(SearchGoodsParam.DataBean beanParam,Context c) {
+    private Activity context;
+    public SearchGoodsModule(SearchGoodsParam.DataBean beanParam,Activity c) {
         this.beanParam = beanParam;
         context = c ;
     }
@@ -86,7 +89,7 @@ public class SearchGoodsModule {
     @Provides
     MaterialDialog provideDialog(){
         return new MaterialDialog.Builder(context)
-                .theme(Theme.LIGHT)
+                .theme(Theme.DARK)
                 .iconRes(R.drawable.hhyglogo)
                 .content("拼命加载中...")
                 .title("请稍后")
@@ -105,4 +108,10 @@ public class SearchGoodsModule {
         return new PeopertyPopAdapter();
     }
 
+    @Provides
+    SearchType provideType(){
+        int value = context.getIntent().getIntExtra(context.getString(R.string.search_type),1);
+        SearchType type = value == -1 ? null : SearchType.values()[value];
+        return type;
+    }
 }

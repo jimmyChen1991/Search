@@ -46,6 +46,7 @@ import com.hhyg.TyClosing.di.module.CommonNetParamModule;
 import com.hhyg.TyClosing.entities.associate.AssociateParam;
 import com.hhyg.TyClosing.entities.associate.AssociateRes;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.global.HttpUtil;
 import com.hhyg.TyClosing.global.INetWorkCallBack;
 import com.hhyg.TyClosing.global.ImageHelper;
@@ -194,16 +195,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 					}
 				})
 				.observeOn(AndroidSchedulers.mainThread())
-//				.materialize()
-//				.subscribe(new Consumer<Notification<AssociateRes>>() {
-//					@Override
-//					public void accept(@NonNull Notification<AssociateRes> associateResNotification) throws Exception {
-//						if(associateResNotification.getValue() != null){
-//							associateRec.setVisibility(View.VISIBLE);
-//							associateAdapter.setNewData(associateResNotification.getValue().getData());
-//						}
-//					}
-//				});
 				.subscribe(new Consumer<AssociateRes>() {
 					@Override
 					public void accept(@NonNull AssociateRes associateRes) throws Exception {
@@ -443,6 +434,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 		Intent it = new Intent(SearchActivity.this,SearchGoodActivity.class);
 		it.putExtra(getString(R.string.search_token),param);
 		it.putExtra(getString(R.string.search_content),searchWord);
+		it.putExtra(getString(R.string.search_type), SearchType.KEY_WORD.ordinal());
 		startActivity(it);
 	}
 	private String MakeJsonString(){

@@ -7,6 +7,7 @@ import com.hhyg.TyClosing.allShop.adapter.AllShopBaseAdapter;
 import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
 import com.hhyg.TyClosing.allShop.info.CateInfo;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.ui.SearchGoodActivity;
 import com.hhyg.TyClosing.ui.view.InSideGridView;
@@ -126,6 +127,7 @@ public class CategoryContentFragment extends Fragment{
 		}else{
 			bean.setClass3Id(item.cateId);
 		}
+		it.putExtra(getString(R.string.search_type), SearchType.CATE_OR_BRAND.ordinal());
 		it.putExtra(getString(R.string.search_token), bean);
 		it.putExtra(getString(R.string.search_content),item.name);
 		startActivity(it);

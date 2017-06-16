@@ -63,4 +63,6 @@ public class FilterBean {
     public void setSelectedName(String selectedName) {
         this.selectedName = selectedName;
     }
+
+
 }

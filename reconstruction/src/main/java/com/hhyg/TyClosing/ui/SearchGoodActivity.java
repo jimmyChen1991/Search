@@ -33,6 +33,7 @@ import com.hhyg.TyClosing.di.module.SearchGoodsModule;
 import com.hhyg.TyClosing.entities.search.FilterBean;
 import com.hhyg.TyClosing.entities.search.FilterItem;
 import com.hhyg.TyClosing.entities.search.FilterType;
+import com.hhyg.TyClosing.entities.search.PeopertyOfCate;
 import com.hhyg.TyClosing.entities.search.SearchFilterRes;
 import com.hhyg.TyClosing.entities.search.SearchGoods;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
@@ -41,6 +42,7 @@ import com.hhyg.TyClosing.exceptions.ServiceDataException;
 import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
 import com.hhyg.TyClosing.ui.view.PeopertyPopwindow;
+import com.hhyg.TyClosing.util.PauseOnRecScrollListener;
 
 import java.util.ArrayList;
 
@@ -56,11 +58,13 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -98,6 +102,8 @@ public class SearchGoodActivity extends AppCompatActivity {
     Gson gson;
     @Inject
     MaterialDialog dialog;
+    @Inject
+    SearchType searchType;
     @BindView(R.id.chosehotsale)
     ImageButton chosehotsale;
     @BindView(R.id.chosenew)
@@ -119,25 +125,144 @@ public class SearchGoodActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     int totalPage;
-    private SearchType type = SearchType.KEY_WORD;
     private PeopertyPopwindow popWindow;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchgood);
         ButterKnife.bind(this);
-        searchtitle.setText(getIntent().getStringExtra(getString(R.string.search_content)));
-        goodsWrap.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
-        goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
-        goodsWrap.setHasFixedSize(true);
-        attrGroupWrap.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        attrGroupWrap.setHasFixedSize(true);
         DaggerSearchGoodComponent.builder()
                 .applicationComponent(MyApplication.GetInstance().getComponent())
                 .commonNetParamComponent(DaggerCommonNetParamComponent.builder().commonNetParamModule(new CommonNetParamModule()).build())
                 .searchGoodsModule(new SearchGoodsModule((SearchGoodsParam.DataBean) getIntent().getParcelableExtra(seach_token), this))
                 .build().inject(this);
+        initView();
+        Observable.just(param)
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
+                    @Override
+                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<SearchGoods>() {
+                    @Override
+                    public void accept(@NonNull SearchGoods searchGoods) throws Exception {
+                        totalPage = searchGoods.getData().getTotalPages();
+                        if (searchGoods.getData().getGoodsList().size() == 0) {
+                            goodRecAdapter.setEmptyView(R.layout.empty_view);
+                        } else {
+                            goodRecAdapter.addData(searchGoods.getData().getGoodsList());
+                        }
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .filter(new Predicate<SearchGoods>() {
+                    @Override
+                    public boolean test(@NonNull SearchGoods searchGoods) throws Exception {
+                        return searchType == SearchType.KEY_WORD;
+                    }
+                })
+                .map(new Function<SearchGoods, SearchGoodsParam>() {
+                    @Override
+                    public SearchGoodsParam apply(@NonNull SearchGoods searchGoods) throws Exception {
+                        param.getData().setKeyword(searchGoods.getData().getSearchKey());
+                        return param;
+                    }
+                })
+                .first(param)
+                .toObservable()
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
+                    @Override
+                    public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
+                    }
+                })
+                .map(new Function<SearchFilterRes, ArrayList<FilterBean>>() {
+                    @Override
+                    public ArrayList<FilterBean> apply(@NonNull SearchFilterRes searchFilterRes) throws Exception {
+                        return new FilterHelper(searchFilterRes).invoke();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<ArrayList<FilterBean>>() {
+                    @Override
+                    public void accept(@NonNull ArrayList<FilterBean> filterBeen) throws Exception {
+                        horizontalFilterAdapter.addData(filterBeen);
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<ArrayList<FilterBean>, ObservableSource<FilterBean>>() {
+                    @Override
+                    public ObservableSource<FilterBean> apply(@NonNull ArrayList<FilterBean> filterBeen) throws Exception {
+                        int size = filterBeen.size();
+                        FilterBean sources[] = new FilterBean[size];
+                        filterBeen.toArray(sources);
+                        return Observable.fromArray(sources);
+                    }
+                })
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.getType() == FilterType.CATEGORY;
+                    }
+                })
+                .firstElement()
+                .toObservable()
+                .flatMap(new Function<FilterBean, ObservableSource<SearchGoodsParam.DataBean>>() {
+                    @Override
+                    public ObservableSource<SearchGoodsParam.DataBean> apply(@NonNull FilterBean filterBean) throws Exception {
+                        int size = filterBean.getDataSet().size();
+                        SearchGoodsParam.DataBean params[] = new SearchGoodsParam.DataBean[size];
+                        for(int idx = 0 ; idx < size ; idx ++){
+                            FilterItem item = filterBean.getDataSet().get(idx);
+                            SearchGoodsParam.DataBean TmpParam = (SearchGoodsParam.DataBean) param.getData().clone();
+                            TmpParam.setClass3Id(item.getId());
+                            params[idx] = TmpParam;
+                        }
+                        return Observable.fromArray(params);
+                    }
+                })
+                .map(new Function<SearchGoodsParam.DataBean, SearchGoodsParam>() {
+                    @Override
+                    public SearchGoodsParam apply(@NonNull SearchGoodsParam.DataBean dataBean) throws Exception {
+                        SearchGoodsParam tmpParam = (SearchGoodsParam) param.clone();
+                        tmpParam.setData(dataBean);
+                        return tmpParam;
+                    }
+                })
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
+                    @Override
+                    public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
+                    }
+                })
+                .map(new Function<SearchFilterRes, PeopertyOfCate>() {
+                    @Override
+                    public PeopertyOfCate apply(@NonNull SearchFilterRes searchFilterRes) throws Exception {
+                        return null;
+                    }
+                })
+                .retry()
+                .subscribe();
+    }
+
+    private void initView() {
+        searchtitle.setText(getIntent().getStringExtra(getString(R.string.search_content)));
+        goodsWrap.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
+        goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+        goodsWrap.setHasFixedSize(true);
+        goodsWrap.addOnScrollListener(new PauseOnRecScrollListener(true,true));
+        attrGroupWrap.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        attrGroupWrap.setHasFixedSize(true);
         goodsWrap.setAdapter(goodRecAdapter);
         goodRecAdapter.bindToRecyclerView(goodsWrap);
         attrGroupWrap.setAdapter(horizontalFilterAdapter);
@@ -212,84 +337,8 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }
             }
         }, goodsWrap);
-        searchSevice.searchGoodsApi(gson.toJson(param))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<SearchGoods>() {
-                    @Override
-                    public void accept(@NonNull SearchGoods searchGoods) throws Exception {
-                        totalPage = searchGoods.getData().getTotalPages();
-                        if (searchGoods.getData().getGoodsList().size() == 0) {
-                            goodRecAdapter.setEmptyView(R.layout.empty_view);
-                        } else {
-                            goodRecAdapter.addData(searchGoods.getData().getGoodsList());
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
-                    }
-                });
-        Observable.just(type)
-                .filter(new Predicate<SearchType>() {
-                    @Override
-                    public boolean test(@NonNull SearchType searchType) throws Exception {
-                        Log.v(TAG,"test  " + Thread.currentThread().getName() );
-                        return searchType == SearchType.KEY_WORD;
-                    }
-                })
-                .map(new Function<SearchType, SearchGoodsParam>() {
-                    @Override
-                    public SearchGoodsParam apply(@NonNull SearchType searchType) throws Exception {
-                        Log.v(TAG,"map1  " + Thread.currentThread().getName() );
-                        return param;
-                    }
-                })
-                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>(){
-                    @Override
-                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                        Log.v(TAG,"flatmap1  " + Thread.currentThread().getName() );
-                        return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
-                    }
-                })
-                .map(new Function<SearchGoods, SearchGoodsParam>() {
-                    @Override
-                    public SearchGoodsParam apply(@NonNull SearchGoods searchGoods) throws Exception {
-                        Log.v(TAG,"map2  " + Thread.currentThread().getName() );
-                        param.getData().setKeyword(searchGoods.getData().getSearchKey());
-                        return param;
-                    }
-                })
-                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
-                    @Override
-                    public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                        Log.v(TAG,"flatmap2  " + Thread.currentThread().getName() );
-                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
-                    }
-                })
-                .map(new Function<SearchFilterRes, ArrayList<FilterBean>>() {
-                    @Override
-                    public ArrayList<FilterBean> apply(@NonNull SearchFilterRes searchFilterRes) throws Exception {
-                        Log.v(TAG,"map3  " + Thread.currentThread().getName() );
-                        return new FilterHelper(searchFilterRes).invoke();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ArrayList<FilterBean>>() {
-                    @Override
-                    public void accept(@NonNull ArrayList<FilterBean> filterBeen) throws Exception {
-                        Log.v(TAG,"on next  " + Thread.currentThread().getName() );
-                        horizontalFilterAdapter.addData(filterBeen);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.v(TAG,throwable.toString());
-                    }
-                });
     }
+
 
     @OnClick(R.id.backbtn)
     public void onViewClicked() {
@@ -335,131 +384,68 @@ public class SearchGoodActivity extends AppCompatActivity {
         }
         bean.setPageNo(1);
         param_use.setData(bean);
-        Observable.just(view)
-                .observeOn(Schedulers.io())
-                .map(new Function<View, Integer>() {
-                    @Override
-                    public Integer apply(@NonNull View view) throws Exception {
-                        return view.getId();
-                    }
-                })
-                .map(new Function<Integer, SearchGoodsParam.DataBean>() {
-                    @Override
-                    public SearchGoodsParam.DataBean apply(@NonNull Integer integer) throws Exception {
-                        SearchGoodsParam.DataBean bean = (SearchGoodsParam.DataBean) param.getData().clone();
-                        bean.setPageNo(1);
-                        switch (view.getId()) {
-                            case R.id.chosengerenal:
-                                bean.setSortType("0");
-                                break;
-                            case R.id.chosehotsale:
-                                bean.setSortType("1");
-                                break;
-                            case R.id.chosenew:
-                                bean.setSortType("2");
-                                break;
-                            case R.id.choseprice:
-                                if(bean.getSortType().equals("3")){
-                                    bean.setSortType("-3");
-                                }else{
-                                    bean.setSortType("3");
-                                }
-                                break;
-                        }
-                        return  bean;
-                    }
-                })
-                .map(new Function<SearchGoodsParam.DataBean, SearchGoodsParam>() {
-                    @Override
-                    public SearchGoodsParam apply(@NonNull SearchGoodsParam.DataBean dataBean) throws Exception {
-                        SearchGoodsParam paramBean = (SearchGoodsParam) param.clone();
-                        paramBean.setData(dataBean);
-                        return paramBean;
-                    }
-                })
-                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
-                    @Override
-                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                        return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
-                    }
-                })
-                .map(new Function<SearchGoods, SearchGoods.DataBean>() {
-                    @Override
-                    public SearchGoods.DataBean apply(@NonNull SearchGoods searchGoods) throws Exception {
-                        return searchGoods.getData();
-                    }
-                })
-                .subscribe(new Observer<SearchGoods.DataBean>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull SearchGoods.DataBean dataBean) {
-                        totalPage = dataBean.getTotalPages();
-                        goodRecAdapter.setNewData(dataBean.getGoodsList());
-                        if(dataBean.getGoodsList().size() == 0){
-                            goodRecAdapter.setEmptyView(R.layout.empty_view);
-                        }
-                        updateChosenStatus(view);
-                        param.setData(param_use.getData());
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-//        Observable.just(param_use)
+//        Observable.just(view)
+//                .observeOn(Schedulers.io())
+//                .map(new Function<View, Integer>() {
+//                    @Override
+//                    public Integer apply(@NonNull View view) throws Exception {
+//                        return view.getId();
+//                    }
+//                })
+//                .map(new Function<Integer, SearchGoodsParam.DataBean>() {
+//                    @Override
+//                    public SearchGoodsParam.DataBean apply(@NonNull Integer integer) throws Exception {
+//                        SearchGoodsParam.DataBean bean = (SearchGoodsParam.DataBean) param.getData().clone();
+//                        bean.setPageNo(1);
+//                        switch (view.getId()) {
+//                            case R.id.chosengerenal:
+//                                bean.setSortType("0");
+//                                break;
+//                            case R.id.chosehotsale:
+//                                bean.setSortType("1");
+//                                break;
+//                            case R.id.chosenew:
+//                                bean.setSortType("2");
+//                                break;
+//                            case R.id.choseprice:
+//                                if(bean.getSortType().equals("3")){
+//                                    bean.setSortType("-3");
+//                                }else{
+//                                    bean.setSortType("3");
+//                                }
+//                                break;
+//                        }
+//                        return  bean;
+//                    }
+//                })
+//                .map(new Function<SearchGoodsParam.DataBean, SearchGoodsParam>() {
+//                    @Override
+//                    public SearchGoodsParam apply(@NonNull SearchGoodsParam.DataBean dataBean) throws Exception {
+//                        SearchGoodsParam paramBean = (SearchGoodsParam) param.clone();
+//                        paramBean.setData(dataBean);
+//                        return paramBean;
+//                    }
+//                })
 //                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
 //                    @Override
-//                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam bean) throws Exception {
-//                        return  searchSevice.searchGoodsApi(gson.toJson(bean));
+//                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+//                        return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
 //                    }
 //                })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnSubscribe(new Consumer<Disposable>() {
+//                .map(new Function<SearchGoods, SearchGoods.DataBean>() {
 //                    @Override
-//                    public void accept(@NonNull Disposable disposable) throws Exception {
-//                        dialog.show();
+//                    public SearchGoods.DataBean apply(@NonNull SearchGoods searchGoods) throws Exception {
+//                        return searchGoods.getData();
 //                    }
 //                })
-//                .flatMap(new Function<SearchGoods, ObservableSource<SearchGoods.DataBean>>() {
+//                .subscribe(new Observer<SearchGoods.DataBean>() {
 //                    @Override
-//                    public ObservableSource<SearchGoods.DataBean> apply(@NonNull final SearchGoods searchGoods) throws Exception {
-//                        return Observable.create(new ObservableOnSubscribe<SearchGoods.DataBean>() {
-//                            @Override
-//                            public void subscribe(@NonNull ObservableEmitter<SearchGoods.DataBean> e) throws Exception {
-//                                if (searchGoods.getErrcode() != 1) {
-//                                    e.onError(new ServiceMsgException(searchGoods.getMsg()));
-//                                }
-//                                if (searchGoods.getData() != null && searchGoods.getData().getGoodsList() != null) {
-//                                    e.onNext(searchGoods.getData());
-//                                    e.onComplete();
-//                                } else {
-//                                    e.onError(new ServiceDataException());
-//                                }
-//                            }
-//                        });
+//                    public void onSubscribe(@NonNull Disposable d) {
+//
 //                    }
-//                })
-//                .doFinally(new Action() {
+//
 //                    @Override
-//                    public void run() throws Exception {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .subscribe(new Consumer<SearchGoods.DataBean>() {
-//                    @Override
-//                    public void accept(@NonNull SearchGoods.DataBean dataBean) throws Exception {
+//                    public void onNext(@NonNull SearchGoods.DataBean dataBean) {
 //                        totalPage = dataBean.getTotalPages();
 //                        goodRecAdapter.setNewData(dataBean.getGoodsList());
 //                        if(dataBean.getGoodsList().size() == 0){
@@ -467,20 +453,82 @@ public class SearchGoodActivity extends AppCompatActivity {
 //                        }
 //                        updateChosenStatus(view);
 //                        param.setData(param_use.getData());
-//                        Log.v(TAG,"success");
 //                    }
-//                }, new Consumer<Throwable>() {
+//
 //                    @Override
-//                    public void accept(@NonNull Throwable throwable) throws Exception {
-//                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
-//                        Log.v(TAG,throwable.toString());
+//                    public void onError(@NonNull Throwable e) {
+//
 //                    }
-//                }, new Action() {
+//
 //                    @Override
-//                    public void run() throws Exception {
-//                        Log.v(TAG,"complete");
+//                    public void onComplete() {
+//
 //                    }
 //                });
+        Observable.just(param_use)
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
+                    @Override
+                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam bean) throws Exception {
+                        return  searchSevice.searchGoodsApi(gson.toJson(bean));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        dialog.show();
+                    }
+                })
+                .flatMap(new Function<SearchGoods, ObservableSource<SearchGoods.DataBean>>() {
+                    @Override
+                    public ObservableSource<SearchGoods.DataBean> apply(@NonNull final SearchGoods searchGoods) throws Exception {
+                        return Observable.create(new ObservableOnSubscribe<SearchGoods.DataBean>() {
+                            @Override
+                            public void subscribe(@NonNull ObservableEmitter<SearchGoods.DataBean> e) throws Exception {
+                                if (searchGoods.getErrcode() != 1) {
+                                    e.onError(new ServiceMsgException(searchGoods.getMsg()));
+                                }
+                                if (searchGoods.getData() != null && searchGoods.getData().getGoodsList() != null) {
+                                    e.onNext(searchGoods.getData());
+                                    e.onComplete();
+                                } else {
+                                    e.onError(new ServiceDataException());
+                                }
+                            }
+                        });
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        dialog.dismiss();
+                    }
+                })
+                .subscribe(new Consumer<SearchGoods.DataBean>() {
+                    @Override
+                    public void accept(@NonNull SearchGoods.DataBean dataBean) throws Exception {
+                        totalPage = dataBean.getTotalPages();
+                        goodRecAdapter.setNewData(dataBean.getGoodsList());
+                        if(dataBean.getGoodsList().size() == 0){
+                            goodRecAdapter.setEmptyView(R.layout.empty_view);
+                        }
+                        updateChosenStatus(view);
+                        param.setData(param_use.getData());
+                        Log.v(TAG,"success");
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
+                        Log.v(TAG,throwable.toString());
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.v(TAG,"complete");
+                    }
+                });
     }
 
     private void updateChosenStatus(View view) {
