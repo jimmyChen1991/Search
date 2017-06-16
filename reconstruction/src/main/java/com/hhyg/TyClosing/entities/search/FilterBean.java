@@ -11,6 +11,7 @@ public class FilterBean {
     private ArrayList<FilterItem> dataSet = new ArrayList<>();
     private String name;
     private boolean selected;
+    private boolean showNow;
     private String selectedName;
     public FilterType getType() {
         return type;
@@ -64,5 +65,11 @@ public class FilterBean {
         this.selectedName = selectedName;
     }
 
+    public boolean isShowNow() {
+        return showNow;
+    }
 
+    public void setShowNow(boolean showNow) {
+        this.showNow = showNow;
+    }
 }

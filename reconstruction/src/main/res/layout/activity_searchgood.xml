@@ -97,13 +97,12 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/attr_group_wrap"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"/>
+                android:layout_height="60dp"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/goods_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/attr_group_wrap"
-                android:layout_marginTop="20dp"
                 android:fitsSystemWindows="true"
                 android:paddingRight="20dp"/>
             <ImageButton
@@ -141,6 +140,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:background="@color/gray"/>
         <RelativeLayout
+            android:id="@+id/only_hasstock_wrap"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@+id/filter_title_split">
@@ -169,6 +169,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/only_hasstock_wrap"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="1dp"
@@ -179,7 +180,12 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/verticalpeoperty_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="1dp"

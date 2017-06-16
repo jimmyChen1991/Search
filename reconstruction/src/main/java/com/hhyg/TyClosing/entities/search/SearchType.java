@@ -6,7 +6,8 @@ package com.hhyg.TyClosing.entities.search;
 
 public enum SearchType {
     KEY_WORD,
-    CATE_OR_BRAND,
+    CATE,
+    BRAND,
     PRIVILEGE,
     ACTIVITY
 }

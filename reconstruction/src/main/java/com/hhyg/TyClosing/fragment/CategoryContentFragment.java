@@ -127,7 +127,7 @@ public class CategoryContentFragment extends Fragment{
 		}else{
 			bean.setClass3Id(item.cateId);
 		}
-		it.putExtra(getString(R.string.search_type), SearchType.CATE_OR_BRAND.ordinal());
+		it.putExtra(getString(R.string.search_type), SearchType.CATE.ordinal());
 		it.putExtra(getString(R.string.search_token), bean);
 		it.putExtra(getString(R.string.search_content),item.name);
 		startActivity(it);

@@ -1,4 +1,4 @@
-package com.hhyg.TyClosing.allShop.adapter;
+package com.hhyg.TyClosing.ui.adapter.search;
 
 
 import android.support.annotation.NonNull;

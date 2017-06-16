@@ -1,7 +1,6 @@
 package com.hhyg.TyClosing.di.module;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.LayoutRes;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -9,14 +8,14 @@ import com.afollestad.materialdialogs.Theme;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
-import com.hhyg.TyClosing.allShop.adapter.GoodRecAdapter;
-import com.hhyg.TyClosing.allShop.adapter.HorizontalFilterAdapter;
-import com.hhyg.TyClosing.allShop.adapter.PeopertyPopAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.GoodRecAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.HorizontalFilterAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.PeopertyPopAdapter;
 import com.hhyg.TyClosing.apiService.SearchSevice;
 import com.hhyg.TyClosing.entities.CommonParam;
-import com.hhyg.TyClosing.entities.search.FilterType;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 import com.hhyg.TyClosing.entities.search.SearchType;
+import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterAdapter;
 
 import javax.inject.Named;
 
@@ -113,5 +112,11 @@ public class SearchGoodsModule {
         int value = context.getIntent().getIntExtra(context.getString(R.string.search_type),1);
         SearchType type = value == -1 ? null : SearchType.values()[value];
         return type;
+    }
+
+    @Provides
+    VerticalFilterAdapter verticalFilterAdapter(){
+        VerticalFilterAdapter adapter = new VerticalFilterAdapter();
+        return adapter;
     }
 }

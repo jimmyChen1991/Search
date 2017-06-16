@@ -16,15 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
-import com.hhyg.TyClosing.allShop.adapter.GoodRecAdapter;
-import com.hhyg.TyClosing.allShop.adapter.HorizontalFilterAdapter;
-import com.hhyg.TyClosing.allShop.adapter.PeopertyPopAdapter;
 import com.hhyg.TyClosing.apiService.SearchSevice;
 import com.hhyg.TyClosing.di.componet.DaggerCommonNetParamComponent;
 import com.hhyg.TyClosing.di.componet.DaggerSearchGoodComponent;
@@ -41,6 +39,10 @@ import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.exceptions.ServiceDataException;
 import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
+import com.hhyg.TyClosing.ui.adapter.search.GoodRecAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.HorizontalFilterAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.PeopertyPopAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterAdapter;
 import com.hhyg.TyClosing.ui.view.PeopertyPopwindow;
 import com.hhyg.TyClosing.util.PauseOnRecScrollListener;
 
@@ -57,10 +59,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -99,6 +97,8 @@ public class SearchGoodActivity extends AppCompatActivity {
     @Inject
     PeopertyPopAdapter popAdapter;
     @Inject
+    VerticalFilterAdapter verticalFilterAdapter;
+    @Inject
     Gson gson;
     @Inject
     MaterialDialog dialog;
@@ -124,8 +124,13 @@ public class SearchGoodActivity extends AppCompatActivity {
     ImageButton chosengerenal;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    @BindView(R.id.verticalpeoperty_rv)
+    RecyclerView verticalpeopertyRv;
+    @BindView(R.id.peopertyitem_rv)
+    RecyclerView peopertyitemRv;
     int totalPage;
     private PeopertyPopwindow popWindow;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +181,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
                     @Override
                     public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
+                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam)).retry();
                     }
                 })
                 .map(new Function<SearchFilterRes, ArrayList<FilterBean>>() {
@@ -189,13 +194,14 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .doOnNext(new Consumer<ArrayList<FilterBean>>() {
                     @Override
                     public void accept(@NonNull ArrayList<FilterBean> filterBeen) throws Exception {
-                        horizontalFilterAdapter.addData(filterBeen);
+                        horizontalFilterAdapter.setNewData(filterBeen);
+                        verticalFilterAdapter.setNewData(filterBeen);
                     }
                 })
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
+                        Toasty.error(SearchGoodActivity.this, getString(R.string.netconnect_exception)).show();
                     }
                 })
                 .observeOn(Schedulers.io())
@@ -221,7 +227,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                     public ObservableSource<SearchGoodsParam.DataBean> apply(@NonNull FilterBean filterBean) throws Exception {
                         int size = filterBean.getDataSet().size();
                         SearchGoodsParam.DataBean params[] = new SearchGoodsParam.DataBean[size];
-                        for(int idx = 0 ; idx < size ; idx ++){
+                        for (int idx = 0; idx < size; idx++) {
                             FilterItem item = filterBean.getDataSet().get(idx);
                             SearchGoodsParam.DataBean TmpParam = (SearchGoodsParam.DataBean) param.getData().clone();
                             TmpParam.setClass3Id(item.getId());
@@ -256,7 +262,6 @@ public class SearchGoodActivity extends AppCompatActivity {
                         return null;
                     }
                 })
-                .retry()
                 .subscribe();
     }
 
@@ -266,8 +271,8 @@ public class SearchGoodActivity extends AppCompatActivity {
         goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         goodsWrap.setHasFixedSize(true);
-        goodsWrap.addOnScrollListener(new PauseOnRecScrollListener(true,true));
-        attrGroupWrap.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        goodsWrap.addOnScrollListener(new PauseOnRecScrollListener(true, true));
+        attrGroupWrap.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         attrGroupWrap.setHasFixedSize(true);
         goodsWrap.setAdapter(goodRecAdapter);
         goodRecAdapter.bindToRecyclerView(goodsWrap);
@@ -279,42 +284,6 @@ public class SearchGoodActivity extends AppCompatActivity {
                 Intent it = new Intent(SearchGoodActivity.this, GoodsInfoActivity.class);
                 it.putExtra("barcode", bean.getBarcode());
                 startActivity(it);
-            }
-        });
-        View popContent = LayoutInflater.from(this).inflate(R.layout.popwindow_peoperty,null);
-        RecyclerView recyclerView = (RecyclerView) popContent.findViewById(R.id.pop_rv);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false));
-        recyclerView.setAdapter(popAdapter);
-        Button reset = (Button) popContent.findViewById(R.id.reset);
-        Button confim = (Button) popContent.findViewById(R.id.confirm);
-        popWindow = new PeopertyPopwindow(this,popContent);
-        horizontalFilterAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                FilterBean bean = (FilterBean) adapter.getData().get(position);
-                popAdapter.setFilterData(bean);
-                popWindow.showAsDropDown(attrGroupWrap,0,0);
-            }
-        });
-        popAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                PeopertyPopAdapter popAdapter = (PeopertyPopAdapter) adapter;
-                FilterBean bean = popAdapter.getFilterData();
-                if(bean.getType() == FilterType.CATEGORY && bean.isSelected()){
-                    return;
-                }else{
-                    FilterItem item = (FilterItem) adapter.getItem(position);
-                    bean.setSelected(true);
-                    if(bean.getSelectedName() != null){
-                        bean.setSelectedName(bean.getSelectedName() +"  " + item.getName());
-                    }else{
-                        bean.setSelectedName(item.getName());
-                    }
-                    item.setSelected(true);
-                    horizontalFilterAdapter.notifyDataSetChanged();
-                    adapter.notifyDataSetChanged();
-                }
             }
         });
         goodRecAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -343,6 +312,63 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }
             }
         }, goodsWrap);
+        verticalpeopertyRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        verticalpeopertyRv.setHasFixedSize(true);
+        verticalpeopertyRv.setAdapter(verticalFilterAdapter);
+        verticalFilterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                verticalFilterAdapter.clearSelectStatus();
+                FilterBean bean = (FilterBean) adapter.getData().get(position);
+                bean.setShowNow(true);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        View popContent = LayoutInflater.from(this).inflate(R.layout.popwindow_peoperty, null);
+        RecyclerView recyclerView = (RecyclerView) popContent.findViewById(R.id.pop_rv);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(popAdapter);
+        Button reset = (Button) popContent.findViewById(R.id.reset);
+        Button confim = (Button) popContent.findViewById(R.id.confirm);
+        popWindow = new PeopertyPopwindow(this, popContent);
+        horizontalFilterAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                FilterBean bean = (FilterBean) adapter.getData().get(position);
+                bean.setShowNow(true);
+                adapter.notifyDataSetChanged();
+                popAdapter.setFilterData(bean);
+                popWindow.showAsDropDown(attrGroupWrap, 0, 0);
+            }
+        });
+        popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popAdapter.getFilterData().setShowNow(false);
+                horizontalFilterAdapter.notifyDataSetChanged();
+            }
+        });
+        popAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PeopertyPopAdapter popAdapter = (PeopertyPopAdapter) adapter;
+                FilterBean bean = popAdapter.getFilterData();
+                if (bean.getType() == FilterType.CATEGORY && bean.isSelected()) {
+                    return;
+                } else {
+                    FilterItem item = (FilterItem) adapter.getItem(position);
+                    bean.setSelected(true);
+                    if (bean.getSelectedName() != null) {
+                        bean.setSelectedName(bean.getSelectedName() + "  " + item.getName());
+                    } else {
+                        bean.setSelectedName(item.getName());
+                    }
+                    item.setSelected(true);
+                    horizontalFilterAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
 
@@ -358,7 +384,7 @@ public class SearchGoodActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.chosengerenal, R.id.chosehotsale, R.id.chosenew, R.id.choseprice})
-    public void onViewClicked(final View view){
+    public void onViewClicked(final View view) {
         SearchGoodsParam.DataBean bean = null;
         try {
             bean = (SearchGoodsParam.DataBean) param.getData().clone();
@@ -376,9 +402,9 @@ public class SearchGoodActivity extends AppCompatActivity {
                 bean.setSortType("2");
                 break;
             case R.id.choseprice:
-                if(bean.getSortType().equals("3")){
+                if (bean.getSortType().equals("3")) {
                     bean.setSortType("-3");
-                }else{
+                } else {
                     bean.setSortType("3");
                 }
                 break;
@@ -475,7 +501,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
                     @Override
                     public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam bean) throws Exception {
-                        return  searchSevice.searchGoodsApi(gson.toJson(bean));
+                        return searchSevice.searchGoodsApi(gson.toJson(bean));
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -516,23 +542,23 @@ public class SearchGoodActivity extends AppCompatActivity {
                     public void accept(@NonNull SearchGoods.DataBean dataBean) throws Exception {
                         totalPage = dataBean.getTotalPages();
                         goodRecAdapter.setNewData(dataBean.getGoodsList());
-                        if(dataBean.getGoodsList().size() == 0){
+                        if (dataBean.getGoodsList().size() == 0) {
                             goodRecAdapter.setEmptyView(R.layout.empty_view);
                         }
                         updateChosenStatus(view);
                         param.setData(param_use.getData());
-                        Log.v(TAG,"success");
+                        Log.v(TAG, "success");
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toasty.error(SearchGoodActivity.this,getString(R.string.netconnect_exception)).show();
-                        Log.v(TAG,throwable.toString());
+                        Toasty.error(SearchGoodActivity.this, getString(R.string.netconnect_exception)).show();
+                        Log.v(TAG, throwable.toString());
                     }
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.v(TAG,"complete");
+                        Log.v(TAG, "complete");
                     }
                 });
     }
@@ -577,9 +603,9 @@ public class SearchGoodActivity extends AppCompatActivity {
                 chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
                 chosengerenal.setClickable(true);
                 choseprice.setClickable(true);
-                if(param_use.getData().getSortType().equals("3")){
+                if (param_use.getData().getSortType().equals("3")) {
                     choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_up);
-                }else{
+                } else {
                     choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_pressed_down);
                 }
                 break;
@@ -604,17 +630,18 @@ public class SearchGoodActivity extends AppCompatActivity {
 
     public static class FilterHelper {
         private SearchFilterRes.DataBean searchFilterRes;
+
         public FilterHelper(SearchFilterRes searchFilterRes) {
             this.searchFilterRes = searchFilterRes.getData();
         }
 
         public ArrayList<FilterBean> invoke() {
             ArrayList<FilterBean> res = new ArrayList<>();
-            if(searchFilterRes.getBrandList() != null && searchFilterRes.getBrandList().size() != 0){
+            if (searchFilterRes.getBrandList() != null && searchFilterRes.getBrandList().size() != 0) {
                 FilterBean brandBean = new FilterBean();
                 brandBean.setType(FilterType.BRAND);
                 brandBean.setName("品牌");
-                for(SearchFilterRes.DataBean.BrandListBean bean: searchFilterRes.getBrandList()){
+                for (SearchFilterRes.DataBean.BrandListBean bean : searchFilterRes.getBrandList()) {
                     FilterItem item = new FilterItem();
                     item.setId(bean.getId());
                     item.setName(bean.getName());
@@ -622,11 +649,11 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }
                 res.add(brandBean);
             }
-            if(searchFilterRes.getClass3List() != null && searchFilterRes.getClass3List().size() !=0){
+            if (searchFilterRes.getClass3List() != null && searchFilterRes.getClass3List().size() != 0) {
                 FilterBean cateBean = new FilterBean();
                 cateBean.setType(FilterType.CATEGORY);
                 cateBean.setName("分类");
-                for (SearchFilterRes.DataBean.Class3ListBean bean : searchFilterRes.getClass3List()){
+                for (SearchFilterRes.DataBean.Class3ListBean bean : searchFilterRes.getClass3List()) {
                     FilterItem item = new FilterItem();
                     item.setName(bean.getName());
                     item.setId(bean.getId());
@@ -634,10 +661,10 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }
                 res.add(cateBean);
             }
-            if(searchFilterRes.getPriceList() != null && searchFilterRes.getPriceList().size() != 0){
+            if (searchFilterRes.getPriceList() != null && searchFilterRes.getPriceList().size() != 0) {
                 FilterBean priceBean = new FilterBean();
                 priceBean.setType(FilterType.PRICE);
-                for(SearchFilterRes.DataBean.PriceListBean bean : searchFilterRes.getPriceList()){
+                for (SearchFilterRes.DataBean.PriceListBean bean : searchFilterRes.getPriceList()) {
                     FilterItem item = new FilterItem();
                     item.setMaxPrice(bean.getMaxPrice());
                     item.setMinPrice(bean.getMinPrice());
@@ -645,12 +672,12 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }
 //                res.add(priceBean);
             }
-            if(searchFilterRes.getPropertyList() != null && searchFilterRes.getPropertyList().size() != 0){
-                for (SearchFilterRes.DataBean.PropertyListBean BiBean : searchFilterRes.getPropertyList()){
+            if (searchFilterRes.getPropertyList() != null && searchFilterRes.getPropertyList().size() != 0) {
+                for (SearchFilterRes.DataBean.PropertyListBean BiBean : searchFilterRes.getPropertyList()) {
                     FilterBean peopertyBean = new FilterBean();
                     peopertyBean.setType(FilterType.PEOPERTY);
                     peopertyBean.setName(BiBean.getName());
-                    for (String attr : BiBean.getValue()){
+                    for (String attr : BiBean.getValue()) {
                         FilterItem item = new FilterItem();
                         item.setName(attr);
                         peopertyBean.addItem(item);

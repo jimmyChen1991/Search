@@ -63,7 +63,7 @@ public class CategoryHotFragment extends Fragment{
 		}
 		it.putExtra(getString(R.string.search_token), bean);
 		it.putExtra(getString(R.string.search_content),item.name);
-		it.putExtra(getString(R.string.search_type), SearchType.CATE_OR_BRAND.ordinal());
+		it.putExtra(getString(R.string.search_type), SearchType.CATE.ordinal());
 		startActivity(it);
 	}
 	class HotCategoryAdapter extends AllShopBaseAdapter<CateInfo,HotCategoryAdapter.ViewHolder>{

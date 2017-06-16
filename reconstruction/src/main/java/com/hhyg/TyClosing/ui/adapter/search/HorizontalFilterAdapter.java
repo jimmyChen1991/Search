@@ -1,7 +1,7 @@
-package com.hhyg.TyClosing.allShop.adapter;
+package com.hhyg.TyClosing.ui.adapter.search;
 
 
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -20,8 +20,9 @@ public class HorizontalFilterAdapter extends BaseQuickAdapter<FilterBean,BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, FilterBean item) {
-        helper.addOnClickListener(R.id.filter);
-        Button filter = helper.getView(R.id.filter);
+        helper.addOnClickListener(R.id.filter)
+                .setVisible(R.id.bottom_connect,item.isShowNow());
+        TextView filter = helper.getView(R.id.filter);
         if(!item.isSelected()){
             filter.setText(item.getName());
             filter.setTextColor(Constants.UNSELECTOR_COLOR);
