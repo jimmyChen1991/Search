@@ -174,28 +174,43 @@
             <LinearLayout
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
+                android:layout_weight="0.45"
                 android:background="@color/gray_f2"
+                android:paddingBottom="@dimen/dp_20"
                 android:orientation="vertical">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/verticalpeoperty_rv"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.8" />
+                    android:layout_weight="0.95" />
                 <Button
-                    android:layout_width="match_parent"
+                    android:id="@+id/vertical_reset"
+                    android:layout_width="200dp"
                     android:layout_height="0dp"
-                    android:layout_weight="0.2"/>
+                    android:layout_weight="0.05"
+                    android:layout_gravity="center"
+                    android:text="@string/reset"
+                    android:background="@drawable/button_corner_selector"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7"
+                android:layout_weight="0.55"
+                android:paddingBottom="@dimen/dp_20"
                 android:orientation="vertical">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/peopertyitem_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:layout_weight="0.95"/>
+                <Button
+                    android:id="@+id/vertical_confirm"
+                    android:layout_width="260dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.05"
+                    android:layout_gravity="center"
+                    android:text="@string/queding"
+                    android:background="@drawable/cancelbtn_shape"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

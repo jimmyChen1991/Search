@@ -32,6 +32,8 @@ import com.hhyg.TyClosing.entities.search.FilterBean;
 import com.hhyg.TyClosing.entities.search.FilterItem;
 import com.hhyg.TyClosing.entities.search.FilterType;
 import com.hhyg.TyClosing.entities.search.PeopertyOfCate;
+import com.hhyg.TyClosing.entities.search.PerFilterRes;
+import com.hhyg.TyClosing.entities.search.PropertyListBean;
 import com.hhyg.TyClosing.entities.search.SearchFilterRes;
 import com.hhyg.TyClosing.entities.search.SearchGoods;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
@@ -43,6 +45,7 @@ import com.hhyg.TyClosing.ui.adapter.search.GoodRecAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.HorizontalFilterAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.PeopertyPopAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterItemAdapter;
 import com.hhyg.TyClosing.ui.view.PeopertyPopwindow;
 import com.hhyg.TyClosing.util.PauseOnRecScrollListener;
 
@@ -59,10 +62,13 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -99,11 +105,17 @@ public class SearchGoodActivity extends AppCompatActivity {
     @Inject
     VerticalFilterAdapter verticalFilterAdapter;
     @Inject
+    CompositeDisposable compositeDisposable;
+    @Inject
     Gson gson;
     @Inject
     MaterialDialog dialog;
     @Inject
     SearchType searchType;
+    @Inject
+    ArrayList<PeopertyOfCate> peopertyOfCates;
+    @Inject
+    VerticalFilterItemAdapter verticalFilterItemAdapter;
     @BindView(R.id.chosehotsale)
     ImageButton chosehotsale;
     @BindView(R.id.chosenew)
@@ -128,6 +140,10 @@ public class SearchGoodActivity extends AppCompatActivity {
     RecyclerView verticalpeopertyRv;
     @BindView(R.id.peopertyitem_rv)
     RecyclerView peopertyitemRv;
+    @BindView(R.id.vertical_reset)
+    Button verticalReset;
+    @BindView(R.id.vertical_confirm)
+    Button verticalConfirm;
     int totalPage;
     private PeopertyPopwindow popWindow;
 
@@ -181,7 +197,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
                     @Override
                     public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam)).retry();
+                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
                     }
                 })
                 .map(new Function<SearchFilterRes, ArrayList<FilterBean>>() {
@@ -244,25 +260,64 @@ public class SearchGoodActivity extends AppCompatActivity {
                         return tmpParam;
                     }
                 })
-                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchFilterRes>>() {
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<PerFilterRes>>() {
                     @Override
-                    public ObservableSource<SearchFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam));
+                    public ObservableSource<PerFilterRes> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        return searchSevice.searchFilterApi(gson.toJson(searchGoodsParam))
+                                .zipWith(Observable.just(searchGoodsParam.getData().getClass3Id()), new BiFunction<SearchFilterRes, String, PerFilterRes>() {
+                                    @Override
+                                    public PerFilterRes apply(@NonNull SearchFilterRes searchFilterRes, @NonNull String s) throws Exception {
+                                        PerFilterRes res = new PerFilterRes();
+                                        res.setCateId(s);
+                                        res.setRaw(searchFilterRes);
+                                        return res;
+                                    }
+                                })
+                                .retry();
                     }
                 })
-                .doOnError(new Consumer<Throwable>() {
+                .map(new Function<PerFilterRes, PeopertyOfCate>() {
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.d(TAG, "handler");
+                    public PeopertyOfCate apply(@NonNull PerFilterRes perFilterRes) throws Exception {
+                        PeopertyOfCate res = new PeopertyOfCate();
+                        res.setCateId(perFilterRes.getCateId());
+                        res.setDataSet((ArrayList<PropertyListBean>) perFilterRes.getRaw().getData().getPropertyList());
+                        return res;
                     }
                 })
-                .map(new Function<SearchFilterRes, PeopertyOfCate>() {
+                .subscribe(new Observer<PeopertyOfCate>() {
+
                     @Override
-                    public PeopertyOfCate apply(@NonNull SearchFilterRes searchFilterRes) throws Exception {
-                        return null;
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
                     }
-                })
-                .subscribe();
+
+                    @Override
+                    public void onNext(@NonNull PeopertyOfCate peopertyOfCate) {
+                        Log.d(TAG, peopertyOfCate.getCateId());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 
     private void initView() {
@@ -312,7 +367,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 }
             }
         }, goodsWrap);
-        verticalpeopertyRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        verticalpeopertyRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         verticalpeopertyRv.setHasFixedSize(true);
         verticalpeopertyRv.setAdapter(verticalFilterAdapter);
         verticalFilterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -324,6 +379,9 @@ public class SearchGoodActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+        verticalpeopertyRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        verticalpeopertyRv.setHasFixedSize(true);
+        verticalpeopertyRv.setAdapter(verticalFilterItemAdapter);
         View popContent = LayoutInflater.from(this).inflate(R.layout.popwindow_peoperty, null);
         RecyclerView recyclerView = (RecyclerView) popContent.findViewById(R.id.pop_rv);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
@@ -673,7 +731,7 @@ public class SearchGoodActivity extends AppCompatActivity {
 //                res.add(priceBean);
             }
             if (searchFilterRes.getPropertyList() != null && searchFilterRes.getPropertyList().size() != 0) {
-                for (SearchFilterRes.DataBean.PropertyListBean BiBean : searchFilterRes.getPropertyList()) {
+                for (PropertyListBean BiBean : searchFilterRes.getPropertyList()) {
                     FilterBean peopertyBean = new FilterBean();
                     peopertyBean.setType(FilterType.PEOPERTY);
                     peopertyBean.setName(BiBean.getName());

@@ -136,32 +136,6 @@ public class SearchFilterRes {
             }
         }
 
-        public static class PropertyListBean {
-            /**
-             * name : 商品类型
-             * value : ["粉底液","粉底霜"]
-             */
-
-            private String name;
-            private List<String> value;
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public List<String> getValue() {
-                return value;
-            }
-
-            public void setValue(List<String> value) {
-                this.value = value;
-            }
-        }
-
         public static class BrandListBean {
             /**
              * num : 34

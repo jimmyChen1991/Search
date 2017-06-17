@@ -8,6 +8,7 @@ import com.afollestad.materialdialogs.Theme;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
+import com.hhyg.TyClosing.entities.search.PeopertyOfCate;
 import com.hhyg.TyClosing.ui.adapter.search.GoodRecAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.HorizontalFilterAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.PeopertyPopAdapter;
@@ -16,11 +17,15 @@ import com.hhyg.TyClosing.entities.CommonParam;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterAdapter;
+import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterItemAdapter;
+
+import java.util.ArrayList;
 
 import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Retrofit;
 
 /**
@@ -34,6 +39,7 @@ public class SearchGoodsModule {
         this.beanParam = beanParam;
         context = c ;
     }
+
     @Provides
     SearchGoodsParam provideSearchGoodParam(CommonParam commonParam, SearchGoodsParam.DataBean bean)
     {
@@ -117,6 +123,22 @@ public class SearchGoodsModule {
     @Provides
     VerticalFilterAdapter verticalFilterAdapter(){
         VerticalFilterAdapter adapter = new VerticalFilterAdapter();
+        return adapter;
+    }
+
+    @Provides
+    CompositeDisposable provideDisposable(){
+        return new CompositeDisposable();
+    }
+
+    @Provides
+    ArrayList<PeopertyOfCate> peopertyOfCates(){
+        return new ArrayList<>();
+    }
+
+    @Provides
+    VerticalFilterItemAdapter verticalFilterItemAdapter(){
+        VerticalFilterItemAdapter adapter = new VerticalFilterItemAdapter();
         return adapter;
     }
 }
