@@ -12,6 +12,7 @@ public class FilterBean {
     private String name;
     private boolean selected;
     private boolean showNow;
+    private boolean vertacalShow;
     private String selectedName;
     public FilterType getType() {
         return type;
@@ -71,5 +72,13 @@ public class FilterBean {
 
     public void setShowNow(boolean showNow) {
         this.showNow = showNow;
+    }
+
+    public boolean isVertacalShow() {
+        return vertacalShow;
+    }
+
+    public void setVertacalShow(boolean vertacalShow) {
+        this.vertacalShow = vertacalShow;
     }
 }

@@ -18,6 +18,7 @@ public class VerticalFilterItemAdapter extends BaseQuickAdapter<FilterItem,BaseV
 
     @Override
     protected void convert(BaseViewHolder helper, FilterItem item) {
-
+        helper.setText(R.id.filterName,item.getName())
+                .setVisible(R.id.selected_icon,item.isSelected());
     }
 }

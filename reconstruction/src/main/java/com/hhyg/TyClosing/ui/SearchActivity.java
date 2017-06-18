@@ -186,6 +186,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 								.onErrorResumeNext(Observable.<AssociateRes>empty());
 					}
 				})
+				.filter(new Predicate<AssociateRes>() {
+					@Override
+					public boolean test(@NonNull AssociateRes associateRes) throws Exception {
+						return mEditText.getText().toString().length() > 0;
+					}
+				})
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(new Consumer<AssociateRes>() {
 					@Override
