@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.hhyg.TyClosing.global.MyApplication;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
@@ -77,7 +79,11 @@ public class NetModule {
         return new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.v("httpLogger",message);
+                try {
+                    Log.v("httpLogger", URLDecoder.decode(message,"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         };
     }

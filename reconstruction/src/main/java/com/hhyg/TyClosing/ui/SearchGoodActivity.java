@@ -1173,7 +1173,10 @@ public class SearchGoodActivity extends AppCompatActivity {
                     public SearchGoodsParam apply(@NonNull List<SearchFilterParam> searchFilterParams) throws Exception {
                         SearchGoodsParam tmpParam = (SearchGoodsParam) param.clone();
                         SearchGoodsParam.DataBean data = (SearchGoodsParam.DataBean) tmpParam.getData().clone();
+                        Log.d(TAG, "come in");
+                        Log.d(TAG, searchFilterParams.toString());
                         for (SearchFilterParam filterParam : searchFilterParams) {
+                            Log.d(TAG, filterParam.getParam());
                             if (filterParam.getType() == FilterType.BRAND) {
                                 data.setBrandId(filterParam.getParam());
                             } else if (filterParam.getType() == FilterType.CATEGORY) {
