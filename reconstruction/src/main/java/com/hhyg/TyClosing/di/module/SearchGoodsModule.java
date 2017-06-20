@@ -9,6 +9,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.entities.search.PeopertyOfCate;
+import com.hhyg.TyClosing.entities.shopcart.ShopcartListParam;
+import com.hhyg.TyClosing.global.MyApplication;
+import com.hhyg.TyClosing.mgr.ClosingRefInfoMgr;
 import com.hhyg.TyClosing.ui.adapter.search.GoodRecAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.HorizontalFilterAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.PeopertyPopAdapter;
@@ -69,6 +72,17 @@ public class SearchGoodsModule {
     }
 
     @Provides
+    ShopcartListParam shopcartListParam(CommonParam commonParam){
+        ShopcartListParam param = new ShopcartListParam();
+        param.setChannel(commonParam.getChannelId());
+        param.setImei(commonParam.getImei());
+        param.setShopid(commonParam.getShopId());
+        param.setPlatformId(commonParam.getPlatformId());
+        param.setDeliverplace(""+ClosingRefInfoMgr.getInstance().getCurPickupId());
+        return param;
+    }
+
+    @Provides
     SearchSevice provideService(@Named("indexApi") Retrofit retrofit){
         return  retrofit.create(SearchSevice.class);
     }
@@ -84,8 +98,8 @@ public class SearchGoodsModule {
     }
 
     @Provides
-    GoodRecAdapter provideGoodAdapter(@LayoutRes int layout){
-        GoodRecAdapter adapter = new GoodRecAdapter(layout);
+    GoodRecAdapter provideGoodAdapter(@LayoutRes int layout,SearchType type){
+        GoodRecAdapter adapter = new GoodRecAdapter(layout,type);
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         adapter.isFirstOnly(false);
         return adapter;

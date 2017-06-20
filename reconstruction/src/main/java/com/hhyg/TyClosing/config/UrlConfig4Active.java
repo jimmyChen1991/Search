@@ -9,7 +9,7 @@ public class UrlConfig4Active implements NetrulConfig{
 
 	@Override
 	public String getServiceUrl() {
-		return "http://search.mianshui365.net/api/MSService.php";
+		return "http://exps.mianshui365.net/api/MSService.php";
 	}
 
 }

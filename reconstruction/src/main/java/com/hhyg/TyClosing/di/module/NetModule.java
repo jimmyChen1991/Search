@@ -51,7 +51,7 @@ public class NetModule {
     @Provides
     @Named("serviceUrl")
     String provideServiceApiUrlStr(){
-        return "http://search.mianshui365.net/";
+        return "http://exps.mianshui365.net/";
     }
 
     @Provides

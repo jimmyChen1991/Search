@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.config.Constants;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.global.INetWorkCallBack;
 import com.hhyg.TyClosing.global.JsonPostParamBuilder;
 import com.hhyg.TyClosing.global.MyApplication;
@@ -169,10 +171,13 @@ public class SalerMainPageActivity extends Activity implements android.text.Text
                     sb.append(",");
                 }
                 Intent it = new Intent();
-                it.setClass(SalerMainPageActivity.this,ActiveSellActivity.class);
-                it.putExtra("activeId",sb.toString());
-                it.putExtra("isPrivilege",true);
-                it.putExtra("privilegeName",info.getTitle());
+                SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+                bean.setActivityId(sb.toString());
+                it.putExtra(getString(R.string.search_token),bean);
+                it.putExtra(getString(R.string.search_type), SearchType.PRIVILEGE.ordinal());
+                it.putExtra(getString(R.string.search_desc),info.getDetailDesc());
+                it.putExtra(getString(R.string.search_content),getString(R.string.privilegeActivity));
+                it.setClass(SalerMainPageActivity.this,SearchGoodActivity.class);
                 startActivity(it);
             }
         });

@@ -67,12 +67,12 @@ public class MyPrivilegeInfoPresenter extends BasePresenter<MyPrivilegeView>{
                     info.setDetailDesc(code_item.getString("description"));
                     info.setDiscountDesc(code_item.getString("discountDesc"));
                     if(!TextUtils.isEmpty(code_item.getString("startTime"))){
-                        info.setStartTime(TimeStamp2Date(code_item.getString("startTime"),null));
+                        info.setStartTime(code_item.getString("startTime"));
                     }else{
                         info.setStartTime("");
                     }
                     if(!TextUtils.isEmpty(code_item.getString("endTime"))){
-                        info.setEndTime(TimeStamp2Date(code_item.getString("endTime"),null));
+                        info.setEndTime(code_item.getString("endTime"));
                     }else{
                         info.setEndTime("");
                     }

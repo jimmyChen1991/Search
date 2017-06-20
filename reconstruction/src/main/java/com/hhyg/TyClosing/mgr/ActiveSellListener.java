@@ -1,7 +1,10 @@
 package com.hhyg.TyClosing.mgr;
 
+import com.hhyg.TyClosing.R;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.info.ActiveInfo;
-import com.hhyg.TyClosing.ui.ActiveSellActivity;
+import com.hhyg.TyClosing.ui.SearchGoodActivity;
 
 import android.content.Intent;
 import android.view.View;
@@ -19,9 +22,13 @@ public class ActiveSellListener implements OnClickListener{
 		if(aInfo.getActiveId() == null || aInfo.getShort_desc() == null){
 			return;
 		}
-		it.putExtra("activeId", aInfo.getActiveId());
-		it.putExtra("desc", aInfo.getShort_desc());
-		it.setClass(v.getContext(), ActiveSellActivity.class);
+		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+		bean.setActivityId(aInfo.getActiveId());
+		it.putExtra(v.getContext().getString(R.string.search_token),bean);
+		it.putExtra(v.getContext().getString(R.string.search_type), SearchType.ACTIVITY.ordinal());
+		it.putExtra(v.getContext().getString(R.string.search_desc),aInfo.getShort_desc());
+		it.putExtra(v.getContext().getString(R.string.search_content),aInfo.getType_name());
+		it.setClass(v.getContext(), SearchGoodActivity.class);
 		v.getContext().startActivity(it);
 	}
 }

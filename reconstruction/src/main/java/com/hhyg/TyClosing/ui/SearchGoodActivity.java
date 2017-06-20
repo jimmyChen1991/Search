@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -17,11 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -44,9 +47,15 @@ import com.hhyg.TyClosing.entities.search.SearchFilterRes;
 import com.hhyg.TyClosing.entities.search.SearchGoods;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
 import com.hhyg.TyClosing.entities.search.SearchType;
+import com.hhyg.TyClosing.entities.shopcart.CastDetail;
+import com.hhyg.TyClosing.entities.shopcart.ShopcartListParam;
+import com.hhyg.TyClosing.entities.shopcart.ShopcartListRes;
 import com.hhyg.TyClosing.exceptions.ServiceDataException;
 import com.hhyg.TyClosing.exceptions.ServiceMsgException;
 import com.hhyg.TyClosing.global.MyApplication;
+import com.hhyg.TyClosing.info.ShoppingCartInfo;
+import com.hhyg.TyClosing.info.SpuInfo;
+import com.hhyg.TyClosing.mgr.ShoppingCartMgr;
 import com.hhyg.TyClosing.ui.adapter.search.GoodRecAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.HorizontalFilterAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.PeopertyPopAdapter;
@@ -54,11 +63,8 @@ import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterAdapter;
 import com.hhyg.TyClosing.ui.adapter.search.VerticalFilterItemAdapter;
 import com.hhyg.TyClosing.ui.view.PeopertyPopwindow;
 import com.hhyg.TyClosing.util.PauseOnRecScrollListener;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.jakewharton.rxbinding2.widget.RxCheckedTextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -68,15 +74,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.Maybe;
-import io.reactivex.MaybeObserver;
-import io.reactivex.MaybeSource;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -130,6 +132,8 @@ public class SearchGoodActivity extends AppCompatActivity {
     ArrayList<PeopertyOfCate> peopertyOfCates;
     @Inject
     VerticalFilterItemAdapter verticalFilterItemAdapter;
+    @Inject
+    ShopcartListParam shopcartListParam;
     @BindView(R.id.chosehotsale)
     ImageButton chosehotsale;
     @BindView(R.id.chosenew)
@@ -165,6 +169,22 @@ public class SearchGoodActivity extends AppCompatActivity {
     ImageView selectedIcon;
     @BindView(R.id.contenttop)
     RelativeLayout contenttop;
+    @BindView(R.id.cast)
+    TextView cast;
+    @BindView(R.id.cut)
+    TextView cut;
+    @BindView(R.id.goshopcat)
+    Button goshopcat;
+    @BindView(R.id.bottomshopcat)
+    LinearLayout bottomshopcat;
+    @BindView(R.id.fullin)
+    TextView fullin;
+    @BindView(R.id.full)
+    LinearLayout full;
+    @BindView(R.id.activitydetail)
+    TextView activitydetail;
+    @BindView(R.id.activelayout)
+    RelativeLayout activelayout;
     private SearchFilterRes rawFilterRes;
     private PeopertyPopwindow popWindow;
 
@@ -342,11 +362,11 @@ public class SearchGoodActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if((keyCode == KeyEvent.KEYCODE_BACK)&&(drawerLayout.isDrawerOpen(Gravity.RIGHT))){
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && (drawerLayout.isDrawerOpen(Gravity.RIGHT))) {
             drawerLayout.closeDrawer(Gravity.RIGHT);
             return false;
-        }else{
-            return super.onKeyDown(keyCode,event);
+        } else {
+            return super.onKeyDown(keyCode, event);
         }
     }
 
@@ -362,10 +382,9 @@ public class SearchGoodActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        initSearchType();
         searchtitle.setText(getIntent().getStringExtra(getString(R.string.search_content)));
         goodsWrap.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
-        goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        goodsWrap.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         goodsWrap.setHasFixedSize(true);
         goodsWrap.addOnScrollListener(new PauseOnRecScrollListener(true, true));
         attrGroupWrap.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -380,6 +399,13 @@ public class SearchGoodActivity extends AppCompatActivity {
                 Intent it = new Intent(SearchGoodActivity.this, GoodsInfoActivity.class);
                 it.putExtra("barcode", bean.getBarcode());
                 startActivity(it);
+            }
+        });
+        goodRecAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                SearchGoods.DataBean.GoodsListBean bean = (SearchGoods.DataBean.GoodsListBean) adapter.getItem(position);
+                addToShopcart(bean);
             }
         });
         goodRecAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -429,7 +455,17 @@ public class SearchGoodActivity extends AppCompatActivity {
         peopertyitemRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         peopertyitemRv.setHasFixedSize(true);
         peopertyitemRv.setAdapter(verticalFilterItemAdapter);
-
+        hasStockCb.setChecked(true);
+        hasStockCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    param.getData().setAvailable("1");
+                } else {
+                    param.getData().setAvailable("0");
+                }
+            }
+        });
         View popContent = LayoutInflater.from(this).inflate(R.layout.popwindow_peoperty, null);
         RecyclerView recyclerView = (RecyclerView) popContent.findViewById(R.id.pop_rv);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
@@ -438,13 +474,13 @@ public class SearchGoodActivity extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(popAdapter.getFilterData().getType() == FilterType.CATEGORY){
+                if (popAdapter.getFilterData().getType() == FilterType.CATEGORY) {
                     removePeoperty();
                     FilterItem filterItem = new FilterItem();
                     filterItem.setSelected(false);
                     changePeoperty(filterItem);
                 }
-                Observable.concat(Observable.just(popAdapter.getFilterData()),Observable.fromIterable(verticalFilterAdapter.getData()).filter(new Predicate<FilterBean>() {
+                Observable.concat(Observable.just(popAdapter.getFilterData()), Observable.fromIterable(verticalFilterAdapter.getData()).filter(new Predicate<FilterBean>() {
                     @Override
                     public boolean test(@NonNull FilterBean filterBean) throws Exception {
                         return filterBean.getName().equals(popAdapter.getFilterData().getName());
@@ -457,7 +493,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                                 filterBean.setSelected(false);
                                 filterBean.setShowNow(false);
                                 filterBean.setSelectedName("");
-                                if(filterBean.isVertacalShow()){
+                                if (filterBean.isVertacalShow()) {
                                     selectedIcon.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -484,7 +520,7 @@ public class SearchGoodActivity extends AppCompatActivity {
 
                             @Override
                             public void onNext(@NonNull FilterItem filterItem) {
-                                Log.d(TAG, "on next" +filterItem.getName());
+                                Log.d(TAG, "on next" + filterItem.getName());
 
                             }
 
@@ -506,258 +542,14 @@ public class SearchGoodActivity extends AppCompatActivity {
         });
         final Button confim = (Button) popContent.findViewById(R.id.confirm);
         confim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Observable<SearchFilterParam> A = Observable.fromIterable(verticalFilterAdapter.getData())
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.isSelected();
-                            }
-                        })
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.getType() == FilterType.CATEGORY;
-                            }
-                        })
-                        .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
-                            @Override
-                            public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
-                                return Observable.fromIterable(filterBean.getDataSet());
-                            }
-                        })
-                        .filter(new Predicate<FilterItem>() {
-                            @Override
-                            public boolean test(@NonNull FilterItem filterItem) throws Exception {
-                                return filterItem.isSelected();
-                            }
-                        })
-                        .map(new Function<FilterItem, SearchFilterParam>() {
-                            @Override
-                            public SearchFilterParam apply(@NonNull FilterItem filterBean) throws Exception {
-                                SearchFilterParam param = new SearchFilterParam();
-                                param.setType(FilterType.CATEGORY);
-                                param.setParam(filterBean.getId());
-                                return param;
-                            }
-                        });
-                Observable<SearchFilterParam> B = Observable.fromIterable(verticalFilterAdapter.getData())
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.isSelected();
-                            }
-                        })
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.getType() == FilterType.PRICE;
-                            }
-                        })
-                        .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
-                            @Override
-                            public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
-                                return Observable.fromIterable(filterBean.getDataSet());
-                            }
-                        })
-                        .filter(new Predicate<FilterItem>() {
-                            @Override
-                            public boolean test(@NonNull FilterItem filterItem) throws Exception {
-                                return filterItem.isSelected();
-                            }
-                        })
-                        .map(new Function<FilterItem, SearchFilterParam>() {
-                            @Override
-                            public SearchFilterParam apply(@NonNull FilterItem filterItem) throws Exception {
-                                SearchFilterParam param = new SearchFilterParam();
-                                param.setType(FilterType.PRICE);
-                                param.setParam(filterItem.getMinPrice());
-                                param.setParam2(filterItem.getMaxPrice());
-                                return param;
-                            }
-                        });
-                Observable<SearchFilterParam> C = Observable.fromIterable(verticalFilterAdapter.getData())
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.getType() == FilterType.BRAND ;
-                            }
-                        })
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                Log.d(TAG, "test" + filterBean.isSelected());
-                                return filterBean.isSelected();
-                            }
-                        })
-                        .doOnNext(new Consumer<FilterBean>() {
-                            @Override
-                            public void accept(@NonNull FilterBean filterBean) throws Exception {
-                                Log.d(TAG, filterBean.getName());
-                            }
-                        })
-                        .doOnError(new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                Log.d(TAG, throwable.toString());
-                            }
-                        })
-                        .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
-                            @Override
-                            public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
-                                final FilterBean bean = filterBean;
-                                return Observable.fromIterable(filterBean.getDataSet()).filter(new Predicate<FilterItem>() {
-                                    @Override
-                                    public boolean test(@NonNull FilterItem filterItem) throws Exception {
-                                        return bean.getType() == FilterType.BRAND && bean.isSelected() &&filterItem.isSelected();
-                                    }
-                                });
-                            }
-                        })
-                        .toList()
-                        .toObservable()
-                        .map(new Function<List<FilterItem>, SearchFilterParam>() {
-                            @Override
-                            public SearchFilterParam apply(@NonNull List<FilterItem> filterItems) throws Exception {
-                                Log.d(TAG, "sdsa");
-                                SearchFilterParam param = new SearchFilterParam();
-                                param.setType(FilterType.BRAND);
-                                StringBuilder sb = new StringBuilder();
-                                for (FilterItem item : filterItems) {
-                                    Log.d(TAG, item.getName());
-                                    sb.append(item.getId());
-                                    sb.append(",");
-                                }
-                                param.setParam(sb.toString());
-                                return param;
-                            }
-                        });
-                Observable<FilterBean> cD = Observable.fromIterable(verticalFilterAdapter.getData())
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.isSelected();
-                            }
-                        })
-                        .filter(new Predicate<FilterBean>() {
-                            @Override
-                            public boolean test(@NonNull FilterBean filterBean) throws Exception {
-                                return filterBean.getType() == FilterType.PEOPERTY;
-                            }
-                        });
-
-                Observable<SearchFilterParam> D = cD.flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
-                            @Override
-                            public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
-                                return Observable.fromIterable(filterBean.getDataSet());
-                            }
-                        })
-                        .filter(new Predicate<FilterItem>() {
-                            @Override
-                            public boolean test(@NonNull FilterItem filterItem) throws Exception {
-                                return filterItem.isSelected();
-                            }
-                        })
-                        .toList()
-                        .toObservable()
-                        .zipWith(cD, new BiFunction<List<FilterItem>, FilterBean, PeoperFilter>() {
-                            @Override
-                            public PeoperFilter apply(@NonNull List<FilterItem> filterItems, @NonNull FilterBean filterBean) throws Exception {
-                                PeoperFilter filter = new PeoperFilter();
-                                ArrayList<String> res = new ArrayList<String>();
-                                filter.setName(filterBean.getName());
-                                filter.setValues((ArrayList<FilterItem>) filterItems);
-                                return filter;
-                            }
-                        })
-                        .toList()
-                        .toObservable()
-                        .map(new Function<List<PeoperFilter>, SearchFilterParam>() {
-                            @Override
-                            public SearchFilterParam apply(@NonNull List<PeoperFilter> peoperFilters) throws Exception {
-                                SearchFilterParam param = new SearchFilterParam();
-                                param.setType(FilterType.PEOPERTY);
-                                StringBuilder sb = new StringBuilder();
-                                for (PeoperFilter filter : peoperFilters){
-                                    for(FilterItem item : filter.getValues()){
-                                        Log.d(TAG, item.getName() + "222");
-                                        sb.append(filter.getName());
-                                        sb.append("_");
-                                        sb.append(item.getName());
-                                        sb.append(",");
-                                    }
-                                }
-                                param.setParam(sb.toString());
-                                return param;
-                            }
-                        });
-                Observable.concat(A,B,C,D)
-                        .toList()
-                        .toObservable()
-                        .map(new Function<List<SearchFilterParam>, SearchGoodsParam>() {
-                            @Override
-                            public SearchGoodsParam apply(@NonNull List<SearchFilterParam> searchFilterParams) throws Exception {
-                                SearchGoodsParam param = (SearchGoodsParam) param_use.clone();
-                                SearchGoodsParam.DataBean data = (SearchGoodsParam.DataBean) param.getData().clone();
-                                for (SearchFilterParam filterParam : searchFilterParams){
-                                    if(filterParam.getType() == FilterType.BRAND){
-                                        data.setBrandId(filterParam.getParam());
-                                    }else if(filterParam.getType() == FilterType.CATEGORY){
-                                        data.setClass3Id(filterParam.getParam());
-                                    }else if(filterParam.getType() == FilterType.PRICE){
-                                        data.setMinPrice(filterParam.getParam());
-                                        data.setMaxPrice(filterParam.getParam2());
-                                    }else{
-                                        data.setPropertyList(filterParam.getParam());
-                                    }
-                                }
-                                param.setData(data);
-                                return param;
-                            }
-                        })
-                        .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
-                            @Override
-                            public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
-                                return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<SearchGoods>() {
-                            @Override
-                            public void onSubscribe(@NonNull Disposable d) {
-                                dialog.show();
-                            }
-
-                            @Override
-                            public void onNext(@NonNull SearchGoods searchGoods) {
-                                dialog.dismiss();
-                                totalPage = searchGoods.getData().getTotalPages();
-                                if (searchGoods.getData().getGoodsList().size() == 0) {
-                                    goodRecAdapter.setEmptyView(R.layout.empty_view);
-                                } else {
-                                    goodRecAdapter.setNewData(searchGoods.getData().getGoodsList());
-                                }
-                            }
-
-                            @Override
-                            public void onError(@NonNull Throwable e) {
-                                dialog.dismiss();
-                                for (int index = 0;index < e.getStackTrace().length ;index ++){
-                                    Log.d(TAG, e.getStackTrace()[index].toString());
-                                }
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                dialog.dismiss();
-                            }
-                        });
-            }
-          }
+                                      @Override
+                                      public void onClick(View view) {
+                                          changeSearchGoods();
+                                      }
+                                  }
         );
         popWindow = new PeopertyPopwindow(this, popContent);
+
         horizontalFilterAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -837,7 +629,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                         otherBean.setSelected(true);
                         otherBean.setSelectedName(item.getName());
                     }
-                } else if(bean.getType() == FilterType.PRICE){
+                } else if (bean.getType() == FilterType.PRICE) {
                     if (bean.isSelected()) {
                         if (item.isSelected()) {
                             item.setSelected(false);
@@ -867,7 +659,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                         bean.setSelected(true);
                         bean.setSelectedName(item.getName());
                     }
-                }else {
+                } else {
                     if (item.isSelected()) {
                         item.setSelected(false);
                         otherItem.setSelected(false);
@@ -1025,6 +817,460 @@ public class SearchGoodActivity extends AppCompatActivity {
                                               }
                                           }
         );
+    }
+
+    private void addToShopcart(SearchGoods.DataBean.GoodsListBean bean) {
+        final int choseCnt;
+        if(!ShoppingCartMgr.getInstance().isInfoExist(bean.getBarcode())){
+            choseCnt = 1;
+        }else{
+            choseCnt = ShoppingCartMgr.getInstance().getInfoByBarCode(bean.getBarcode()).cnt +1;
+        }
+        if(choseCnt > bean.getStock()){
+            Toast.makeText(MyApplication.GetInstance(), "该商品库存不足", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (bean.getStock() > 0){
+            SpuInfo spu = new SpuInfo();
+            spu.barCode = bean.getBarcode();
+            spu.activeId = bean.getActive_code();
+            spu.name = bean.getName();
+            spu.stock = bean.getStock();
+            spu.citAmount = 1000;
+            spu.attrInfo = bean.getName();
+            spu.msPrice = bean.getMianshui_price();
+            if(bean.getImage() != null && !bean.getImage().equals("")){
+                ArrayList<String> imgLinks = new ArrayList<String>();
+                imgLinks.add(bean.getImage());
+                spu.imageLinks = imgLinks;
+            }
+            ShoppingCartMgr mShoppingCartMgr = ShoppingCartMgr.getInstance();
+            if(mShoppingCartMgr.isInfoExist(bean.getBarcode())){
+                mShoppingCartMgr.updateShopCnt(bean.getBarcode(),choseCnt);
+            }else{
+                mShoppingCartMgr.addInfo(spu, bean.getName(), bean.getBrand_name(), choseCnt, 1211, bean.getName());
+            }
+            if(!(searchType == SearchType.PRIVILEGE)){
+                mShoppingCartMgr.updateActiveId(bean.getBarcode(), bean.getActive_code());
+            }else{
+                if(bean.getActive_code() != null){
+                    mShoppingCartMgr.updateActiveId(bean.getBarcode(),bean.getActive_code());
+                }else{
+                    mShoppingCartMgr.updateActiveId(bean.getBarcode(), "");
+                }
+            }
+            Toast.makeText(MyApplication.GetInstance(), "加入购物车成功", Toast.LENGTH_SHORT).show();
+            if(!(searchType == SearchType.PRIVILEGE)){
+                getCaset();
+            }
+        }
+    }
+
+    private void getCaset() {
+        ShoppingCartMgr mShoppingCartMgr = ShoppingCartMgr.getInstance();
+        Observable.fromIterable(mShoppingCartMgr.getAll())
+                .filter(new Predicate<ShoppingCartInfo>() {
+                    @Override
+                    public boolean test(@NonNull ShoppingCartInfo shoppingCartInfo) throws Exception {
+                        return shoppingCartInfo.activeId.equals(param.getData().getActivityId());
+                    }
+                })
+                .toList()
+                .toObservable()
+                .map(new Function<List<ShoppingCartInfo>, ShopcartListParam>() {
+                    @Override
+                    public ShopcartListParam apply(@NonNull List<ShoppingCartInfo> shoppingCartInfos) throws Exception {
+                        ArrayList<ShopcartListParam.DataBean> res = new ArrayList<ShopcartListParam.DataBean>();
+                        for (ShoppingCartInfo info : shoppingCartInfos){
+                            ShopcartListParam.DataBean bean = new ShopcartListParam.DataBean();
+                            bean.setBarcode(info.barCode);
+                            bean.setActivity(info.activeId);
+                            bean.setNumber(""+info.cnt);
+                            res.add(bean);
+                        }
+                        shopcartListParam.setData(res);
+                        return shopcartListParam;
+                    }
+                })
+                .flatMap(new Function<ShopcartListParam, ObservableSource<ShopcartListRes>>() {
+                    @Override
+                    public ObservableSource<ShopcartListRes> apply(@NonNull ShopcartListParam shopcartListParam) throws Exception {
+                        return searchSevice.shopcartList(gson.toJson(shopcartListParam));
+                    }
+                })
+                .map(new Function<ShopcartListRes, ShopcartListRes.DataBean>() {
+                    @Override
+                    public ShopcartListRes.DataBean apply(@NonNull ShopcartListRes shopcartListRes) throws Exception {
+                        return shopcartListRes.getData();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ShopcartListRes.DataBean>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull ShopcartListRes.DataBean dataBean) {
+                        CastDetail detail =  dataBean.getActive_columns().get(param.getData().getActivityId());
+                        setPrice(detail.getActive_price(),detail.getPreferentialPrice(),detail.getDesc_fee());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, e.toString());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void setPrice(String cast2, String fee,String comment) {
+        if(cast2 != null && fee != null){
+            cast.setText("小计   " + getString(R.string.server_settle_moeny) + cast2);
+            cut.setText("优惠   " + getString(R.string.server_settle_moeny) + fee);
+        }else{
+            cast.setText("小计   " + getString(R.string.server_settle_moeny)+ "0");
+            cut.setText("优惠   " + getString(R.string.server_settle_moeny) + "0");
+        }
+        if(comment != null && !comment.equals("")){
+            full.setVisibility(View.VISIBLE);
+            fullin.setText(Html.fromHtml(comment));
+        }else{
+            full.setVisibility(View.GONE);
+        }
+    }
+
+    private void initSearchType() {
+        if (searchType == SearchType.ACTIVITY) {
+            getCaset();
+            full.setVisibility(View.VISIBLE);
+            bottomshopcat.setVisibility(View.VISIBLE);
+            activelayout.setVisibility(View.VISIBLE);
+            activitydetail.setText(getIntent().getStringExtra(getString(R.string.search_desc)));
+            goodsWrap.setPadding(40,0,40,220);
+        }else if(searchType == SearchType.PRIVILEGE){
+            bottomshopcat.setVisibility(View.VISIBLE);
+            goodsWrap.setPadding(40,0,40,150);
+            activelayout.setVisibility(View.VISIBLE);
+            activitydetail.setText(getIntent().getStringExtra(getString(R.string.search_desc)));
+            cast.setVisibility(View.GONE);
+            cut.setVisibility(View.GONE);
+        }
+    }
+
+    private void changeSearchGoods() {
+        Observable<SearchFilterParam> A = Observable.fromIterable(verticalFilterAdapter.getData())
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.isSelected();
+                    }
+                })
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.getType() == FilterType.CATEGORY;
+                    }
+                })
+                .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
+                    @Override
+                    public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
+                        return Observable.fromIterable(filterBean.getDataSet());
+                    }
+                })
+                .filter(new Predicate<FilterItem>() {
+                    @Override
+                    public boolean test(@NonNull FilterItem filterItem) throws Exception {
+                        return filterItem.isSelected();
+                    }
+                })
+                .map(new Function<FilterItem, SearchFilterParam>() {
+                    @Override
+                    public SearchFilterParam apply(@NonNull FilterItem filterBean) throws Exception {
+                        SearchFilterParam param = new SearchFilterParam();
+                        param.setType(FilterType.CATEGORY);
+                        param.setParam(filterBean.getId());
+                        return param;
+                    }
+                });
+        Observable<SearchFilterParam> B = Observable.fromIterable(verticalFilterAdapter.getData())
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.isSelected();
+                    }
+                })
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.getType() == FilterType.PRICE;
+                    }
+                })
+                .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
+                    @Override
+                    public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
+                        return Observable.fromIterable(filterBean.getDataSet());
+                    }
+                })
+                .filter(new Predicate<FilterItem>() {
+                    @Override
+                    public boolean test(@NonNull FilterItem filterItem) throws Exception {
+                        return filterItem.isSelected();
+                    }
+                })
+                .map(new Function<FilterItem, SearchFilterParam>() {
+                    @Override
+                    public SearchFilterParam apply(@NonNull FilterItem filterItem) throws Exception {
+                        SearchFilterParam param = new SearchFilterParam();
+                        param.setType(FilterType.PRICE);
+                        param.setParam(filterItem.getMinPrice());
+                        param.setParam2(filterItem.getMaxPrice());
+                        return param;
+                    }
+                });
+        Observable<SearchFilterParam> C = Observable.fromIterable(verticalFilterAdapter.getData())
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.getType() == FilterType.BRAND;
+                    }
+                })
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        Log.d(TAG, "test" + filterBean.isSelected());
+                        return filterBean.isSelected();
+                    }
+                })
+                .doOnNext(new Consumer<FilterBean>() {
+                    @Override
+                    public void accept(@NonNull FilterBean filterBean) throws Exception {
+                        Log.d(TAG, filterBean.getName());
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.d(TAG, throwable.toString());
+                    }
+                })
+                .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
+                    @Override
+                    public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
+                        final FilterBean bean = filterBean;
+                        return Observable.fromIterable(filterBean.getDataSet()).filter(new Predicate<FilterItem>() {
+                            @Override
+                            public boolean test(@NonNull FilterItem filterItem) throws Exception {
+                                return bean.getType() == FilterType.BRAND && bean.isSelected() && filterItem.isSelected();
+                            }
+                        });
+                    }
+                })
+                .toList()
+                .toObservable()
+                .map(new Function<List<FilterItem>, SearchFilterParam>() {
+                    @Override
+                    public SearchFilterParam apply(@NonNull List<FilterItem> filterItems) throws Exception {
+                        Log.d(TAG, "sdsa");
+                        SearchFilterParam param = new SearchFilterParam();
+                        param.setType(FilterType.BRAND);
+                        StringBuilder sb = new StringBuilder();
+                        for (FilterItem item : filterItems) {
+                            Log.d(TAG, item.getName());
+                            sb.append(item.getId());
+                            sb.append(",");
+                        }
+                        param.setParam(sb.toString());
+                        return param;
+                    }
+                });
+        Observable<FilterBean> cD = Observable.fromIterable(verticalFilterAdapter.getData())
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.isSelected();
+                    }
+                })
+                .filter(new Predicate<FilterBean>() {
+                    @Override
+                    public boolean test(@NonNull FilterBean filterBean) throws Exception {
+                        return filterBean.getType() == FilterType.PEOPERTY;
+                    }
+                });
+
+        Observable<SearchFilterParam> D = cD.flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
+            @Override
+            public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
+                return Observable.fromIterable(filterBean.getDataSet());
+            }
+        })
+                .filter(new Predicate<FilterItem>() {
+                    @Override
+                    public boolean test(@NonNull FilterItem filterItem) throws Exception {
+                        return filterItem.isSelected();
+                    }
+                })
+                .toList()
+                .toObservable()
+                .zipWith(cD, new BiFunction<List<FilterItem>, FilterBean, PeoperFilter>() {
+                    @Override
+                    public PeoperFilter apply(@NonNull List<FilterItem> filterItems, @NonNull FilterBean filterBean) throws Exception {
+                        PeoperFilter filter = new PeoperFilter();
+                        ArrayList<String> res = new ArrayList<String>();
+                        filter.setName(filterBean.getName());
+                        filter.setValues((ArrayList<FilterItem>) filterItems);
+                        return filter;
+                    }
+                })
+                .toList()
+                .toObservable()
+                .map(new Function<List<PeoperFilter>, SearchFilterParam>() {
+                    @Override
+                    public SearchFilterParam apply(@NonNull List<PeoperFilter> peoperFilters) throws Exception {
+                        SearchFilterParam param = new SearchFilterParam();
+                        param.setType(FilterType.PEOPERTY);
+                        StringBuilder sb = new StringBuilder();
+                        for (PeoperFilter filter : peoperFilters) {
+                            for (FilterItem item : filter.getValues()) {
+                                Log.d(TAG, item.getName() + "222");
+                                sb.append(filter.getName());
+                                sb.append("_");
+                                sb.append(item.getName());
+                                sb.append(",");
+                            }
+                        }
+                        param.setParam(sb.toString());
+                        return param;
+                    }
+                });
+        Observable.concat(A, B, C, D)
+                .toList()
+                .toObservable()
+                .map(new Function<List<SearchFilterParam>, SearchGoodsParam>() {
+                    @Override
+                    public SearchGoodsParam apply(@NonNull List<SearchFilterParam> searchFilterParams) throws Exception {
+                        SearchGoodsParam tmpParam = (SearchGoodsParam) param.clone();
+                        SearchGoodsParam.DataBean data = (SearchGoodsParam.DataBean) tmpParam.getData().clone();
+                        for (SearchFilterParam filterParam : searchFilterParams) {
+                            if (filterParam.getType() == FilterType.BRAND) {
+                                data.setBrandId(filterParam.getParam());
+                            } else if (filterParam.getType() == FilterType.CATEGORY) {
+                                data.setClass3Id(filterParam.getParam());
+                            } else if (filterParam.getType() == FilterType.PRICE) {
+                                data.setMinPrice(filterParam.getParam());
+                                data.setMaxPrice(filterParam.getParam2());
+                            } else {
+                                data.setPropertyList(filterParam.getParam());
+                            }
+                        }
+                        tmpParam.setData(data);
+                        param_use.setData(data);
+                        return tmpParam;
+                    }
+                })
+                .flatMap(new Function<SearchGoodsParam, ObservableSource<SearchGoods>>() {
+                    @Override
+                    public ObservableSource<SearchGoods> apply(@NonNull SearchGoodsParam searchGoodsParam) throws Exception {
+                        return searchSevice.searchGoodsApi(gson.toJson(searchGoodsParam));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        dialog.dismiss();
+                    }
+                })
+                .subscribe(new Observer<SearchGoods>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        dialog.show();
+                        if (popWindow.isShowing()) {
+                            popWindow.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(@NonNull SearchGoods searchGoods) {
+                        totalPage = searchGoods.getData().getTotalPages();
+                        goodRecAdapter.setNewData(searchGoods.getData().getGoodsList());
+                        if (searchGoods.getData().getGoodsList().size() == 0) {
+                            goodRecAdapter.setEmptyView(R.layout.empty_view);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        for (int index = 0; index < e.getStackTrace().length; index++) {
+                            Log.d(TAG, e.getStackTrace()[index].toString());
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        param = param_use;
+                    }
+                });
+    }
+
+    private void clearStatus() {
+        Observable<FilterBean> A = Observable.fromIterable(horizontalFilterAdapter.getData());
+        Observable<FilterBean> B = Observable.fromIterable(verticalFilterAdapter.getData());
+        Observable.concat(A, B)
+                .doOnNext(new Consumer<FilterBean>() {
+                    @Override
+                    public void accept(@NonNull FilterBean filterBean) throws Exception {
+                        filterBean.setSelected(false);
+                        filterBean.setSelectedName("");
+                    }
+                })
+                .flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
+                    @Override
+                    public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
+                        return Observable.fromIterable(filterBean.getDataSet());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Consumer<FilterItem>() {
+                    @Override
+                    public void accept(@NonNull FilterItem filterItem) throws Exception {
+                        filterItem.setSelected(false);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<FilterItem>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull FilterItem filterItem) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        removePeoperty();
+                        FilterItem item = new FilterItem();
+                        item.setSelected(false);
+                        changePeoperty(item);
+                        selectedIcon.setVisibility(View.VISIBLE);
+                    }
+                });
 
     }
 
@@ -1063,72 +1309,71 @@ public class SearchGoodActivity extends AppCompatActivity {
                     }
                 });
 
-        Observable.concat(A,C)
+        Observable.concat(A, C)
                 .flatMap(new Function<ArrayList<PropertyListBean>, ObservableSource<PropertyListBean>>() {
                     @Override
                     public ObservableSource<PropertyListBean> apply(@NonNull ArrayList<PropertyListBean> propertyListBeen) throws Exception {
                         return Observable.fromIterable(propertyListBeen);
                     }
-        })
-        .map(new Function<PropertyListBean, FilterBean>() {
-            @Override
-            public FilterBean apply(@NonNull PropertyListBean propertyListBean) throws Exception {
-                FilterBean bean = new FilterBean();
-                bean.setType(FilterType.PEOPERTY);
-                bean.setName(propertyListBean.getName());
-                for (String attr : propertyListBean.getValue()){
-                    FilterItem item = new FilterItem();
-                    item.setName(attr);
-                    bean.addItem(item);
-                }
-                return bean;
-            }
-        })
-         .doOnNext(new Consumer<FilterBean>() {
-            @Override
-            public void accept(@NonNull FilterBean filterBean) throws Exception {
-                horizontalFilterAdapter.getData().add(filterBean);
-                verticalFilterAdapter.getData().add(filterBean);
-            }
-        })
-        .subscribeOn(AndroidSchedulers.mainThread())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<FilterBean>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
+                })
+                .map(new Function<PropertyListBean, FilterBean>() {
+                    @Override
+                    public FilterBean apply(@NonNull PropertyListBean propertyListBean) throws Exception {
+                        FilterBean bean = new FilterBean();
+                        bean.setType(FilterType.PEOPERTY);
+                        bean.setName(propertyListBean.getName());
+                        for (String attr : propertyListBean.getValue()) {
+                            FilterItem item = new FilterItem();
+                            item.setName(attr);
+                            bean.addItem(item);
+                        }
+                        return bean;
+                    }
+                })
+                .doOnNext(new Consumer<FilterBean>() {
+                    @Override
+                    public void accept(@NonNull FilterBean filterBean) throws Exception {
+                        horizontalFilterAdapter.getData().add(filterBean);
+                        verticalFilterAdapter.getData().add(filterBean);
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<FilterBean>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(@NonNull FilterBean filterBean) {
-                Log.d(TAG, filterBean.getName());
+                    @Override
+                    public void onNext(@NonNull FilterBean filterBean) {
+                        Log.d(TAG, filterBean.getName());
 
-            }
+                    }
 
-            @Override
-            public void onError(@NonNull Throwable e) {
-                Log.d(TAG, e.toString());
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, e.toString());
 
-            }
+                    }
 
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "x");
-                horizontalFilterAdapter.notifyDataSetChanged();
-                verticalFilterAdapter.notifyDataSetChanged();
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        horizontalFilterAdapter.notifyDataSetChanged();
+                        verticalFilterAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private void removePeoperty() {
-        for (int i = 0 ; i < horizontalFilterAdapter.getData().size() ;i++){
-            if(horizontalFilterAdapter.getData().get(i).getType() == FilterType.PEOPERTY){
+        for (int i = 0; i < horizontalFilterAdapter.getData().size(); i++) {
+            if (horizontalFilterAdapter.getData().get(i).getType() == FilterType.PEOPERTY) {
                 horizontalFilterAdapter.getData().remove(i);
                 --i;
             }
         }
-        for (int i = 0 ; i < verticalFilterAdapter.getData().size() ;i++){
-            if(verticalFilterAdapter.getData().get(i).getType() == FilterType.PEOPERTY){
+        for (int i = 0; i < verticalFilterAdapter.getData().size(); i++) {
+            if (verticalFilterAdapter.getData().get(i).getType() == FilterType.PEOPERTY) {
                 verticalFilterAdapter.getData().remove(i);
                 --i;
             }
@@ -1318,7 +1563,7 @@ public class SearchGoodActivity extends AppCompatActivity {
 
     @OnClick(R.id.contenttop)
     public void onViewClickAll() {
-       Observable<FilterBean> A = Observable.fromIterable(verticalFilterAdapter.getData())
+        Observable<FilterBean> A = Observable.fromIterable(verticalFilterAdapter.getData())
                 .filter(new Predicate<FilterBean>() {
                     @Override
                     public boolean test(@NonNull FilterBean filterBean) throws Exception {
@@ -1344,7 +1589,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                     @Override
                     public ObservableSource<FilterBean> apply(@NonNull FilterBean filterBean) throws Exception {
                         final String name = filterBean.getName();
-                        return  Observable.fromIterable(horizontalFilterAdapter.getData())
+                        return Observable.fromIterable(horizontalFilterAdapter.getData())
                                 .filter(new Predicate<FilterBean>() {
                                     @Override
                                     public boolean test(@NonNull FilterBean filterBean) throws Exception {
@@ -1353,7 +1598,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                                 });
                     }
                 });
-        Observable.concat(A,B)
+        Observable.concat(A, B)
                 .doOnNext(new Consumer<FilterBean>() {
                     @Override
                     public void accept(@NonNull FilterBean filterBean) throws Exception {
@@ -1399,6 +1644,24 @@ public class SearchGoodActivity extends AppCompatActivity {
                         horizontalFilterAdapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    @OnClick(R.id.vertical_confirm)
+    public void onViewClickedVerticalConfirm(View view) {
+        drawerLayout.closeDrawer(Gravity.RIGHT);
+        changeSearchGoods();
+    }
+
+    @OnClick(R.id.vertical_reset)
+    public void onViewClickedVerticalCancel(View view) {
+        clearStatus();
+    }
+
+    @OnClick(R.id.goshopcat)
+    public void onViewClickedGoshopcat() {
+        Intent it = new Intent();
+        it.setClass(SearchGoodActivity.this, ShopCartActivity.class);
+        startActivity(it);
     }
 
     public static class FilterHelper {
@@ -1462,7 +1725,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                     item.setName(bean.getMinPrice() + " --- " + bean.getMaxPrice());
                     priceBean.addItem(item);
                 }
-                res.add(2,priceBean);
+                res.add(2, priceBean);
             }
             return res;
         }

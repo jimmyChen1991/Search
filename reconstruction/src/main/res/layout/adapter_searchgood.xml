@@ -89,4 +89,15 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/shopcart_privilege_icon"
         />
+    <Button
+        android:id="@+id/add"
+        android:layout_width="180dip"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_height="30dip"
+        android:layout_below="@+id/price_wrap"
+        android:text="加入购物车"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_corner_selector"
+        />
 </RelativeLayout>

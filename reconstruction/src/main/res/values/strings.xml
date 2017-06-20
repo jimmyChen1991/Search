@@ -88,6 +88,7 @@
     <string name="search_token">intent_param</string>
     <string name="search_content">intent_content</string>
     <string name="search_type">intent_type</string>
+    <string name="search_desc">desc</string>
 
     <string name="searchbartext">搜索商品</string>
     <string name="category">分类</string>
