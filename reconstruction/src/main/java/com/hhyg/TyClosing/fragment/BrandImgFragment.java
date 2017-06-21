@@ -8,6 +8,7 @@ import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
 import com.hhyg.TyClosing.allShop.info.BrandImgInfo;
 import com.hhyg.TyClosing.allShop.info.SearchInfo;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.log.Logger;
 import com.hhyg.TyClosing.ui.GoodListActivity;
@@ -73,6 +74,8 @@ public class BrandImgFragment extends Fragment{
 		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
 		bean.setBrandId(item.id);
 		intent.putExtra(getString(R.string.search_token),bean);
+		intent.putExtra(getString(R.string.search_content),item.name);
+		intent.putExtra(getString(R.string.search_type), SearchType.BRAND.ordinal());
 		startActivity(intent);
 	}
 	class BrandGridViewAdapter extends AllShopBaseAdapter<BrandImgInfo,BrandGridViewAdapter.ViewHolder>{

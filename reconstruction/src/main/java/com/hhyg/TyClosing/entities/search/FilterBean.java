@@ -34,6 +34,10 @@ public class FilterBean {
         dataSet.add(item);
     }
 
+    public void addItem(int position,FilterItem item){
+        dataSet.add(position,item);
+    }
+
     public String getName() {
         return name;
     }

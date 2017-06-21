@@ -1,21 +1,21 @@
 package com.hhyg.TyClosing.fragment;
 
-import java.util.ArrayList;
-
-import com.hhyg.TyClosing.R;
-import com.hhyg.TyClosing.allShop.adapter.AllShopBrandAdapter;
-import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
-import com.hhyg.TyClosing.allShop.info.BrandImgInfo;
-import com.hhyg.TyClosing.allShop.info.SearchInfo;
-import com.hhyg.TyClosing.mgr.UserTrackMgr;
-import com.hhyg.TyClosing.ui.GoodListActivity;
-import com.hhyg.TyClosing.ui.view.InSideGridView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.hhyg.TyClosing.R;
+import com.hhyg.TyClosing.allShop.adapter.AllShopBrandAdapter;
+import com.hhyg.TyClosing.allShop.adapter.OnItemClickListener;
+import com.hhyg.TyClosing.allShop.info.BrandImgInfo;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
+import com.hhyg.TyClosing.ui.SearchGoodActivity;
+import com.hhyg.TyClosing.ui.view.InSideGridView;
+
+import java.util.ArrayList;
 public class AllShopBrandFragment extends AllShopBaseFragment{
 	private ArrayList<BrandImgInfo> mBrandList;
 	private InSideGridView mGridView;
@@ -48,12 +48,13 @@ public class AllShopBrandFragment extends AllShopBaseFragment{
 		mAdapter.notifyDataSetChanged();
 	}
 	private void jumpToSearchActivity(BrandImgInfo item){
-		UserTrackMgr.getInstance().clear();
-		UserTrackMgr.getInstance().enter("AllShopBrandFragment");
-		UserTrackMgr.getInstance().onEvent("brandtolist",item.name);
-		SearchInfo info = SearchInfo.NewInstance(SearchInfo.BRAND_SEARCH, item.id, item.name);
-		Intent intent = new Intent(getActivity(), GoodListActivity.class);
-		intent.putExtra("searchInfo", info);
+		SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+		bean.setBrandId(item.id);
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), SearchGoodActivity.class);
+		intent.putExtra(getString(R.string.search_content),item.name);
+		intent.putExtra(getString(R.string.search_token),bean);
+		intent.putExtra(getString(R.string.search_type), SearchType.BRAND.ordinal());
 		startActivity(intent);
 	}
 }

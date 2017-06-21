@@ -10,6 +10,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.info.SearchInfo;
 import com.hhyg.TyClosing.config.Constants;
+import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.global.INetWorkCallBack;
 import com.hhyg.TyClosing.global.ImageHelper;
 import com.hhyg.TyClosing.global.JsonPostParamBuilder;
@@ -345,9 +347,13 @@ public class GoodsInfoActivity extends Activity implements GoodInfoView {
 			@Override
 			public void onClick(View v) {
 				SearchInfo info = SearchInfo.NewInstance(SearchInfo.BRAND_SEARCH, mInfo.brandId, mInfo.brand);
+				SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
+				bean.setBrandId(info.brandId);
 				Intent intent = new Intent();
-				intent.setClass(GoodsInfoActivity.this, GoodListActivity.class);
-				intent.putExtra("searchInfo", info);
+				intent.setClass(GoodsInfoActivity.this, SearchGoodActivity.class);
+				intent.putExtra(getString(R.string.search_content),info.searchContent);
+				intent.putExtra(getString(R.string.search_token),bean);
+				intent.putExtra(getString(R.string.search_type), SearchType.BRAND.ordinal());
 				startActivity(intent);
 			}
 		});

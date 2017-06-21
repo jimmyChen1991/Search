@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.hhyg.TyClosing.R;
 import com.hhyg.TyClosing.allShop.info.CategoryInfo;
 import com.hhyg.TyClosing.entities.search.SearchGoodsParam;
+import com.hhyg.TyClosing.entities.search.SearchType;
 import com.hhyg.TyClosing.mgr.UserTrackMgr;
 import com.hhyg.TyClosing.ui.SearchGoodActivity;
 import com.nostra13.universalimageloader.cache.disc.impl.BrandFileGetter;
@@ -88,6 +89,7 @@ public class AllShopCateFragment extends AllShopBaseFragment implements View.OnC
 		bean.setClass1Id(item.id);
 		it.putExtra(getResources().getString(R.string.search_token),bean);
 		it.putExtra(getString(R.string.search_content),item.cateName);
+		it.putExtra(getString(R.string.search_type), SearchType.CATE.ordinal());
 		it.setClass(getActivity(), SearchGoodActivity.class);
 		startActivity(it);
 	}

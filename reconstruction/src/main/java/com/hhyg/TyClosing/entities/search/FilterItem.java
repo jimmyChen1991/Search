@@ -10,6 +10,7 @@ public class FilterItem {
     private String maxPrice;
     private String minPrice;
     private boolean selected;
+    private boolean isAllchoseFlag;
     public String getName() {
         return name;
     }
@@ -48,5 +49,13 @@ public class FilterItem {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public boolean isAllchoseFlag() {
+        return isAllchoseFlag;
+    }
+
+    public void setAllchoseFlag(boolean allchoseFlag) {
+        isAllchoseFlag = allchoseFlag;
     }
 }

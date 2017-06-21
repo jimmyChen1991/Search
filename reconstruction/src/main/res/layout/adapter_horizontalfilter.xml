@@ -3,23 +3,33 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingRight="15dp">
-    <TextView
-        android:id="@+id/filter"
+    <RelativeLayout
+        android:id="@+id/content"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:paddingRight="15dp"
-        android:background="@color/ffffff"
-        android:gravity="center"
-        android:drawableRight="@drawable/search_property_icon"
-        android:textColor="@color/light"
-        android:textSize="@dimen/sp_16"
-        android:maxLines="1"
-        android:maxEms="12"
-        android:ellipsize="end"/>
+        android:background="@color/ffffff">
+        <TextView
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/light"
+            android:textSize="@dimen/sp_15"
+            android:maxLines="1"
+            android:maxEms="6"
+            android:ellipsize="end"/>
+        <View
+            android:layout_width="8dp"
+            android:layout_height="5dp"
+            android:background="@drawable/search_property_icon"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/filter"
+            android:layout_marginLeft="@dimen/dp_4"/>
+    </RelativeLayout>
     <View
         android:id="@+id/bottom_connect"
         android:layout_width="150dp"
         android:layout_height="20dp"
         android:background="@color/ffffff"
-        android:layout_below="@+id/filter"/>
+        android:layout_below="@+id/content"/>
 </RelativeLayout>

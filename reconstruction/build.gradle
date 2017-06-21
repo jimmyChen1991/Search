@@ -44,8 +44,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.hanks:htextview-base:0.1.1'
-    compile 'com.hanks:htextview-scale:0.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'

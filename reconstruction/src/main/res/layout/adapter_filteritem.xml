@@ -9,7 +9,8 @@
         android:id="@+id/filterName"
         style="@style/goodlistchosetitle"
         android:layout_centerVertical="true"
-        android:text="全部" />
+        android:text="全部"
+        android:textSize="@dimen/sp_15"/>
     <ImageView
         android:id="@+id/selected_icon"
         android:layout_width="wrap_content"

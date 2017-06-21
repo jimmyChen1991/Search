@@ -278,10 +278,7 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .flatMap(new Function<ArrayList<FilterBean>, ObservableSource<FilterBean>>() {
                     @Override
                     public ObservableSource<FilterBean> apply(@NonNull ArrayList<FilterBean> filterBeen) throws Exception {
-                        int size = filterBeen.size();
-                        FilterBean sources[] = new FilterBean[size];
-                        filterBeen.toArray(sources);
-                        return Observable.fromArray(sources);
+                        return Observable.fromIterable(filterBeen);
                     }
                 })
                 .filter(new Predicate<FilterBean>() {
@@ -348,6 +345,7 @@ public class SearchGoodActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull PeopertyOfCate peopertyOfCate) {
+                        Log.d(TAG, "start next");
                         peopertyOfCates.add(peopertyOfCate);
                     }
 
@@ -1011,7 +1009,6 @@ public class SearchGoodActivity extends AppCompatActivity {
                 .map(new Function<FilterItem, SearchFilterParam>() {
                     @Override
                     public SearchFilterParam apply(@NonNull FilterItem filterBean) throws Exception {
-                        Log.d(TAG, "map _ cate");
                         SearchFilterParam param = new SearchFilterParam();
                         param.setType(FilterType.CATEGORY);
                         param.setParam(filterBean.getId());
@@ -1121,19 +1118,16 @@ public class SearchGoodActivity extends AppCompatActivity {
                     }
                 });
 
-        Observable<SearchFilterParam> D = cD.flatMap(new Function<FilterBean, ObservableSource<FilterItem>>() {
+        Observable<SearchFilterParam> D = cD.flatMap(new Function<FilterBean, ObservableSource<List<FilterItem>>>() {
             @Override
-            public ObservableSource<FilterItem> apply(@NonNull FilterBean filterBean) throws Exception {
-                return Observable.fromIterable(filterBean.getDataSet());
-            }})
-                .filter(new Predicate<FilterItem>() {
+            public ObservableSource<List<FilterItem>> apply(@NonNull FilterBean filterBean) throws Exception {
+                return Observable.fromIterable(filterBean.getDataSet()).filter(new Predicate<FilterItem>() {
                     @Override
                     public boolean test(@NonNull FilterItem filterItem) throws Exception {
                         return filterItem.isSelected();
                     }
-                })
-                .toList()
-                .toObservable()
+                }).toList().toObservable();
+            }})
                 .zipWith(cD, new BiFunction<List<FilterItem>, FilterBean, PeoperFilter>() {
                     @Override
                     public PeoperFilter apply(@NonNull List<FilterItem> filterItems, @NonNull FilterBean filterBean) throws Exception {
@@ -1154,13 +1148,15 @@ public class SearchGoodActivity extends AppCompatActivity {
                         StringBuilder sb = new StringBuilder();
                         for (PeoperFilter filter : peoperFilters) {
                             for (FilterItem item : filter.getValues()) {
-                                Log.d(TAG, item.getName() + "222");
+                                Log.d(TAG, "big name" + filter.getName());
+                                Log.d(TAG, "small name" + item.getName());
                                 sb.append(filter.getName());
                                 sb.append("_");
                                 sb.append(item.getName());
                                 sb.append(",");
                             }
                         }
+                        Log.d(TAG, "peoperty");
                         param.setParam(sb.toString());
                         return param;
                     }
@@ -1232,7 +1228,7 @@ public class SearchGoodActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-                        param = param_use;
+
                     }
                 });
     }
@@ -1517,26 +1513,26 @@ public class SearchGoodActivity extends AppCompatActivity {
                 view.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_pressed);
                 view.setClickable(false);
                 chosehotsale.setClickable(true);
-                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_salenew_normal);
                 chosenew.setClickable(true);
-                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newgood_normal);
                 choseprice.setClickable(true);
                 choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
                 break;
             case R.id.chosehotsale:
-                view.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_pressed);
+                view.setBackgroundResource(R.drawable.allshop_search_goodlist_salenew_pressed);
                 view.setClickable(false);
-                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newgood_normal);
                 chosenew.setClickable(true);
                 choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
                 choseprice.setClickable(true);
-                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
                 chosengerenal.setClickable(true);
                 break;
             case R.id.chosenew:
-                view.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_pressed);
+                view.setBackgroundResource(R.drawable.allshop_search_goodlist_newgood_pressed);
                 view.setClickable(false);
-                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_salenew_normal);
                 chosehotsale.setClickable(true);
                 choseprice.setBackgroundResource(R.drawable.allshop_search_goodlist_price_normal);
                 choseprice.setClickable(true);
@@ -1544,9 +1540,9 @@ public class SearchGoodActivity extends AppCompatActivity {
                 chosengerenal.setClickable(true);
                 break;
             case R.id.choseprice:
-                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_hotsale_normal);
+                chosehotsale.setBackgroundResource(R.drawable.allshop_search_goodlist_salenew_normal);
                 chosehotsale.setClickable(true);
-                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newarrival_normal);
+                chosenew.setBackgroundResource(R.drawable.allshop_search_goodlist_newgood_normal);
                 chosenew.setClickable(true);
                 chosengerenal.setBackgroundResource(R.drawable.allshop_search_goodlist_gerenal_normal);
                 chosengerenal.setClickable(true);
@@ -1697,7 +1693,7 @@ public class SearchGoodActivity extends AppCompatActivity {
 
         public ArrayList<FilterBean> invoke() {
             ArrayList<FilterBean> res = new ArrayList<>();
-            if (searchFilterRes.getBrandList() != null && searchFilterRes.getBrandList().size() != 0) {
+            if (searchFilterRes.getBrandList() != null && searchFilterRes.getBrandList().size() != 0 && searchFilterRes.getBrandList().size() != 1) {
                 FilterBean brandBean = new FilterBean();
                 brandBean.setType(FilterType.BRAND);
                 brandBean.setName("品牌");
@@ -1707,9 +1703,10 @@ public class SearchGoodActivity extends AppCompatActivity {
                     item.setName(bean.getName());
                     brandBean.addItem(item);
                 }
+                addAllChoseItem(brandBean);
                 res.add(brandBean);
             }
-            if (searchFilterRes.getClass3List() != null && searchFilterRes.getClass3List().size() != 0) {
+            if (searchFilterRes.getClass3List() != null && searchFilterRes.getClass3List().size() != 0  && searchFilterRes.getClass3List().size() != 1) {
                 FilterBean cateBean = new FilterBean();
                 cateBean.setType(FilterType.CATEGORY);
                 cateBean.setName("分类");
@@ -1719,9 +1716,10 @@ public class SearchGoodActivity extends AppCompatActivity {
                     item.setId(bean.getId());
                     cateBean.addItem(item);
                 }
+                addAllChoseItem(cateBean);
                 res.add(cateBean);
             }
-            if (searchFilterRes.getPropertyList() != null && searchFilterRes.getPropertyList().size() != 0) {
+            if (searchFilterRes.getPropertyList() != null && searchFilterRes.getPropertyList().size() != 0 && searchFilterRes.getPropertyList().size() != 1) {
                 for (PropertyListBean BiBean : searchFilterRes.getPropertyList()) {
                     FilterBean peopertyBean = new FilterBean();
                     peopertyBean.setType(FilterType.PEOPERTY);
@@ -1731,10 +1729,19 @@ public class SearchGoodActivity extends AppCompatActivity {
                         item.setName(attr);
                         peopertyBean.addItem(item);
                     }
+                    addAllChoseItem(peopertyBean);
                     res.add(peopertyBean);
                 }
             }
             return res;
+        }
+
+        private void addAllChoseItem(final FilterBean bean){
+//            FilterItem item = new FilterItem();
+//            item.setName("全部");
+//            item.setSelected(true);
+//            item.setAllchoseFlag(true);
+//            bean.addItem(0,item);
         }
 
         private ArrayList<FilterBean> getprice(ArrayList<FilterBean> res) {
@@ -1744,12 +1751,23 @@ public class SearchGoodActivity extends AppCompatActivity {
                 priceBean.setName("价格");
                 for (SearchFilterRes.DataBean.PriceListBean bean : searchFilterRes.getPriceList()) {
                     FilterItem item = new FilterItem();
-                    item.setMaxPrice(bean.getMaxPrice());
+                    if(bean.getMaxPrice() != null){
+                        item.setMaxPrice(bean.getMaxPrice());
+                    }
                     item.setMinPrice(bean.getMinPrice());
-                    item.setName(bean.getMinPrice() + " --- " + bean.getMaxPrice());
+                    if(bean.getMaxPrice() != null){
+                        item.setName(bean.getMinPrice() + " --- " + bean.getMaxPrice());
+                    }else{
+                        item.setName(bean.getMinPrice());
+                    }
                     priceBean.addItem(item);
                 }
-                res.add(2, priceBean);
+                addAllChoseItem(priceBean);
+                if(res.size() > 2){
+                    res.add(2, priceBean);
+                }else{
+                    res.add(priceBean);
+                }
             }
             return res;
         }

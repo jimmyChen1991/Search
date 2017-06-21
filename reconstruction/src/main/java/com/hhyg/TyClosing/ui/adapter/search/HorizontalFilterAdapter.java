@@ -22,7 +22,7 @@ public class HorizontalFilterAdapter extends BaseQuickAdapter<FilterBean,BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, FilterBean item) {
-        helper.addOnClickListener(R.id.filter)
+        helper.addOnClickListener(R.id.content)
                 .setVisible(R.id.bottom_connect,item.isShowNow());
         TextView filter = helper.getView(R.id.filter);
         if(!item.isSelected()){

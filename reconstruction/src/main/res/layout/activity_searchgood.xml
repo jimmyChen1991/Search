@@ -38,12 +38,11 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/allshop_search_tomian"/>
         </RelativeLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:orientation="horizontal">
+            android:paddingRight="10dp">
             <TextView
                 android:id="@+id/searchtitle"
                 android:layout_width="wrap_content"
@@ -51,38 +50,41 @@
                 android:textSize="@dimen/smallTitle"
                 android:background="@color/ffffff"
                 android:letterSpacing="0.1"
-                android:textColor="@color/maincolor"
-                android:gravity="center" />
-            <ImageButton
-                android:id="@+id/chosengerenal"
-                android:layout_marginStart="230dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/allshop_search_goodlist_gerenal_pressed"/>
-            <ImageButton
-                android:id="@+id/chosehotsale"
-                android:layout_marginStart="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/allshop_search_goodlist_hotsale_normal"/>
-            <ImageButton
-                android:id="@+id/chosenew"
-                android:layout_marginStart="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/allshop_search_goodlist_newarrival_normal"/>
-            <ImageButton
-                android:id="@+id/choseprice"
-                android:layout_marginStart="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/allshop_search_goodlist_price_normal" />
+                android:textColor="@color/maincolor" />
             <ImageButton android:id="@+id/tochosebtn"
-                android:layout_marginStart="15dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:background="@drawable/goodlistchose_selector"/>
-        </LinearLayout>
+            <ImageButton
+                android:id="@+id/choseprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tochosebtn"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@drawable/allshop_search_goodlist_price_normal" />
+            <ImageButton
+                android:id="@+id/chosenew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/choseprice"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@drawable/allshop_search_goodlist_newgood_normal"/>
+            <ImageButton
+                android:id="@+id/chosehotsale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/chosenew"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@drawable/allshop_search_goodlist_salenew_normal"/>
+            <ImageButton
+                android:id="@+id/chosengerenal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/chosehotsale"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@drawable/allshop_search_goodlist_gerenal_pressed"/>
+        </RelativeLayout>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1.5dp"
