@@ -46,7 +46,7 @@ public class GoodInfoPresenter extends BasePresenter<GoodInfoView>{
 			mView.startProgress();
 		}
 		UserTrackMgr.getInstance().onEvent("specialtodetail", BarCode);
-		mHttpRequester.post(GOOD_INFO_URI+"?r=goodinfo/getbybarcode", MakeJsonString(),
+		mHttpRequester.post(GOOD_INFO_URI+"?r=goodinfo/detailbybarcode", MakeJsonString(),
 				new NetCallBackHandlerException(new LocalHandler(), mGoodInfoProc));
 	}
 	
@@ -88,12 +88,14 @@ public class GoodInfoPresenter extends BasePresenter<GoodInfoView>{
 						sInfo.barCode = obj.getString("barcode");
 						sInfo.citPrice = obj.getDouble("cit_price");
 						sInfo.msPrice = obj.getString("cit_price");
-						if(obj.getString("active_price").equals("")){
+						if(obj.getString("active_price") == null || obj.getString("active_price").equals("")){
 							sInfo.activePrice = 0;
 						}else{
-								sInfo.activePrice = obj.getDouble("active_price");
+							sInfo.activePrice = obj.getDouble("active_price");
 						}
-						sInfo.activeCut = obj.getDouble("active_cut");
+						if(obj.getString("active_cut") != null){
+							sInfo.activeCut = obj.getDouble("active_cut");
+						}
 						sInfo.stock = obj.getIntValue("stock");
 						sInfo.citAmount = citAmount;
 						sInfo.activeName = obj.getString("active_name");

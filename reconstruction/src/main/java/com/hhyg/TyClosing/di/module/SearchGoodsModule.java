@@ -59,7 +59,7 @@ public class SearchGoodsModule {
     SearchGoodsParam.DataBean provideBean(){
         SearchGoodsParam.DataBean bean = new SearchGoodsParam.DataBean();
         bean.setPageNo(1);
-        bean.setPageSize("100");
+        bean.setPageSize("99");
         bean.setAvailable("1");
         bean.setSortType("0");
         bean.setClass1Id(beanParam.getClass1Id());

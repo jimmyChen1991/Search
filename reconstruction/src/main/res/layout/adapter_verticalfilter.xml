@@ -15,7 +15,7 @@
         android:layout_centerVertical="true"
         android:text="@string/all"
         android:maxLines="1"
-        android:maxEms="12"
+        android:maxEms="6"
         android:ellipsize="end"
         android:textColor="@color/maincolor"
         android:layout_alignParentRight="true"

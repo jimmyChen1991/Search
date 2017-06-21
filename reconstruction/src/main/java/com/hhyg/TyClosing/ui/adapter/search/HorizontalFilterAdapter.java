@@ -24,11 +24,6 @@ public class HorizontalFilterAdapter extends BaseQuickAdapter<FilterBean,BaseVie
     protected void convert(BaseViewHolder helper, FilterBean item) {
         helper.addOnClickListener(R.id.filter)
                 .setVisible(R.id.bottom_connect,item.isShowNow());
-        if(item.getType() == FilterType.PRICE){
-            helper.itemView.setVisibility(View.GONE);
-        }else{
-            helper.itemView.setVisibility(View.VISIBLE);
-        }
         TextView filter = helper.getView(R.id.filter);
         if(!item.isSelected()){
             filter.setText(item.getName());

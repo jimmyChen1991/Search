@@ -90,7 +90,6 @@
         <activity
                 android:name=".ui.BrandActivity"
                 android:configChanges="orientation|keyboardHidden"
-                android:launchMode="singleInstance"
                 android:screenOrientation="portrait">
         </activity>
         <activity
@@ -119,7 +118,6 @@
         <activity
                 android:name=".ui.CategoryActivity"
                 android:configChanges="orientation|keyboardHidden"
-                android:launchMode="singleInstance"
                 android:screenOrientation="portrait">
         </activity>
         <activity

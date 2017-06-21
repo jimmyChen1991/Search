@@ -1,5 +1,7 @@
 package com.hhyg.TyClosing.entities.shopcart;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by user on 2017/6/19.
  */
@@ -20,7 +22,6 @@ public class CastDetail {
      * name : 满200元减20元 满300元减30元 满400元减40元 满500元减50.00元
      * active_price : 1934
      */
-
     private String total_price;
     private String short_desc;
     private String total_fee;
